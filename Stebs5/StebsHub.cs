@@ -8,9 +8,9 @@ namespace Stebs5
 {
     public class StebsHub : Hub
     {
-        public void Hello()
+        public void Hello(string name)
         {
-            Clients.All.hello();
+            Clients.All.hello($"Hello {name}");
         }
     }
 }
