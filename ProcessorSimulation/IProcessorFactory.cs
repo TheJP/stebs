@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ProcessorSimulation
 {
-    public interface IProcessor
+    public interface IProcessorFactory
     {
-        event Action<IProcessor, IRegister> RegisterChanged;
+        IProcessor CreateProcessor();
     }
 }

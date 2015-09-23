@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Practices.Unity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,6 +38,8 @@ namespace ProcessorSimulation
             [ROR] = (x, y) => unchecked(x >> 1) | ((x & 0x01) << 7),
             [ROL] = (x, y) => unchecked(x << 1) | ((x & 0x80) >> 7)
         };
+
+        public Alu(UnityContainer container) { }
 
         public byte Execute(AluCmd command, byte x, byte y)
         {

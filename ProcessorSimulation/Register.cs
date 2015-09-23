@@ -8,5 +8,10 @@ namespace ProcessorSimulation
 {
     public class Register : IRegister
     {
+        public Registers Type { get; private set; }
+        public Register(Registers type)
+        {
+            this.Type = type;
+        }
     }
 }
