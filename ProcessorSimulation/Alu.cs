@@ -19,7 +19,7 @@ namespace ProcessorSimulation
         /// Dictonary which contains every command that can be computed by the Alu.
         /// </summary>
         private Dictionary<AluCmd, Func<byte, byte, int>> commands = new Dictionary<AluCmd, Func<byte, byte, int>>()
-        {
+        { 
             [NOP] = (x, y) => 0,
             [ADD] = (x, y) => x + y,
             [SUB] = (x, y) => x - y,
@@ -37,7 +37,7 @@ namespace ProcessorSimulation
             [ROR] = (x, y) => unchecked(x >> 1) | ((x & 0x01) << 7),
             [ROL] = (x, y) => unchecked(x << 1) | ((x & 0x80) >> 7)
         };
-
+        
         /// <summary>
         /// Executes an alu calculation.
         /// </summary>
