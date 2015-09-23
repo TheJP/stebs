@@ -39,12 +39,12 @@ namespace ProcessorSimulation
         };
 
         /// <summary>
-        /// 
+        /// Executes an alu calculation.
         /// </summary>
-        /// <param name="command"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
+        /// <param name="command">Defines, which alu commond to execute.</param>
+        /// <param name="x">Left hand side parameter.</param>
+        /// <param name="y">Right hand side parameter.</param>
+        /// <returns>Result of the calculation.</returns>
         public byte Execute(AluCmd command, byte x, byte y)
         {
             byte result = 0;

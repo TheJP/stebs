@@ -62,6 +62,48 @@ namespace Stebs5.Tests.ProcessorSimulation
                 test(DIV, 10, 0xFF, 0),
                 test(DIV, 1, 2, 0),
                 test(DIV, 10, 11, 0),
+                //MOD
+                test(MOD, 0, 1, 0),
+                test(MOD, 0, 5, 0),
+                test(MOD, 5, 5, 0),
+                test(MOD, 10, 5, 0),
+                test(MOD, 12, 5, 2),
+                test(MOD, 0xFF, 0x10, 0x0F),
+                test(MOD, 0xAC, 0x10, 0x0C),
+                test(MOD, 33, 66, 33),
+                test(MOD, 0xFF, 0xFF, 0),
+                //DEC
+                test(DEC, 1, 0, 0),
+                test(DEC, 2, 1, 1),
+                test(DEC, 0xFF, 2, 0xFE),
+                test(DEC, 0x25, 3, 0x24),
+                test(DEC, 0, 4, 0xFF),
+                //INC
+                test(INC, 1, 0, 2),
+                test(INC, 2, 1, 3),
+                test(INC, 0xFF, 2, 0),
+                test(INC, 0x25, 3, 0x26),
+                test(INC, 0, 4, 1),
+                //OR
+                test(OR, 0, 0, 0),
+                test(OR, 0, 1, 1),
+                test(OR, 1, 0, 1),
+                test(OR, 1, 1, 1),
+                test(OR, 0, 0xFF, 0xFF),
+                test(OR, 0xFF, 0, 0xFF),
+                test(OR, 0xFF, 0xFF, 0xFF),
+                test(OR, 0xF0, 0x0F, 0xFF),
+                test(OR, 0x3C, 0xC3, 0xFF),
+                //XOR
+                test(XOR, 0, 0, 0),
+                test(XOR, 0, 1, 1),
+                test(XOR, 1, 0, 1),
+                test(XOR, 1, 1, 0),
+                test(XOR, 0, 0xFF, 0xFF),
+                test(XOR, 0xFF, 0, 0xFF),
+                test(XOR, 0xFF, 0xFF, 0),
+                test(XOR, 0xF0, 0x0F, 0xFF),
+                test(XOR, 0x3C, 0xC3, 0xFF),
             };
             //Test each case
             foreach(var testCase in testCases)
