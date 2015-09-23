@@ -170,7 +170,7 @@ build:
 
 # scripts to run before build
 before_build:
-  nuget restore -verbosity detailed
+  nuget restore
 # scripts to run after build
 #after_build:
 
