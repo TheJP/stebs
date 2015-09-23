@@ -21,8 +21,8 @@ branches:
     - master
 
   # blacklist
-  except:
-   # - gh-pages
+#  except:
+#    - gh-pages
 
 # Do not build on tags (GitHub only)
 skip_tags: true
