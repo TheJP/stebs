@@ -38,6 +38,13 @@ namespace ProcessorSimulation
             [ROL] = (x, y) => unchecked(x << 1) | ((x & 0x80) >> 7)
         };
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public byte Execute(AluCmd command, byte x, byte y)
         {
             byte result = 0;

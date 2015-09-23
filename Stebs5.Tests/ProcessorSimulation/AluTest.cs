@@ -51,6 +51,17 @@ namespace Stebs5.Tests.ProcessorSimulation
                 test(MUL, 4, 16, 64),
                 test(MUL, 0x80, 2, 0),
                 test(MUL, 0xFF, 2, 0xFE),
+                //DIV
+                test(DIV, 0, 1, 0),
+                test(DIV, 5, 1, 5),
+                test(DIV, 10, 2, 5),
+                test(DIV, 0xF6, 1, 0xF6),
+                test(DIV, 0xF6, 2, 0x7B), //Unsigned Division!
+                test(DIV, 10, 10, 1),
+                test(DIV, 20, 10, 2),
+                test(DIV, 10, 0xFF, 0),
+                test(DIV, 1, 2, 0),
+                test(DIV, 10, 11, 0),
             };
             //Test each case
             foreach(var testCase in testCases)
@@ -60,6 +71,17 @@ namespace Stebs5.Tests.ProcessorSimulation
                     alu.Execute(testCase.Item1, testCase.Item2, testCase.Item3),
                     $"{testCase.Item1}({testCase.Item2}, {testCase.Item3})");
             }
+        }
+
+        [TestMethod]
+        public void TestDivisionByZero()
+        {
+            try
+            {
+                alu.Execute(DIV, 5, 0);
+                Assert.Fail("Division by 0 doesn't throw an exception");
+            }
+            catch (DivideByZeroException) { }
         }
     }
 }
