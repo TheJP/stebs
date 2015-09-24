@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProcessorSimulation;
 using System.Collections.Generic;
 using static ProcessorSimulation.AluCmd;
+using Microsoft.Practices.Unity;
 
 namespace Stebs5.Tests.ProcessorSimulation
 {
@@ -15,7 +16,7 @@ namespace Stebs5.Tests.ProcessorSimulation
         [TestInitialize]
         public void Setup()
         {
-            alu = new Alu();
+            alu = new Alu(new UnityContainer());
         }
 
         [TestMethod]

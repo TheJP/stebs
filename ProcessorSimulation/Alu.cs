@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Practices.Unity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace ProcessorSimulation
     /// operations such adding two values or increment one value. It has
     /// two registers (X and Y) which are required to execute binary or
     /// unairy commands. 
-    public class Alu
+    public class Alu : IAlu
     {
         /// <summary>
         /// Dictonary which contains every command that can be computed by the Alu.
@@ -37,14 +38,9 @@ namespace ProcessorSimulation
             [ROR] = (x, y) => unchecked(x >> 1) | ((x & 0x01) << 7),
             [ROL] = (x, y) => unchecked(x << 1) | ((x & 0x80) >> 7)
         };
-        
-        /// <summary>
-        /// Executes an alu calculation.
-        /// </summary>
-        /// <param name="command">Defines, which alu commond to execute.</param>
-        /// <param name="x">Left hand side parameter.</param>
-        /// <param name="y">Right hand side parameter.</param>
-        /// <returns>Result of the calculation.</returns>
+
+        public Alu(UnityContainer container) { }
+
         public byte Execute(AluCmd command, byte x, byte y)
         {
             byte result = 0;

@@ -59,7 +59,15 @@
   <ItemGroup>
     <Compile Include="Alu.cs" />
     <Compile Include="AluCmd.cs" />
+    <Compile Include="IAlu.cs" />
+    <Compile Include="IProcessor.cs" />
+    <Compile Include="IProcessorFactory.cs" />
+    <Compile Include="IRegister.cs" />
+    <Compile Include="Processor.cs" />
+    <Compile Include="ProcessorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Register.cs" />
+    <Compile Include="Registers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
