@@ -77,13 +77,13 @@ namespace ProcessorSimulation
         /// ALU register X.
         /// Left hand side parameter of ALU commands.
         /// </summary>
-        X,
+        X = 13,
 
         /// <summary>
         /// ALU register Y.
         /// Right hand side parameter of ALU commands.
         /// </summary>
-        Y,
+        Y = 14,
 
         /// <summary>
         /// ALU result register.

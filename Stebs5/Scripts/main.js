@@ -35,6 +35,8 @@ stebs.hello = function hello(word) {
 
 $(document).ready(function (){
 
+    stebs.setupCanvas();
+
     var hub = $.connection.stebsHub;
     hub.client.hello = stebs.hello;
 
