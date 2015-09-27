@@ -9,5 +9,6 @@ namespace ProcessorSimulation
     public interface IRegister
     {
         Registers Type { get; }
+        byte Value { get; }
     }
 }

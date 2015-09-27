@@ -18,7 +18,7 @@ namespace ProcessorSimulation
         public ProcessorFactory()
         {
             container
-                .RegisterInstance<Func<Registers, IRegister>>(type => new Register(type))
+                .RegisterInstance<Func<Registers, byte, IRegister>>((type, value) => new Register(type, value))
                 .RegisterInstance<IAlu>(new Alu(container));
         }
 
