@@ -19,6 +19,7 @@ namespace ProcessorSimulation
         {
             container
                 .RegisterInstance<Func<Registers, byte, IRegister>>((type, value) => new Register(type, value))
+                .RegisterType<IRam, Ram>()
                 .RegisterInstance<IAlu>(new Alu(container));
         }
 
