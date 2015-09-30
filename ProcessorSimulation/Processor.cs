@@ -15,7 +15,6 @@ namespace ProcessorSimulation
         private object eventLock = new object();
 
         private Action<IProcessor, IRegister> registerChanged;
-        /// <summary>Event that is fired, when a register changed.</summary>
         public event Action<IProcessor, IRegister> RegisterChanged
         {
             add
@@ -28,34 +27,21 @@ namespace ProcessorSimulation
             }
         }
 
-        private Action<IProcessor, byte> ramChanged;
-        /// <summary>
-        /// Event that is fired, when the ram is changed.
-        /// The byte parameter is the address, where the ram was changed.
-        /// </summary>
-        public event Action<IProcessor, byte> RamChanged
-        {
-            add
-            {
-                lock (eventLock) { ramChanged += value; }
-            }
-            remove
-            {
-                lock (eventLock) { ramChanged -= value; }
-            }
-        }
-
         private volatile ImmutableDictionary<Registers, IRegister> registers = ImmutableDictionary<Registers, IRegister>.Empty;
         private readonly Func<Registers, byte, IRegister> registerFactory;
-        private readonly IAlu alu;
-        private readonly IRam ram;
 
+        public IAlu Alu { get; }
+        public IRam Ram { get; }
+        public IDictionary<Registers, IRegister> Registers
+        {
+            get { return registers; }
+        }
         /// <summary>Creates a processor. The different parts are created by resolving unity dependencies.</summary>
         /// <param name="container">Container that allows the resolving of required dependencies.</param>
         public Processor(UnityContainer container)
         {
-            alu = container.Resolve<IAlu>();
-            ram = container.Resolve<IRam>();
+            Alu = container.Resolve<IAlu>();
+            Ram = container.Resolve<IRam>();
             registerFactory = container.Resolve<Func<Registers, byte, IRegister>>();
             //Initialize the registers dictionary with all existing registers
             registers = registers.AddRange(
@@ -63,9 +49,6 @@ namespace ProcessorSimulation
                 .Select(type => new KeyValuePair<Registers, IRegister>(type, registerFactory(type, 0))));
         }
 
-        /// <summary>Easy way to set a register value.</summary>
-        /// <param name="register">Register type</param>
-        /// <param name="value">New value</param>
         public void SetRegister(Registers type, byte value)
         {
             var register = registerFactory(type, value);
@@ -97,5 +80,6 @@ namespace ProcessorSimulation
                 handler(this, register);
             }
         }
+
     }
 }

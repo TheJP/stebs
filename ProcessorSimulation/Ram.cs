@@ -9,7 +9,25 @@ namespace ProcessorSimulation
 {
     public class Ram : IRam
     {
+        private object eventLock = new object();
         private volatile ImmutableDictionary<byte, byte> data;
+        public IDictionary<byte, byte> Data
+        {
+            get { return data; }
+        }
+
+        private Action<byte, byte> ramChanged;
+        public event Action<byte, byte> RamChanged
+        {
+            add
+            {
+                lock (eventLock) { ramChanged += value; }
+            }
+            remove
+            {
+                lock (eventLock) { ramChanged -= value; }
+            }
+        }
 
         public Ram()
         {
@@ -20,5 +38,35 @@ namespace ProcessorSimulation
             }
             data = dataBuilder.ToImmutable();
         }
+
+        public void Set(byte address, byte value)
+        {
+            data = data.SetItem(address, value);
+            NotifyRamChanged(address, value);
+        }
+
+        /// <summary>Notifies that the memory of the ram changed.</summary>
+        /// <param name="address">Address of the changed cell</param>
+        private void NotifyRamChanged(byte address)
+        {
+            NotifyRamChanged(address, data[address]);
+        }
+
+        /// <summary>Notifies that the memory of the ram changed.</summary>
+        /// <param name="address">Address of the changed cell</param>
+        /// <param name="value">New value of the changed cell</param>
+        private void NotifyRamChanged(byte address, byte value)
+        {
+            Action<byte, byte> handler;
+            lock (eventLock)
+            {
+                handler = ramChanged;
+            }
+            if(handler != null)
+            {
+                handler(address, value);
+            }
+        }
+
     }
 }
