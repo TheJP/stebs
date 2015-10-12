@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using System.Collections.Immutable;
+using System.Threading;
 
 namespace ProcessorSimulation
 {
@@ -13,6 +14,7 @@ namespace ProcessorSimulation
         //Because processor events are accessed by multiple threads custom locking has to be implemented
         //to guarantee thread safety. (See also the delegate chapter of 'C# in depth')
         private object eventLock = new object();
+        private object writeLock = new object();
 
         private Action<IProcessor, IRegister> registerChanged;
         public event Action<IProcessor, IRegister> RegisterChanged
@@ -49,13 +51,6 @@ namespace ProcessorSimulation
                 .Select(type => new KeyValuePair<Registers, IRegister>(type, registerFactory(type, 0))));
         }
 
-        public void SetRegister(Registers type, byte value)
-        {
-            var register = registerFactory(type, value);
-            registers = registers.SetItem(type, register);
-            NotifyRegisterChanged(register);
-        }
-
         /// <summary>Notifies that the register with the given type changed.</summary>
         /// <remarks>The changed register has to be entered to the registers data structure beforehand.</remarks>
         /// <param name="register">Type of the changed register.</param>
@@ -81,5 +76,44 @@ namespace ProcessorSimulation
             }
         }
 
+        public IProcessorSession createSession()
+        {
+            return ProcessorSession.createSession(this);
+        }
+
+        public class ProcessorSession : IProcessorSession
+        {
+            private bool disposed = false;
+            private Processor processor;
+
+            private Processor Session { get; }
+
+            private ProcessorSession(Processor processor)
+            {
+                Session = processor;
+            }
+
+            public static ProcessorSession createSession(Processor processor)
+            {
+                Monitor.Enter(processor.writeLock);
+                return new ProcessorSession(processor);
+            }
+
+            public void Dispose()
+            {
+                if (!disposed)
+                {
+                    disposed = true;
+                    Monitor.Exit(Session.writeLock);
+                }
+            }
+
+            public void SetRegister(Registers type, byte value)
+            {
+                var register = Session.registerFactory(type, value);
+                Session.registers = Session.registers.SetItem(type, register);
+                Session.NotifyRegisterChanged(register);
+            }
+        }
     }
 }

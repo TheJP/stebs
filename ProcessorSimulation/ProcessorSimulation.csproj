@@ -66,6 +66,7 @@
     <Compile Include="IAlu.cs" />
     <Compile Include="IProcessor.cs" />
     <Compile Include="IProcessorFactory.cs" />
+    <Compile Include="IProcessorSession.cs" />
     <Compile Include="IRam.cs" />
     <Compile Include="IRegister.cs" />
     <Compile Include="Processor.cs" />

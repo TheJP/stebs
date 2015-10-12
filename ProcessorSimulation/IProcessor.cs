@@ -11,13 +11,13 @@ namespace ProcessorSimulation
         /// <summary>Event that is fired, when a register changed.</summary>
         event Action<IProcessor, IRegister> RegisterChanged;
 
-        /// <summary>Easy way to set a register value.</summary>
-        /// <param name="register">Register type</param>
-        /// <param name="value">New value</param>
-        void SetRegister(Registers type, byte value);
         IAlu Alu { get; }
         IRam Ram { get; }
         IDictionary<Registers, IRegister> Registers { get; }
 
+        /// <summary>Create session, with which the processor state can be modified.</summary>
+        /// <returns>Session instance</returns>
+        /// <remarks>This method can block, because only one session should exist and it should be used by one thread only.</remarks>
+        IProcessorSession createSession();
     }
 }
