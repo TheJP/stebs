@@ -84,19 +84,19 @@ namespace ProcessorSimulation
         public class ProcessorSession : IProcessorSession
         {
             private bool disposed = false;
-            private Processor processor;
-
             private Processor Session { get; }
+            public IRamSession RamSession { get; }
 
-            private ProcessorSession(Processor processor)
+            private ProcessorSession(Processor processor, IRamSession ram)
             {
                 Session = processor;
+                this.RamSession = ram;
             }
 
             public static ProcessorSession createSession(Processor processor)
             {
                 Monitor.Enter(processor.writeLock);
-                return new ProcessorSession(processor);
+                return new ProcessorSession(processor, processor.Ram.createSession());
             }
 
             public void Dispose()
@@ -104,6 +104,7 @@ namespace ProcessorSimulation
                 if (!disposed)
                 {
                     disposed = true;
+                    RamSession.Dispose();
                     Monitor.Exit(Session.writeLock);
                 }
             }

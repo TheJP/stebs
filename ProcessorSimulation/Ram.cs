@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProcessorSimulation
@@ -10,6 +11,7 @@ namespace ProcessorSimulation
     public class Ram : IRam
     {
         private object eventLock = new object();
+        private object writeLock = new object();
         private volatile ImmutableDictionary<byte, byte> data;
         public IDictionary<byte, byte> Data
         {
@@ -39,11 +41,6 @@ namespace ProcessorSimulation
             data = dataBuilder.ToImmutable();
         }
 
-        public void Set(byte address, byte value)
-        {
-            data = data.SetItem(address, value);
-            NotifyRamChanged(address, value);
-        }
 
         /// <summary>Notifies that the memory of the ram changed.</summary>
         /// <param name="address">Address of the changed cell</param>
@@ -68,5 +65,41 @@ namespace ProcessorSimulation
             }
         }
 
+        public IRamSession createSession()
+        {
+            return RamSession.createSession(this);
+        }
+
+        public class RamSession : IRamSession
+        {
+            private bool disposed = false;
+            private Ram Session { get; }
+            private RamSession(Ram ram)
+            {
+                Session = ram;
+            }
+
+            public void Dispose()
+            {
+                if (!disposed)
+                {
+                    disposed = true;
+                    Monitor.Exit(Session.writeLock);
+                }
+            }
+
+            public static RamSession createSession(Ram ram)
+            {
+                Monitor.Enter(ram.writeLock);
+                return new RamSession(ram);
+            }
+
+            public void Set(byte address, byte value)
+            {
+                Session.data = Session.data.SetItem(address, value);
+                Session.NotifyRamChanged(address, value);
+            }
+
+        }
     }
 }

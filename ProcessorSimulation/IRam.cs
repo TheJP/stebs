@@ -20,12 +20,9 @@ namespace ProcessorSimulation
         /// </summary>
         IDictionary<byte, byte> Data { get; }
 
-        /// <summary>
-        /// Sets the memory cell at given address to given value.
-        /// </summary>
-        /// <param name="address">Address of the concerned memory cell.</param>
-        /// <param name="value">New value, the memory cell should be.</param>
-        void Set(byte address, byte value);
-
+        /// <summary>Create session, with which the ram state can be modified.</summary>
+        /// <returns>Session instance</returns>
+        /// <remarks>This method can block, because only one session should exist and it should be used by one thread only.</remarks>
+        IRamSession createSession();
     }
 }
