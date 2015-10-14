@@ -1,5 +1,9 @@
 ﻿var stebs = {};
 
+stebs.visible = {};
+stebs.visible.devices = false;
+stebs.visible.architecture = false;
+
 /**
  * Stores a global reference of the canvas and sets the global style.
  */
@@ -33,8 +37,19 @@ stebs.hello = function hello(word) {
     stebs.ctx.fillText(word, stebs.canvas.width / 2, stebs.canvas.height / 2);
 };
 
+stebs.toggleDevices = function toggleDevices() {
+    $('#devices, #architecture').animate({ left: (stebs.visible.devices ? '-=400px' : '+=400px') });
+    stebs.visible.devices = !stebs.visible.devices;
+};
+
+stebs.toggleArchitecture = function toggleArchitecture() {
+    $('#architecture').animate({ left: (stebs.visible.architecture ? '-=400px' : '+=400px') });
+    stebs.visible.architecture = !stebs.visible.architecture;
+};
+
 $(document).ready(function (){
 
+    $('#editorWindow').contents().prop('designMode', 'on');
     stebs.setupCanvas();
 
     var hub = $.connection.stebsHub;
@@ -44,5 +59,7 @@ $(document).ready(function (){
         hub.server.hello('you');
     });
 
-    $('#editorWindow').contents().prop('designMode', 'on')
+    $('#openDevices').click(stebs.toggleDevices);
+    $('#openArchitecture').click(stebs.toggleArchitecture);
+
 });
