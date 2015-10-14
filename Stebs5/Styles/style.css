@@ -10,3 +10,20 @@
     top: 0;
     left: 0;
 }
+
+
+.devices, .architecture {
+    position: relative;
+    top: 0px;
+    z-index: 10;
+    width: 30px;
+}
+
+.open-link a {
+    border: 1px solid black;
+    background-color: dimgrey;
+}
+
+.open-link a:hover, .open-link a:active {
+    background-color: yellow;
+}
