@@ -1,4 +1,17 @@
-﻿html, body, #canvas {
+﻿/*
+    Author:  JP, SAM
+    Project: http://github.com/TheJP/stebs
+
+    1. General Style
+    2. Left Sidebars
+    3. Coding View
+    4.
+
+*/
+
+/* 1. General Style */
+
+html, body, #canvas {
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -13,6 +26,57 @@
     /*for debugging */
     display: none;
 }
+
+.open-link {
+    position: relative;
+}
+
+.open-link-vertical {
+    float: right;
+    left: 50px;
+    width: 50px;
+    height: 50%;
+}
+
+.open-link-vertical button {
+    width: 50px;
+    height: 100%;
+}
+
+.open-link-vertical button span {
+    display: inline-block;
+    position: relative;
+    transform: rotate(-90deg);
+    left: -10px;
+}
+
+.open-link button {
+    border: none;
+    background-color: lightgreen;
+}
+
+.open-link button:hover, .open-link button:active {
+    background-color: yellow;
+}
+
+.open-link-horizontal {
+    box-sizing: border-box;
+    height: 40px;
+    width: 100%;
+    border: 1px solid black;
+}
+
+.open-link-horizontal button {
+    height: 38px;
+    width: 100%;
+}
+
+.open-link-horizontal button span {
+    display: inline-block;
+    position: relative;
+}
+
+/* 2. Left Sidebars */
 
 #devices, #architecture {
     position: absolute;
@@ -48,43 +112,13 @@
     top: 50%;
 }
 
-.open-link {
-    position: relative;
-}
-
-.open-link-vertical {
-    float: right;
-    left: 50px;
-    width: 50px;
-    height: 50%;
-}
-
-.open-link-vertical button {
-    width: 50px;
-    height: 100%;
-}
-
-.open-link-vertical button span {
-    display: inline-block;
-    position: relative;
-    transform: rotate(-90deg);
-    left: -10px;
-}
-
 #architecture .open-link-vertical button span {
     left: -23px;
 }
 
-.open-link button {
-    border: none;
-    background-color: lightgreen;
-}
+/* 3. Coding View */
 
-.open-link button:hover, .open-link button:active {
-    background-color: yellow;
-}
-
-.codingView {
+#codingView {
     position: relative;
     z-index: 3000;
     height: 80%;
@@ -111,7 +145,8 @@
     width: 30%;
 }
 
-.codingView #codingFrame iframe {
+#codingView #editorWindow {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
@@ -119,25 +154,6 @@
     margin: 0 0 0 0;
     padding: 5px 5px;
 }
-
-.open-link-horizontal {
-    box-sizing: border-box;
-    height: 40px;
-    width: 100%;
-    border: 1px solid black;
-}
-
-.open-link-horizontal button {
-    width: 50px;
-    height: 38px;
-    width: 100%;
-}
-
-.open-link-horizontal button span {
-    display: inline-block;
-    position: relative;
-}
-
 
 .runAndDebug {
     position: relative;
