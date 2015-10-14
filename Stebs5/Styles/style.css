@@ -18,8 +18,8 @@
     position: absolute;
     width: 400px;
     height: 100%;
-    /*for debugging
-    display: none;*/
+    /*for debugging*/
+    display: none;
 }
 
 .devices {
@@ -85,7 +85,7 @@
     position: relative;
     z-index: 3000;
     height: 80%;
-    width: 80%;
+    width: 100%;
     float: left;
 }
 
@@ -130,4 +130,21 @@
 .open-link-horizontal button span {
     display: inline-block;
     position: relative;
+}
+
+
+.runAndDebug {
+    position: relative;
+    z-index: 3000;
+    border: 1px solid black;
+}
+
+.runAndDebug .btnView {
+    float: right;
+}
+
+.runAndDebug .btnView .runMode {
+    /*
+    display: none;
+    */
 }
