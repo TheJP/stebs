@@ -43,4 +43,6 @@ $(document).ready(function (){
     $.connection.hub.start().done(function () {
         hub.server.hello('you');
     });
+
+    $('#editorWindow').contents().prop('designMode', 'on')
 });

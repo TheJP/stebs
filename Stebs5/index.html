@@ -11,13 +11,37 @@
     <script src="Scripts/main.js"></script>
 </head>
 <body>
+    <div class="codingView">
+        <div id="codingTopBar">
+            <button type="button">New</button>
+            <button type="button">Open</button>
+            <button type="button">Save</button>
+            <input id="fileName" type="text" name="FileName" placeholder="FileName">
+            <span class="middle"></span>
+
+        </div>
+        <div id="codingFrame">
+            <iframe id="editorWindow"></iframe> 
+            <!-- https://developer.mozilla.org/de/docs/Rich-Text_Editing_in_Mozilla -->
+        </div>
+
+        <div class="ram">
+            <h1 class="open-link open-link-horizontal"><a id="openRam" href="#">RAM</a></h1>
+        </div>
+        <div class="output">
+            <h1 class="open-link open-link-horizontal"><a id="openOutput" href="#">Output</a></h1>
+        </div>
+    </div>
+
     <div class="devices">
         <h1 class="open-link open-link-vertical"><a id="openDevices" href="#">Devices</a></h1>
     </div>
     <div class="architecture">
         <h1 class="open-link open-link-vertical"><a id="openArchitecture" href="#">Architecture</a></h1>
     </div>
-    <canvas id="canvas" width="1000" height="600"></canvas>
+    
 
+
+    <canvas id="canvas" width="1000" height="600"></canvas>
 </body>
 </html>

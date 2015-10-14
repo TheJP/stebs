@@ -27,3 +27,45 @@
 .open-link a:hover, .open-link a:active {
     background-color: yellow;
 }
+
+.codingView {
+    position: relative;
+    z-index: 5000;
+    height: 80%;
+    width: 80%;
+    float: left;
+    background-color: white;
+}
+
+#codingTopBar {
+    z-index: 5000;
+    width: 100%;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    padding: 5px 5px;
+    background-color: lightgrey;
+}
+
+#codingTopBar button {
+    float: right;
+    margin-right: 2%;
+}
+
+#codingTopBar #fileName {
+    width: 30%;
+}
+
+.codingView iframe {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    margin: 0 0 0 0;
+    padding: 5px 5px;
+}
+
+.open-link-horizontal {
+    width: 100%;
+    border: 1px solid black;
+    padding: 5px 5px;
+}
