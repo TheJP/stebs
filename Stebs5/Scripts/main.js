@@ -37,13 +37,21 @@ stebs.hello = function hello(word) {
     stebs.ctx.fillText(word, stebs.canvas.width / 2, stebs.canvas.height / 2);
 };
 
+/** Opens/Closes the devices sidebar. */
 stebs.toggleDevices = function toggleDevices() {
-    $('#devices, #architecture').animate({ left: (stebs.visible.devices ? '-=400px' : '+=400px') });
+    var animation = { left: (stebs.visible.devices ? '-=400px' : '+=400px') };
+    $('#devices, #architecture').animate(animation);
+    animation.width = (stebs.visible.devices ? '+=400px' : '-=400px');
+    $('#codingView').animate(animation);
     stebs.visible.devices = !stebs.visible.devices;
 };
 
+/** Opens/Closes the architecture sidebar. */
 stebs.toggleArchitecture = function toggleArchitecture() {
-    $('#architecture').animate({ left: (stebs.visible.architecture ? '-=400px' : '+=400px') });
+    var animation = { left: (stebs.visible.architecture ? '-=400px' : '+=400px') };
+    $('#architecture').animate(animation);
+    animation.width = (stebs.visible.architecture ? '+=400px' : '-=400px');
+    $('#codingView').animate(animation);
     stebs.visible.architecture = !stebs.visible.architecture;
 };
 
@@ -61,5 +69,9 @@ $(document).ready(function (){
 
     $('#openDevices').click(stebs.toggleDevices);
     $('#openArchitecture').click(stebs.toggleArchitecture);
+    $(window).resize(function windowResize() {
+        var minus = 50 + 400 * ((stebs.visible.architecture ? 1 : 0) + (stebs.visible.devices ? 1 : 0));
+        $('#codingView').animate({ width: window.innerWidth -  minus}, 0);
+    });
 
 });
