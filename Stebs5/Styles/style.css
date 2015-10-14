@@ -12,14 +12,15 @@
     left: 0;
 }
 
-.devices, .architecture {
+#devices, #architecture {
     position: absolute;
     width: 400px;
     height: 100%;
 }
 
-.devices {
+#devices {
     z-index: 5000;
+    left: -400px;
 }
 
 .devices-container {
@@ -27,8 +28,10 @@
     height: 100%;
     background-color: lightblue;
 }
-.architecture {
+
+#architecture {
     z-index: 4000;
+    left: -400px;
 }
 
 .architecture-container {
@@ -37,7 +40,7 @@
     background-color: lightgray;
 }
 
-.architecture .open-link {
+#architecture .open-link {
     top: 50%;
 }
 
@@ -49,7 +52,7 @@
     float: right;
     left: 50px;
     width: 50px;
-    height: 50%
+    height: 50%;
 }
 
 .open-link-vertical button {
@@ -64,7 +67,7 @@
     left: -10px;
 }
 
-.architecture .open-link-vertical button span {
+#architecture .open-link-vertical button span {
     left: -23px;
 }
 
@@ -79,7 +82,7 @@
 
 .codingView {
     position: relative;
-    z-index: 5000;
+    z-index: 3000;
     height: 80%;
     width: 80%;
     float: left;
