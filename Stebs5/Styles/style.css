@@ -88,8 +88,8 @@
     position: relative;
     z-index: 3000;
     height: 80%;
-    width: 100%;
-    float: left;
+    width: calc(100% - 50px);
+    left: 50px;
 }
 
 #codingTopBar {
