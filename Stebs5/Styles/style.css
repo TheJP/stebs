@@ -18,8 +18,8 @@
     position: absolute;
     width: 400px;
     height: 100%;
-    /*for debugging*/
-    display: none;
+    /*for debugging
+    display: none;*/
 }
 
 #devices {
