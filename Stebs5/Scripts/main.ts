@@ -4,8 +4,8 @@
         architecture: false
     };
 
-    var ctx: any;
-    var canvas: any;
+    var ctx: CanvasRenderingContext2D;
+    var canvas: HTMLCanvasElement;
 
     export var ui = {
 
@@ -13,9 +13,8 @@
          * Stores a global reference of the canvas and sets the global style.
          */
         setupCanvas(): void {
-            //ctx = $('#canvas')[0].getContext('2d');
-            ctx = {};
-            canvas = ctx.canvas || {};
+            canvas = <HTMLCanvasElement>$('#canvas')[0];
+            ctx = canvas.getContext('2d');
             this.normalizeCanvas();
 
             ctx.font = '20pt Helvetica';
@@ -67,17 +66,24 @@
     };
 }
 
+/**
+ * This interface allows the usage of the signalr library.
+ */
+interface JQueryStatic {
+    connection: any;
+}
+
 $(document).ready(function (){
 
     $('#editorWindow').contents().prop('designMode', 'on');
     Stebs.ui.setupCanvas();
 
-    /*var hub = $.connection.stebsHub;
-    hub.client.hello = stebs.hello;
+    var hub = $.connection.stebsHub;
+    hub.client.hello = Stebs.ui.hello;
 
     $.connection.hub.start().done(function () {
         hub.server.hello('you');
-    });*/
+    });
 
     $('#openDevices').click(Stebs.ui.toggleDevices);
     $('#openArchitecture').click(Stebs.ui.toggleArchitecture);
