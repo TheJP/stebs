@@ -70,7 +70,7 @@ namespace ProcessorSimulation
             return RamSession.createSession(this);
         }
 
-        public class RamSession : IRamSession
+        public sealed class RamSession : IRamSession
         {
             private bool disposed = false;
             private Ram Session { get; }

@@ -69,6 +69,7 @@
     <Compile Include="IProcessorSession.cs" />
     <Compile Include="IRam.cs" />
     <Compile Include="IRamSession.cs" />
+    <Compile Include="IReadOnlyRam.cs" />
     <Compile Include="IRegister.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="ProcessorFactory.cs" />

@@ -33,7 +33,11 @@ namespace ProcessorSimulation
         private readonly Func<Registers, byte, IRegister> registerFactory;
 
         public IAlu Alu { get; }
-        public IRam Ram { get; }
+        private IRam ram;
+        public IReadOnlyRam Ram
+        {
+            get { return new ReadOnlyRam(ram); }
+        }
         public IDictionary<Registers, IRegister> Registers
         {
             get { return registers; }
@@ -43,7 +47,7 @@ namespace ProcessorSimulation
         public Processor(UnityContainer container)
         {
             Alu = container.Resolve<IAlu>();
-            Ram = container.Resolve<IRam>();
+            ram = container.Resolve<IRam>();
             registerFactory = container.Resolve<Func<Registers, byte, IRegister>>();
             //Initialize the registers dictionary with all existing registers
             registers = registers.AddRange(
@@ -81,7 +85,33 @@ namespace ProcessorSimulation
             return ProcessorSession.createSession(this);
         }
 
-        public class ProcessorSession : IProcessorSession
+        /// <summary>Proxy Pattern to protect write access to the ram.</summary>
+        /// <remarks>
+        /// This prevents deadlocks, because the ram is locking and often processor and ram sessions are required.
+        /// This protection ensures the order in which locks (sessions) to processor and ram are acquired.
+        /// </remarks>
+        public sealed class ReadOnlyRam : IReadOnlyRam
+        {
+            private IRam Ram { get; }
+
+            public IDictionary<byte, byte> Data
+            {
+                get { return Ram.Data; }
+            }
+
+            public event Action<byte, byte> RamChanged
+            {
+                add { Ram.RamChanged += value; }
+                remove { Ram.RamChanged -= value; }
+            }
+
+            public ReadOnlyRam(IRam ram)
+            {
+                this.Ram = ram;
+            }
+        }
+
+        public sealed class ProcessorSession : IProcessorSession
         {
             private bool disposed = false;
             private Processor Session { get; }
@@ -96,7 +126,7 @@ namespace ProcessorSimulation
             public static ProcessorSession createSession(Processor processor)
             {
                 Monitor.Enter(processor.writeLock);
-                return new ProcessorSession(processor, processor.Ram.createSession());
+                return new ProcessorSession(processor, processor.ram.createSession());
             }
 
             public void Dispose()

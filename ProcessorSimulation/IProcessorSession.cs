@@ -12,5 +12,9 @@ namespace ProcessorSimulation
         /// <param name="register">Register type</param>
         /// <param name="value">New value</param>
         void SetRegister(Registers type, byte value);
+        /// <summary>
+        /// Session instance, that allows write access to the ram, used by the accessed processor.
+        /// </summary>
+        IRamSession RamSession { get; }
     }
 }

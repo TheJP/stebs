@@ -12,7 +12,7 @@ namespace ProcessorSimulation
         event Action<IProcessor, IRegister> RegisterChanged;
 
         IAlu Alu { get; }
-        IRam Ram { get; }
+        IReadOnlyRam Ram { get; }
         IDictionary<Registers, IRegister> Registers { get; }
 
         /// <summary>Create session, with which the processor state can be modified.</summary>
