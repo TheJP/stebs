@@ -166,11 +166,15 @@ html, body, #canvas {
     width: 30%;
 }
 
+#codingFrame {
+    height: calc(100% - 38px - 38px - 38px);
+}
+
 #codingView #editorWindow {
     display: block;
     box-sizing: border-box;
     width: 100%;
-    height: calc(100vh - 38px - 38px - 38px - 100px);
+    height: 100%;
     border: 1px solid black;
     margin: 0 0 0 0;
     padding: 5px 5px;
