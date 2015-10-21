@@ -7,8 +7,16 @@
     };
 
     export var widths = {
-        devices: '400px',
+        devices: '250px',
         architecture: '400px'
+    };
+
+    export var heights = {
+        topbar: '38px',
+        containerBar: '38px',
+        containerSize: '150px',
+        /* 1x topbar & 2x containerBar */
+        bars: '114px'
     };
 
     var ctx: CanvasRenderingContext2D;
@@ -84,16 +92,15 @@
          * Opens/Closes the ram bar.
          */
         toggleRAM(): void {
-            $('#editorWindow').animate({ height: visible.ram ? '+=150px' : '-=150px' }, 1000, function () {
-                /*if (visible.output) {
-                    $('#editorWindow').css({ height: visible.ram ? 'calc(100vh - 38px - 38px - 38px - 100px - 150px)' : 'calc(100vh - 38px - 38px - 38px - 100px - 300px)' });
+            $('#codingFrame').animate({ height: (visible.ram ? '+=' : '-=') + heights.containerSize }, function () {
+                if (visible.output) {
+                    $('#codingFrame').css({ height: 'calc(100% - ' + heights.bars + ' - ' + heights.containerSize + (visible.ram ? '' : ' - ' + heights.containerSize) +')' });
                 } else {
-                    $('#editorWindow').css({ height: visible.ram ? 'calc(100vh - 38px - 38px - 38px - 100px)' : 'calc(100vh - 38px - 38px - 38px - 100px - 150px)' });
-                }*/
-                
+                    $('#codingFrame').css({ height: 'calc(100% - ' + heights.bars + (visible.ram ? '' : ' -' + heights.containerSize) + ')' });
+                }
                 visible.ram = !visible.ram;
             });
-            $('.ram').animate({height: visible.ram ? '38px' : '188px' }, 1000);
+            $('.ram').animate({ height: heights.containerBar + (visible.ram ? '' : ' + ' + heights.containerSize) +  ')' });
             $('.ram-container').hide(visible.ram);
             $('.ram-container').show(!visible.ram);
         },
@@ -102,15 +109,17 @@
          * Opens/Closes the output bar.
          */
         toggleOutput(): void {
-            if (visible.ram) {
-                $('#editorWindow').css({ height: visible.output ? 'calc(100vh - 38px - 38px - 38px - 100px - 150px)' : 'calc(100vh - 38px - 38px - 38px - 100px - 300px)' });
-            } else {
-                $('#editorWindow').css({ height: visible.output ? 'calc(100vh - 38px - 38px - 38px - 100px)' : 'calc(100vh - 38px - 38px - 38px - 100px - 150px)' });
-            }
+            $('#codingFrame').animate({ height: (visible.output ? '+=' : '-=') + heights.containerSize }, function () {
+                if (visible.ram) {
+                    $('#codingFrame').css({ height: 'calc(100% - ' + heights.bars + ' - ' + heights.containerSize + (visible.output ? '' : ' - ' + heights.containerSize) + ')' });
+                } else {
+                    $('#codingFrame').css({ height: 'calc(100% - ' + heights.bars + (visible.output ? '' : ' -' + heights.containerSize) + ')' });
+                }
+                visible.output = !visible.output;
+            });
+            $('.output').animate({ height: heights.containerBar + (visible.output ? '' : ' + ' + heights.containerSize) + ')' });
             $('.output-container').hide(visible.output);
             $('.output-container').show(!visible.output);
-            $('.output').css({ height: visible.output ? '38px' : '188px'});
-            visible.output = !visible.output;
         }
     };
 }
