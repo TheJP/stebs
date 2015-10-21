@@ -70,15 +70,18 @@
          * Opens/Closes the ram bar.
          */
         toggleRAM(): void {
-            if (visible.output) {
-                $('#editorWindow').css({ height: visible.ram ? 'calc(100vh - 38px - 38px - 38px - 100px - 150px)' : 'calc(100vh - 38px - 38px - 38px - 100px - 300px)' });
-            } else {
-                $('#editorWindow').css({ height: visible.ram ? 'calc(100vh - 38px - 38px - 38px - 100px)' : 'calc(100vh - 38px - 38px - 38px - 100px - 150px)' });
-            }
+            $('#editorWindow').animate({ height: visible.ram ? '+=150px' : '-=150px' }, 1000, function () {
+                /*if (visible.output) {
+                    $('#editorWindow').css({ height: visible.ram ? 'calc(100vh - 38px - 38px - 38px - 100px - 150px)' : 'calc(100vh - 38px - 38px - 38px - 100px - 300px)' });
+                } else {
+                    $('#editorWindow').css({ height: visible.ram ? 'calc(100vh - 38px - 38px - 38px - 100px)' : 'calc(100vh - 38px - 38px - 38px - 100px - 150px)' });
+                }*/
+                
+                visible.ram = !visible.ram;
+            });
+            $('.ram').animate({height: visible.ram ? '38px' : '188px' }, 1000);
             $('.ram-container').hide(visible.ram);
             $('.ram-container').show(!visible.ram);
-            $('.ram').css({ height: visible.ram ? '38px' : 'calc(38px + 150px)' });
-            visible.ram = !visible.ram;
         },
 
         /**
@@ -92,7 +95,7 @@
             }
             $('.output-container').hide(visible.output);
             $('.output-container').show(!visible.output);
-            $('.output').css({ height: visible.output ? '38px' : 'calc(38px + 150px)'});
+            $('.output').css({ height: visible.output ? '38px' : '188px'});
             visible.output = !visible.output;
         }
     };
