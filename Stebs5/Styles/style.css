@@ -52,7 +52,7 @@ html, body, #canvas {
 
 .open-link button {
     border: none;
-    background-color: lightgreen;
+    background-color: forestgreen;
 }
 
 .open-link button:hover, .open-link button:active {
@@ -74,6 +74,26 @@ html, body, #canvas {
 .open-link-horizontal button span {
     display: inline-block;
     position: relative;
+}
+
+.ram-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 150px;
+    display: none;
+    /*4 Testing*/
+    z-index: 4000;
+}
+
+.output-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 150px;
+    display: none;
+    /*4 Testing*/
+    z-index: 4000;
 }
 
 /* 2. Left Sidebars */
@@ -155,7 +175,6 @@ html, body, #canvas {
     margin: 0 0 0 0;
     padding: 5px 5px;
 }
-
 
 .runAndDebug {
     position: relative;
