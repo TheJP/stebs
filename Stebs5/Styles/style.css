@@ -196,3 +196,12 @@ html, body, #canvas {
     display: none;
     */
 }
+
+.runMode button {
+    width: 60px;
+}
+
+.runMode table {
+    border-collapse: separate; 
+    border-spacing: 5px 0px; 
+}

@@ -25,15 +25,18 @@
             <button id="openArchitecture"><span>Architecture</span></button>
         </div>
         <div class="architecture-container">
-
+            <canvas id="canvas" width="1000" height="600"></canvas>
         </div>
     </div>
 
     <div id="codingView">
         <div id="codingTopBar">
-            <button type="button">New</button>
-            <button type="button">Open</button>
-            <button type="button">Save</button>
+            <button id="btnNew">New</button>
+            <button id="btnOpen">Open</button>
+            <button id="btnSave">Save</button>
+            <button id="btnRun" disabled="disabled">Run</button>
+            <button id="btnDebug" disabled="disabled">Debug</button>
+            <button id="btnAssemble">Assemble</button>
             <input id="fileName" type="text" name="FileName" placeholder="FileName">
             <span class="middle"></span>
 
@@ -66,30 +69,25 @@
             <div class="runMode">
                 <table>
                     <tr>
-                        <!-- Where are the tds? -->
-                        <!--<button id="btninstrStep">Instruction Step</button>
-                        <button id="btnRun">Run</button>-->
+                        <td><label><input id="btninstrStep" name="speedGroup" type="radio" /> Instruction Step</label></td>
+                        <td><button id="btnPause">Pause</button></td>
                     </tr>
                     <tr>
-                        <!--<button id="btnmacroStep">Macro Step</button>
-                        <button id="btnRestart">Restart</button>-->
+                        <td><label><input id="btnmacroStep" name="speedGroup" type="radio" /> Macro Step</label></td>
+                        <td><button id="btnStop">Stop</button></td>
                     </tr>
                     <tr>
-                        <!--<button id="btnmicroStep">Micro Step</button>
-                        <button id="btnPause">Pause</button>-->
+                        <td><label><input id="btnmicroStep" name="speedGroup" type="radio" /> Micro Step</label></td>
+                        <td><button id="btnReset">Reset</button></td>
                     </tr>
-                    <!-- slider for speed -->
                 </table>
+                <input id="slider1" type="range" min="0" max="100" step="10" /> 
             </div>
-            <button id="btnAssemble">Assemble</button>
-            <button id="btnReset">Reset</button>
         </div>
         <div class="watcher">
 
         </div>
     </div>
 
-
-    <canvas id="canvas" width="1000" height="600"></canvas>
 </body>
 </html>
