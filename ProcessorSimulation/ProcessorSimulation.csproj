@@ -71,6 +71,11 @@
     <Compile Include="IRamSession.cs" />
     <Compile Include="IReadOnlyRam.cs" />
     <Compile Include="IRegister.cs" />
+    <Compile Include="MpmParser\Destination.cs" />
+    <Compile Include="MpmParser\IMicroInstruction.cs" />
+    <Compile Include="MpmParser\JumpCriteria.cs" />
+    <Compile Include="MpmParser\NextAddress.cs" />
+    <Compile Include="MpmParser\Source.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="ProcessorFactory.cs" />
     <Compile Include="IProcessorSimulator.cs" />
@@ -81,7 +86,19 @@
     <Compile Include="Registers.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\DECODER.data">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\INSTRUCTION.data">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
+    <None Include="Resources\ROM1.data">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\ROM2.data">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
