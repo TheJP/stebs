@@ -141,7 +141,7 @@ html, body, #canvas {
 #codingView {
     position: relative;
     z-index: 3000;
-    height: calc(100vh - 100px);
+    height: calc(100% - 100px);
     width: calc(100% - 50px);
     left: 50px;
 }

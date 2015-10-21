@@ -6,6 +6,11 @@
         output: false
     };
 
+    export var widths = {
+        devices: '400px',
+        architecture: '400px'
+    };
+
     var ctx: CanvasRenderingContext2D;
     var canvas: HTMLCanvasElement;
 
@@ -45,13 +50,22 @@
         },
 
         /**
+         * Sets the width of #codingView to a prozentual value.
+         * This allows correct browser resizing without additional client code.
+         */
+        setCodingViewWidth(): void {
+            var width = (visible.architecture ? ' - ' + widths.architecture : '') + (visible.devices ? ' - ' + widths.devices : '');
+            $('#codingView').css('width', 'calc(100% - 50px' + width + ')');
+        },
+
+        /**
          * Opens/Closes the devices sidebar.
          */
         toggleDevices(): void {
-            var animation = { left: (visible.devices ? '-=400px' : '+=400px') };
+            var animation = { left: (visible.devices ? '-=' : '+=') + widths.devices };
             $('#devices, #architecture').animate(animation);
-            var animation2 = { left: animation.left, width: (visible.devices ? '+=400px' : '-=400px') };
-            $('#codingView').animate(animation2);
+            var animation2 = { left: animation.left, width: (visible.devices ? '+=' : '-=') + widths.devices };
+            $('#codingView').animate(animation2, ui.setCodingViewWidth);
             visible.devices = !visible.devices;
         },
 
@@ -59,10 +73,10 @@
          * Opens/Closes the architecture sidebar.
          */
         toggleArchitecture(): void {
-            var animation = { left: (visible.architecture ? '-=400px' : '+=400px') };
+            var animation = { left: (visible.architecture ? '-=' : '+=') + widths.architecture };
             $('#architecture').animate(animation);
-            var animation2 = { left: animation.left, width: (visible.architecture ? '+=400px' : '-=400px') };
-            $('#codingView').animate(animation2);
+            var animation2 = { left: animation.left, width: (visible.architecture ? '+=' : '-=') + widths.architecture };
+            $('#codingView').animate(animation2, ui.setCodingViewWidth);
             visible.architecture = !visible.architecture;
         },
 
@@ -121,9 +135,5 @@ $(document).ready(function (){
     $('#openArchitecture').click(Stebs.ui.toggleArchitecture);
     $('#openRam').click(Stebs.ui.toggleRAM);
     $('#openOutput').click(Stebs.ui.toggleOutput);
-    $(window).resize(function windowResize() {
-        var minus = 50 + (Stebs.visible.architecture ? 400 : 0) + (Stebs.visible.devices ? 400 : 0);
-        $('#codingView').css('width', (window.innerWidth -  minus) + 'px');
-    });
 
 });
