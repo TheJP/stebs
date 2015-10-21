@@ -120,6 +120,10 @@
             $('.output').animate({ height: heights.containerBar + (visible.output ? '' : ' + ' + heights.containerSize) + ')' });
             $('.output-container').hide(visible.output);
             $('.output-container').show(!visible.output);
+        },
+
+        setOutput(text): void {
+            $('#outputText').text(text);
         }
     };
 }
