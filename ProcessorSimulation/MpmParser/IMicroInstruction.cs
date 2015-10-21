@@ -22,11 +22,18 @@ namespace ProcessorSimulation.MpmParser
         /// <summary>Criterion which is used in jump instructions</summary>
         JumpCriterion JumpCriterion { get; }
         /// <summary>Clear interrupt flag</summary>
-        bool ClearInterruptFlag { get; }
+        bool ClearInterrupt { get; }
         /// <summary>Affected Flag</summary>
-        bool AffectedFlag { get; }
+        bool Affected { get; }
         /// <summary>Defines which alu command to use in alu micro instructions</summary>
         AluCmd AluCommand { get; }
-
+        /// <summary>Source where the data is read from with this micro instruction</summary>
+        Source Source { get; }
+        /// <summary>Destination where the data is written to with this micro instruction</summary>
+        Destination Destination { get; }
+        /// <summary>Defines where the input of the data comes from in this micro instruction</summary>
+        DataInput DataInput { get; }
+        /// <summary>Controls the flow, which is either read or write</summary>
+        ReadWrite ReadWrite { get; }
     }
 }

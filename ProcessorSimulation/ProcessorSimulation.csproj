@@ -71,10 +71,14 @@
     <Compile Include="IRamSession.cs" />
     <Compile Include="IReadOnlyRam.cs" />
     <Compile Include="IRegister.cs" />
+    <Compile Include="MpmParser\DataFlow.cs" />
     <Compile Include="MpmParser\Destination.cs" />
     <Compile Include="MpmParser\IMicroInstruction.cs" />
     <Compile Include="MpmParser\JumpCriteria.cs" />
+    <Compile Include="MpmParser\MicroInstruction.cs" />
+    <Compile Include="MpmParser\MpmFileParser.cs" />
     <Compile Include="MpmParser\NextAddress.cs" />
+    <Compile Include="MpmParser\ReadWrite.cs" />
     <Compile Include="MpmParser\Source.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="ProcessorFactory.cs" />
