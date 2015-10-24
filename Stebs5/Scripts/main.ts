@@ -162,13 +162,16 @@
                 if (i % this.lineBreak == 0) {
                     asString += "\n";
                 }
+                if (i % 2 == 0) {
+                    asString += " ";
+                }
                 asString += this.ramContent[i].toString(16);
             }
             return asString;
         }
     };
 
-    export var ramCont = new Stebs.Ram(16 * 16, 16);
+    export var ramCont = new Stebs.Ram((16*2) * 16, (16*2));
 }
 
 /**
