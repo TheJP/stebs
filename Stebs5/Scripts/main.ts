@@ -122,7 +122,7 @@
             $('.output-container').show(!visible.output);
         },
 
-        setOutput(text): void {
+        setOutput(text: string): void {
             $('#outputText').text(text);
         }
     };

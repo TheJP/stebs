@@ -1,0 +1,61 @@
+020;00;HALT
+028;9A;ROL reg
+038;9B;ROR reg
+048;9C;SHL reg
+058;9D;SHR reg
+068;A0;ADD reg,reg
+080;A1;SUB reg,reg
+098;A2;MUL reg,reg
+0B0;A3;DIV reg,reg
+0C8;A4;INC reg
+0D8;A5;DEC reg
+0E8;A6;MOD reg,reg
+100;AA;AND reg,reg
+118;AB;OR reg,reg
+130;AC;XOR reg,reg
+148;AD;NOT reg
+158;B0;ADD reg,const
+170;B1;SUB reg,const
+188;B2;MUL reg,const
+1A0;B3;DIV reg,const
+1B8;B6;MOD reg,const
+1D0;BA;AND reg,const
+1E8;BB;OR reg,const
+200;BC;XOR reg,const
+218;C0;JMP offset
+228;C1;JZ offset
+240;C2;JNZ offset
+258;C3;JS offset
+270;C4;JNS offset
+288;C5;JO offset
+2A0;C6;JNO offset
+2B8;CA;CALL addr
+2C8;CB;RET
+2D0;CC;INT addr
+2E8;CD;IRET
+2F0;D0;MOV reg,const
+300;D1;MOV reg,|addr|
+318;D2;MOV |addr|,reg
+330;D3;MOV reg,|reg|
+348;D4;MOV |reg|,reg
+360;D5;MOV reg,reg
+378;DA;CMP reg,reg
+390;DB;CMP reg,const
+3A8;DC;CMP reg,|addr|
+3C0;E0;PUSH reg
+3D0;E1;POP reg
+3E0;EA;PUSHF
+3E8;EB;POPF
+3F0;F0;IN addr
+400;F1;OUT addr
+410;FC;STI
+418;FD;CLI
+420;FF;NOP
+428;80;INC |reg|
+440;C7;JPA absolute
+448;81;DEC |addr|
+460;82;SWAP |addr|
+478;83;CLINC |reg|
+490;10;NEXT addr
+520;D6;XCHG reg,reg
+538;D7;CPYD |reg|,const
