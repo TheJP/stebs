@@ -126,6 +126,49 @@
             $('#outputText').text(text);
         }
     };
+
+    export class Ram {
+        private ramContent: number[];
+        private lineBreak: number = 10;
+
+        constructor(size: number, lineBreak: number) {
+            this.lineBreak = lineBreak;
+
+            this.ramContent = Array(size);
+            for (var i: number = 0; i < size; i++) {
+                this.ramContent[i] = 0;
+            }
+        }
+
+        public setContent(exising: string): boolean {
+            if (exising == null) {
+                return false;
+            }
+
+            return true;
+        }
+
+        public setRamAt(pos: number, val: number): boolean {
+            if (pos < 0 || pos >= this.ramContent.length || val < 0 || val > 255) {
+                return false;
+            }
+            this.ramContent[pos] = val;
+            return true;
+        }
+
+        public getAsString(): string {
+            var asString: string = "";
+            for (var i: number = 0; i < this.ramContent.length; i++) {
+                if (i % this.lineBreak == 0) {
+                    asString += "\n";
+                }
+                asString += this.ramContent[i].toString(16);
+            }
+            return asString;
+        }
+    };
+
+    export var ramCont = new Stebs.Ram(16 * 16, 16);
 }
 
 /**
@@ -152,4 +195,5 @@ $(document).ready(function (){
     $('#openRam').click(Stebs.ui.toggleRAM);
     $('#openOutput').click(Stebs.ui.toggleOutput);
 
+    $('#ramText').text(Stebs.ramCont.getAsString());
 });

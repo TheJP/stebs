@@ -140,6 +140,7 @@
     <Content Include="Styles\normalize.css" />
     <Content Include="Styles\style.css" />
     <Content Include="Web.config" />
+    <TypeScriptCompile Include="Scripts\ram.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup>
