@@ -83,7 +83,21 @@ html, body, #canvas {
     height: 150px;
     display: none;
     z-index: 4000;
+    text-align: center;
 }
+
+.ram-container table {
+    display: inline-block;
+    border-spacing: 2px;
+    border-collapse: separate;
+    font-size: 11.5px;
+}
+
+.ram-container table, th {
+    text-align: center;
+}
+
+
 
 .output-container {
     position: relative;

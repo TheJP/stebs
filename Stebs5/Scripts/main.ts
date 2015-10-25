@@ -129,11 +129,8 @@
 
     export class Ram {
         private ramContent: number[];
-        private lineBreak: number = 10;
 
-        constructor(size: number, lineBreak: number) {
-            this.lineBreak = lineBreak;
-
+        constructor(size: number) {
             this.ramContent = Array(size);
             for (var i: number = 0; i < size; i++) {
                 this.ramContent[i] = 0;
@@ -156,10 +153,10 @@
             return true;
         }
 
-        public getAsString(): string {
+        public getAsString(lineBreak: number): string {
             var asString: string = "";
             for (var i: number = 0; i < this.ramContent.length; i++) {
-                if (i % this.lineBreak == 0) {
+                if (i % lineBreak == 0) {
                     asString += "\n";
                 }
                 if (i % 2 == 0) {
@@ -169,9 +166,40 @@
             }
             return asString;
         }
+
+        public getAsTable(lineLengh: number): HTMLTableElement {
+            var table: HTMLTableElement;
+            var thead: HTMLTableElement;
+            var tbody: HTMLTableElement;
+
+            table = document.createElement('table');
+            //table.setAttribute("id", "ramTable");
+            thead = <HTMLTableElement> table.createTHead();
+            tbody = <HTMLTableElement> table.createTBody();
+            var hrow = <HTMLTableRowElement> table.tHead.insertRow(0);
+
+            hrow.insertCell(0).innerHTML = "";
+            for (var i: number = 0; i < lineLengh / 2; i++) {
+                var cell = hrow.insertCell(i + 1);
+                cell.innerHTML = i.toString(16);
+            }
+            var newWith = (this.ramContent.length / (lineLengh));
+            for (var i: number = 0; i < newWith / 2; i++) {
+                var row = <HTMLTableRowElement> table.tHead.insertRow(i + 1);
+                for (var j: number = 0; j < lineLengh / 2; j++) {
+                    if (j == 0) {
+                        var cell = row.insertCell(0);
+                        cell.innerHTML = i.toString(16);
+                    }
+                    var cell = row.insertCell(j + 1);
+                    cell.innerHTML = this.ramContent[(i * newWith) + (j * 2)].toString(16) + this.ramContent[(i * newWith) + (j*2) + 1].toString(16);
+                }
+            }
+            return table;
+        }
     };
 
-    export var ramCont = new Stebs.Ram((16*2) * 16, (16*2));
+    export var ramCont = new Stebs.Ram(1024);
 }
 
 /**
@@ -198,5 +226,5 @@ $(document).ready(function (){
     $('#openRam').click(Stebs.ui.toggleRAM);
     $('#openOutput').click(Stebs.ui.toggleOutput);
 
-    $('#ramText').text(Stebs.ramCont.getAsString());
+    $('.ram-container').append(Stebs.ramCont.getAsTable(16*4));
 });
