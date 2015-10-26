@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.2.13.2.0\lib\net40-client\CsvHelper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -71,6 +75,8 @@
     <Compile Include="IRamSession.cs" />
     <Compile Include="IReadOnlyRam.cs" />
     <Compile Include="IRegister.cs" />
+    <Compile Include="MpmParser\IMpmFileParser.cs" />
+    <Compile Include="MpmParser\IMpmParser.cs" />
     <Compile Include="MpmParser\Instruction.cs" />
     <Compile Include="MpmParser\DataFlow.cs" />
     <Compile Include="MpmParser\Destination.cs" />
