@@ -32,8 +32,8 @@ namespace ProcessorSimulation.MpmParser
         ///
         /// </summary>
         Data = 20,
-        SelRef,
-        FROM_SR,
+        SEL_REF,
+        SR,
         Empty
     }
 }

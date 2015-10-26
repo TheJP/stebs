@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 
 namespace ProcessorSimulation.MpmParser
 {
@@ -43,5 +45,6 @@ namespace ProcessorSimulation.MpmParser
         private OperandType() { }
 
         public static OperandType FromString(string operand) => conversions[operand];
+        public static IImmutableList<OperandType> FromStrings(params string[] operands) => operands.Select(FromString).ToImmutableList();
     }
 }
