@@ -14,7 +14,7 @@ namespace ProcessorSimulation.MpmParser
         /// <summary>
         /// Decodes the given instructions file.
         /// </summary>
-        /// <param name="instructions">Instructions file in a csv format.</param>
+        /// <param name="instructions">Instructions file in a csv format. The csv format should not contain headers.</param>
         /// <returns>Parsed instructions.</returns>
         IEnumerable<IInstruction> ParseInstructionsFile(string filename);
 

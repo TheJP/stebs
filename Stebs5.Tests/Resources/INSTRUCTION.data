@@ -1,0 +1,12 @@
+﻿000;000;AAA
+001;001;BBB const
+002;002;CCC offset
+003;003;DDD addr
+004;004;EEE reg
+005;005;FFF |addr|
+006;006;GGG |reg|
+007;007;HHH absolute
+008;008;III const,offset
+009;009;JJJ addr, reg
+00A;00A;KKK |addr|, |reg|
+00B;00B;LLL absolute,absolute

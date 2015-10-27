@@ -10,7 +10,7 @@ namespace ProcessorSimulation.MpmParser
     /// <summary>
     /// Represents a typed instruction as the opcode decoder would see it.
     /// </summary>
-    public interface IInstruction
+    public interface IInstruction : IEquatable<IInstruction>
     {
         /// <summary>Machine code representation of this instruction</summary>
         byte OpCode { get; }

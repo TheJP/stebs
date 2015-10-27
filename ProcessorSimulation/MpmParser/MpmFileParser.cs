@@ -1,4 +1,5 @@
 ﻿using CsvHelper;
+using CsvHelper.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,7 +18,7 @@ namespace ProcessorSimulation.MpmParser
         /// <summary>
         /// Encoding, which is used for all file readings, which are done in this class.
         /// </summary>
-        private Encoding encoding = Encoding.ASCII;
+        private static readonly Encoding encoding = Encoding.ASCII;
 
         /// <summary>
         /// Dictionary, which is used to convert the input to the correct Destination registers.
@@ -57,13 +58,18 @@ namespace ProcessorSimulation.MpmParser
         private IEnumerable<IInstruction> ParseInstructions(TextReader reader)
         {
             var result = new List<IInstruction>();
-            var csv = new CsvReader(reader);
+            var csvConfig = new CsvConfiguration();
+            csvConfig.HasHeaderRecord = false;
+            csvConfig.SkipEmptyRecords = true;
+            csvConfig.TrimFields = true;
+            csvConfig.Delimiter = ";";
+            var csv = new CsvReader(reader, csvConfig);
             while (csv.Read())
             {
                 var address = int.Parse(csv.GetField<string>(0), NumberStyles.HexNumber);
                 var opCode = byte.Parse(csv.GetField<string>(1), NumberStyles.HexNumber);
                 var type = csv.GetField<string>(2).Split(' ');
-                var operandTypes = OperandType.FromStrings(type?[1]?.Split(','));
+                var operandTypes = OperandType.FromStrings(type.Length >= 2 ? type[1].Split(',') : new string[0]);
                 //TODO: Remove too tight coupling
                 result.Add(new Instruction(opCode, address, type[0], operandTypes));
             }
