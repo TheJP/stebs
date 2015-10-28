@@ -1,4 +1,6 @@
-﻿module Stebs {
+﻿/// <reference path="editorWindow.ts"/>
+
+module Stebs {
     export var visible = {
         devices: false,
         architecture: false,
@@ -210,8 +212,6 @@ interface JQueryStatic {
 }
 
 $(document).ready(function (){
-
-    $('#editorWindow').contents().prop('designMode', 'on');
     Stebs.ui.setupCanvas();
 
     var hub = $.connection.stebsHub;
@@ -226,5 +226,14 @@ $(document).ready(function (){
     $('#openRam').click(Stebs.ui.toggleRAM);
     $('#openOutput').click(Stebs.ui.toggleOutput);
 
-    $('.ram-container').append(Stebs.ramCont.getAsTable(16*4));
+    $('.ram-container').append(Stebs.ramCont.getAsTable(16 * 4));
+
+    console.log(Stebs.coloredItems.test);
+    Stebs.coloredItems.test = 20;
+    console.log(Stebs.coloredItems.test);
+    var editorWindow: Stebs.EditorWindow = new Stebs.EditorWindow();
+    window.setInterval(function () {
+        editorWindow.inkText();
+        console.log("wasHere");
+    }, 1000);
 });
