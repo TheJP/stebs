@@ -5,7 +5,7 @@
 004;004;EEE reg
 005;005;FFF |addr|
 006;006;GGG |reg|
-007;007;HHH absolute
+007;007;HHH absolute 
 008;008;III const,offset
 009;009;JJJ addr, reg
 00A;00A;KKK |addr|, |reg|

@@ -68,8 +68,9 @@ namespace ProcessorSimulation.MpmParser
             {
                 var address = int.Parse(csv.GetField<string>(0), NumberStyles.HexNumber);
                 var opCode = byte.Parse(csv.GetField<string>(1), NumberStyles.HexNumber);
-                var type = csv.GetField<string>(2).Split(' ');
-                var operandTypes = OperandType.FromStrings(type.Length >= 2 ? type[1].Split(',') : new string[0]);
+                var type = csv.GetField<string>(2).Split(new char[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                var operandString = type.Length >= 2 ? type[1].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries) : new string[0];
+                var operandTypes = OperandType.FromStrings(operandString);
                 //TODO: Remove too tight coupling
                 result.Add(new Instruction(opCode, address, type[0], operandTypes));
             }
