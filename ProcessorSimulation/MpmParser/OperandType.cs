@@ -44,7 +44,7 @@ namespace ProcessorSimulation.MpmParser
 
         private OperandType() { }
 
-        public static OperandType FromString(string operand) => conversions[operand];
+        public static OperandType FromString(string operand) => conversions[operand.Trim()];
         public static IImmutableList<OperandType> FromStrings(params string[] operands) => operands.Select(FromString).ToImmutableList();
     }
 }
