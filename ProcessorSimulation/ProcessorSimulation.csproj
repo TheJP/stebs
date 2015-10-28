@@ -88,6 +88,7 @@
     <Compile Include="MpmParser\NextAddress.cs" />
     <Compile Include="MpmParser\OperandType.cs" />
     <Compile Include="MpmParser\ReadWrite.cs" />
+    <Compile Include="MpmParser\RomType.cs" />
     <Compile Include="MpmParser\Source.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="ProcessorFactory.cs" />

@@ -58,6 +58,8 @@ namespace ProcessorSimulation.MpmParser
         private IEnumerable<IInstruction> ParseInstructions(TextReader reader)
         {
             var result = new List<IInstruction>();
+            //Csv configuration: No header, no empy lines,
+            //remove leading and trailing whitespaces from cell values, ';' separated columns
             var csvConfig = new CsvConfiguration();
             csvConfig.HasHeaderRecord = false;
             csvConfig.SkipEmptyRecords = true;
@@ -95,6 +97,11 @@ namespace ProcessorSimulation.MpmParser
 
         private IDictionary<byte, IMicroInstruction> ParseMicroInstructions(TextReader reader)
         {
+            //Skip header
+            reader.ReadLine();
+            reader.ReadToEnd().Split()
+                .Select(t => t?.Trim())
+                .Where(t => !string.IsNullOrEmpty(t));
             //TODO:
             throw new NotImplementedException();
         }
