@@ -51,15 +51,6 @@ module Stebs {
         },
 
         /**
-         * Hello callback function.
-         */
-        hello(word: string): void {
-            ctx.fillStyle = 'green';
-            ctx.font = '100pt Helvetica';
-            ctx.fillText(word, canvas.width / 2, canvas.height / 2);
-        },
-
-        /**
          * Sets the width of #codingView to a prozentual value.
          * This allows correct browser resizing without additional client code.
          */
@@ -215,10 +206,10 @@ $(document).ready(function (){
     Stebs.ui.setupCanvas();
 
     var hub = $.connection.stebsHub;
-    hub.client.hello = Stebs.ui.hello;
+    //hub.client.hello = Stebs.ui.hello;
 
     $.connection.hub.start().done(function () {
-        hub.server.hello('you');
+        //hub.server.hello('you');
     });
 
     $('#openDevices').click(Stebs.ui.toggleDevices);
