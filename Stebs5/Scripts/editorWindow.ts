@@ -52,7 +52,7 @@ module Stebs {
                 }*/
             }
 
-            public formatText(iframe: HTMLFrameElement, command: string, option): void {
+            public formatText(iframe: HTMLFrameElement, command: string, option: string | boolean): void {
                 iframe.contentWindow.focus();
                 try {
                     iframe.contentWindow.document.execCommand(command, false, option);

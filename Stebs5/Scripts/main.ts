@@ -1,4 +1,6 @@
-﻿module Stebs {
+﻿/// <reference path="editorWindow.ts"/>
+
+module Stebs {
     export var visible = {
         devices: false,
         architecture: false,
