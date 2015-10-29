@@ -114,6 +114,9 @@ module Stebs {
             $('.output-container').hide(visible.output);
             $('.output-container').show(!visible.output);
         },
+        openOutput(): void {
+            if (!visible.output) { this.toggleOutput(); }
+        },
 
         setOutput(text: string): void {
             $('#outputText').text(text);
@@ -219,12 +222,25 @@ $(document).ready(function (){
 
     $('.ram-container').append(Stebs.ramCont.getAsTable(16 * 4));
 
-    console.log(Stebs.coloredItems.test);
+    hub.client.assembled = function (result: string) {
+        Stebs.ui.openOutput();
+        var output = $('#outputText');
+        output.text(result);
+        output.html(output.html().replace(/\n/g, '<br/>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/\s/g, '&nbsp;'));
+    };
+    hub.client.assembleError = hub.client.assembled;
+
+    $('#assemble').click(function () {
+        var source = $('#editorWindow').contents().find('body').html().replace(/<\w*br\w*\/?>/g, '\r\n').replace(/<.*>/g, '');
+        $.connection.stebsHub.server.assemble(source);
+    });
+
+    //console.log(Stebs.coloredItems.test);
     Stebs.coloredItems.test = 20;
-    console.log(Stebs.coloredItems.test);
+    //console.log(Stebs.coloredItems.test);
     var editorWindow: Stebs.EditorWindow = new Stebs.EditorWindow();
     window.setInterval(function () {
         editorWindow.inkText();
-        console.log("wasHere");
+        //console.log("wasHere");
     }, 1000);
 });

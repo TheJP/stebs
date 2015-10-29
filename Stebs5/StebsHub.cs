@@ -17,7 +17,8 @@ namespace Stebs5
             {
                 //TODO: Improve performance here:
                 Assembler assembler = new Assembler("");
-                using(var reader = new StreamReader("Resources\\INSTRUCTION.data"))
+                var server = HttpContext.Current.Server;
+                using(var reader = new StreamReader(server.MapPath("~\\bin\\Resources\\INSTRUCTION.data")))
                 {
                     var instructions = reader.ReadToEnd();
                     if (assembler.execute(source, instructions))

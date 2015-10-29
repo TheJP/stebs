@@ -112,6 +112,10 @@ html, body, #canvas {
     margin: 0 0 0 5px;
 }
 
+#outputText {
+    font-family: Consolas,monaco,monospace;
+}
+
 /* 2. Left Sidebars */
 
 #devices, #architecture {
