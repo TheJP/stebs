@@ -20,7 +20,7 @@ module Stebs {
             /*
             $('#editorWindow').contents().find("html").each(function () {
                 var foo = $(this).html();
-                console.log(foo);
+                //console.log(foo);
             });
             
             this.formatText(this.editorDoc, 'insertBrOnReturn', false);
