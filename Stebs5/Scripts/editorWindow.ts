@@ -17,13 +17,14 @@ module Stebs {
         public inkText(): void {
             var inkedText = "";
             var span = $(document.createElement('span'));
-
+            /*
             $('#editorWindow').contents().find("html").each(function () {
                 var foo = $(this).html();
                 console.log(foo);
             });
             
             this.formatText(this.editorDoc, 'insertBrOnReturn', false);
+            */
             /*
             var isComment: boolean = false;
             var isMemoryPos: boolean = false;

@@ -202,6 +202,13 @@ module Stebs {
     };
 
     export var ramCont = new Stebs.Ram(1024);
+
+    /**
+     * This interface allows the usage of the CodeMirror library.
+     */
+    export interface CodeMirror {
+        codeMirror: any;
+    }
 }
 
 /**
@@ -210,6 +217,8 @@ module Stebs {
 interface JQueryStatic {
     connection: any;
 }
+
+
 
 $(document).ready(function (){
     Stebs.ui.setupCanvas();
