@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.Practices.Unity;
 using ProcessorSimulation;
+using ProcessorSimulation.MpmParser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,14 @@ namespace Stebs5
         {
             var container = new UnityContainer();
             container
+                //SignalR Hubs
                 .RegisterType<StebsHub>()
-                .RegisterInstance<IProcessorFactory>(new ProcessorFactory())
-                .RegisterInstance<IConstants>(new Constants());
+                //Singletons
+                .RegisterType<IProcessorFactory, ProcessorFactory>(new ContainerControlledLifetimeManager())
+                .RegisterType<IConstants, Constants>(new ContainerControlledLifetimeManager())
+                .RegisterType<IMpmParser, MpmFileParser>(new ContainerControlledLifetimeManager())
+                .RegisterType<IMpmFileParser, MpmFileParser>(new ContainerControlledLifetimeManager())
+                .RegisterType<IProcessorSimulator, ProcessorSimulator>(new ContainerControlledLifetimeManager());
             return container;
         });
         public static UnityContainer Container { get; } = container.Value;
