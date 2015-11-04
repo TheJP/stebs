@@ -148,7 +148,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\codemirror-3.01\codemirror.css" />
+    <Content Include="Icons\Save-icon.png" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Stebs.JP.pubxml" />
