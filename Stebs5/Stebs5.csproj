@@ -426,7 +426,6 @@
     <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
-    <TypeScriptCompile Include="Scripts\editorWindow.ts" />
     <TypeScriptCompile Include="Scripts\main.ts" />
     <Content Include="Styles\normalize.css" />
     <Content Include="Styles\style.css" />

@@ -1,4 +1,4 @@
-﻿/// <reference path="editorWindow.ts"/>
+﻿/*/// <reference path="editorWindow.ts"/>*/
 
 module Stebs {
     export var visible = {
@@ -245,16 +245,12 @@ $(document).ready(function (){
     hub.client.assembleError = hub.client.assembled;
 
     $('#assemble').click(function () {
-        var source = $('#editorWindow').contents().find('body').html().replace(/<\w*br\w*\/?>/g, '\r\n').replace(/<.*>/g, '');
-        $.connection.stebsHub.server.assemble(source);
+        var newSource = editor.getDoc().getValue();
+        console.log(newSource);
+        //var source = $('#editorWindow').contents().find('body').html().replace(/<\w*br\w*\/?>/g, '\r\n').replace(/<.*>/g, '');
+        $.connection.stebsHub.server.assemble(newSource);
     });
 
-    /*
-    var editorWindow: Stebs.EditorWindow = new Stebs.EditorWindow();
-    window.setInterval(function () {
-        editorWindow.inkText();
-    }, 20000);
-    */
     var editor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#editableTxtArea').get(0), {
         lineNumbers: true,
         mode: { name: 'gas', architecture: 'x86' }
