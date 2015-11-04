@@ -6,19 +6,25 @@ using Microsoft.AspNet.SignalR;
 using assembler.support;
 using assembler;
 using System.IO;
+using Microsoft.Practices.Unity;
 
 namespace Stebs5
 {
     public class StebsHub : Hub
     {
+        private IConstants Constants { get; }
+        public StebsHub(IConstants constants)
+        {
+            this.Constants = constants;
+        }
+
         public void Assemble(string source)
         {
             lock (typeof(Common))
             {
-                //TODO: Improve performance here:
-                Assembler assembler = new Assembler("");
-                var server = HttpContext.Current.Server;
-                using(var reader = new StreamReader(server.MapPath("~\\bin\\Resources\\INSTRUCTION.data")))
+                //TODO: Improve performance
+                Assembler assembler = new Assembler(string.Empty);
+                using(var reader = new StreamReader(Constants.InstructionsAbsolutePath))
                 {
                     var instructions = reader.ReadToEnd();
                     if (assembler.execute(source, instructions))
