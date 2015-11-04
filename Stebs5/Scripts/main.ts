@@ -212,6 +212,11 @@ interface JQueryStatic {
     connection: any;
 }
 
+interface JQuery {
+    
+}
+
+
 
 
 $(document).ready(function (){
@@ -244,12 +249,15 @@ $(document).ready(function (){
         $.connection.stebsHub.server.assemble(source);
     });
 
-    //console.log(Stebs.coloredItems.test);
-    Stebs.coloredItems.test = 20;
-    //console.log(Stebs.coloredItems.test);
+    /*
     var editorWindow: Stebs.EditorWindow = new Stebs.EditorWindow();
     window.setInterval(function () {
         editorWindow.inkText();
-        //console.log("wasHere");
-    }, 1000);
+    }, 20000);
+    */
+    var editor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#editableTxtArea').get(0), {
+        lineNumbers: true,
+        mode: { name: 'gas', architecture: 'x86' }
+    });
+
 });

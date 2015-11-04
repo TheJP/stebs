@@ -10,6 +10,9 @@
     <script src="Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script src="signalr/hubs"></script>
     <script src="Scripts/main.js"></script>
+    <link rel="stylesheet" href="Scripts/CodeMirror/lib/codemirror.css">
+    <script src="Scripts/CodeMirror/lib/codemirror.js"></script>
+    <script src="Scripts/CodeMirror/mode/gas/gas.js"></script>
 </head>
 <body>
     <div id="devices">
@@ -44,7 +47,10 @@
         <div id="codingFrame">
             <iframe id="editorWindow"></iframe>
             <!-- https://developer.mozilla.org/de/docs/Rich-Text_Editing_in_Mozilla -->
-        </div>
+            <textarea id="editableTxtArea">
+
+            </textarea>
+         </div>
 
         <div class="ram">
             <div class="open-link open-link-horizontal">
