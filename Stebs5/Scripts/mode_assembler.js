@@ -7,11 +7,22 @@ CodeMirror.defineMode("assembler", function (_config) {
     var custom = [];
 
     var directives = {
+        add: "variable-2",
         mov: "variable-2",
-        shl: "variable-2",
         dec: "variable-2",
+        inc: "variable-2",
+        shl: "variable-2",
         jnz: "variable-2",
-        end: "variable-2"
+        jno: "variable-2",
+        end: "variable-2",
+        in: "variable-2",
+        out: "variable-2",
+        call: "variable-2",
+        nop: "variable-2",
+        org: "variable-2",
+        halt: "variable-2",
+        ret: "variable-2",
+        jmp: "variable-2"
     };
 
     var registers = {
