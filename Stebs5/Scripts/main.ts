@@ -178,7 +178,7 @@ $(document).ready(function (){
 
     var editor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#editableTxtArea').get(0), {
         lineNumbers: true,
-        name: 'assembler'
+        mode: 'assembler'
     });
 
 });
