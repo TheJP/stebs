@@ -252,7 +252,7 @@ $(document).ready(function (){
 
     var editor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#editableTxtArea').get(0), {
         lineNumbers: true,
-        mode: { name: 'gas', architecture: 'x86' }
+        name: 'assembler'
     });
 
 });
