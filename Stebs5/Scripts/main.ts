@@ -245,8 +245,7 @@ $(document).ready(function (){
     hub.client.assembleError = hub.client.assembled;
 
     $('#assemble').click(function () {
-        var newSource = editor.getDoc().getValue();
-        console.log(newSource);
+        var newSource = editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
         //var source = $('#editorWindow').contents().find('body').html().replace(/<\w*br\w*\/?>/g, '\r\n').replace(/<.*>/g, '');
         $.connection.stebsHub.server.assemble(newSource);
     });
