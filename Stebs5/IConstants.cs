@@ -15,5 +15,13 @@ namespace Stebs5
         /// Absolute path to the instructions data file. This file is used for the processor simulation.
         /// </summary>
         string InstructionsAbsolutePath { get; }
+        /// <summary>
+        /// Absolute path to the rom1 data file. This file is used for the processor simulation.
+        /// </summary>
+        string Rom1AbsolutePath { get; }
+        /// <summary>
+        /// Absolute path to the rom2 data file. This file is used for the processor simulation.
+        /// </summary>
+        string Rom2AbsolutePath { get; }
     }
 }

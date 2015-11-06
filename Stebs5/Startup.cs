@@ -16,7 +16,7 @@ namespace Stebs5
         {
             var container = UnityConfiguration.Container;
             var constants = container.Resolve<IConstants>();
-            container.Resolve<IMpm>().Parse(constants.InstructionsAbsolutePath, "", "");
+            container.Resolve<IMpm>().Parse(constants.InstructionsAbsolutePath, constants.Rom1AbsolutePath, constants.Rom2AbsolutePath);
             GlobalHost.DependencyResolver.Register(typeof(StebsHub), () => container.Resolve<StebsHub>());
             app.MapSignalR();
         }
