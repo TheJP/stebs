@@ -8,7 +8,7 @@ namespace ProcessorSimulation.MpmParser
 {
     public enum ReadWrite
     {
-        Read,
-        Write
+        Write = 0,
+        Read = 1
     }
 }

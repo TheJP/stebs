@@ -21,11 +21,15 @@ namespace ProcessorSimulation.MpmParser
         /// <summary>
         /// Decodes the given micro instructions.
         /// </summary>
-        /// <param name="microInstructions">
-        /// Micro instructions in a logisim ram export file format.
+        /// <param name="microInstructions1">
+        /// Micro instructions 1 in a logisim ram export file format.
+        /// (This format has to be used beacause of compatibility reasons.)
+        /// </param>
+        /// <param name="microInstructions2">
+        /// Micro instructions 2 in a logisim ram export file format.
         /// (This format has to be used beacause of compatibility reasons.)
         /// </param>
         /// <returns>Parsed micro instructions in a dictionary. The key is the micro instructions address.</returns>
-        IDictionary<byte, IMicroInstruction> ParseMicroInstructions(string microInstructions);
+        IDictionary<int, IMicroInstruction> ParseMicroInstructions(string microInstructions1, string microInstructions2);
     }
 }

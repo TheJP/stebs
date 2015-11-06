@@ -79,7 +79,7 @@
     <Compile Include="MpmParser\IMpmFileParser.cs" />
     <Compile Include="MpmParser\IMpmParser.cs" />
     <Compile Include="MpmParser\Instruction.cs" />
-    <Compile Include="MpmParser\DataFlow.cs" />
+    <Compile Include="MpmParser\DataInput.cs" />
     <Compile Include="MpmParser\Destination.cs" />
     <Compile Include="MpmParser\IInstruction.cs" />
     <Compile Include="MpmParser\IMicroInstruction.cs" />
@@ -87,10 +87,10 @@
     <Compile Include="MpmParser\MicroInstruction.cs" />
     <Compile Include="MpmParser\Mpm.cs" />
     <Compile Include="MpmParser\MpmFileParser.cs" />
+    <Compile Include="MpmParser\MpmParsingException.cs" />
     <Compile Include="MpmParser\NextAddress.cs" />
     <Compile Include="MpmParser\OperandType.cs" />
     <Compile Include="MpmParser\ReadWrite.cs" />
-    <Compile Include="MpmParser\RomType.cs" />
     <Compile Include="MpmParser\Source.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="ProcessorFactory.cs" />

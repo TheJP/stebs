@@ -95,30 +95,76 @@ namespace ProcessorSimulation.MpmParser
             }
         }
 
-        private IDictionary<byte, IMicroInstruction> ParseMicroInstructions(TextReader reader)
+        private IDictionary<int, IMicroInstruction> ParseMicroInstructions(TextReader reader1, TextReader reader2)
         {
             //Skip header
-            reader.ReadLine();
-            reader.ReadToEnd().Split()
-                .Select(t => t?.Trim())
-                .Where(t => !string.IsNullOrEmpty(t));
-            //TODO:
-            throw new NotImplementedException();
+            reader1.ReadLine();
+            //Read an intermediate state of the micro instructions from the first reader
+            var intermediates = reader1.ReadToEnd().Split()
+                .Where(word => !string.IsNullOrWhiteSpace(word))
+                .Select(word => int.Parse(word, NumberStyles.HexNumber))
+                .Select(microcode => new
+                {
+                    Address = (microcode >> 20) & 0xFFF,
+                    NextAddress = (NextAddress)((microcode >> 18) & 0x3),
+                    ClearInterrupt = ((microcode >> 17) & 0x1) == 1,
+                    EnableValue = ((microcode >> 16) & 0x1) == 1,
+                    Value = (microcode >> 4) & 0xFFF,
+                    Affected = ((microcode >> 3) & 1) == 1,
+                    Criterion = (JumpCriterion)((microcode >> 0) & 7)
+                })
+                .ToDictionary(microinstruction => microinstruction.Address);
+            //Skip header
+            reader2.ReadLine();
+            //Complete the micro instruction using the scond reader
+            return reader2.ReadToEnd().Split()
+                .Where(word => !string.IsNullOrWhiteSpace(word))
+                .Select(word => int.Parse(word, NumberStyles.HexNumber))
+                .Select(microcode =>
+                {
+                    var address = (microcode >> 16) & 0xFFF;
+                    var entry = intermediates[address];
+                    var aluCommand = (AluCmd)((microcode >> 12) & 0x0F);
+                    var destination = ParseWithDictionary(numberToDestination, (microcode >> 8) & 0x0F);
+                    var source = ParseWithDictionary(numberToSource, (microcode >> 4) & 0x0F);
+                    var readWrite = (ReadWrite)((microcode >> 3) & 0x01);
+                    var dataInput = (DataInput)((microcode >> 2) & 0x01);
+                    //TODO: Remove too tight coupling
+                    return (IMicroInstruction) new MicroInstruction(address, entry.NextAddress, entry.EnableValue,
+                        entry.Value, entry.Criterion, entry.ClearInterrupt, entry.Affected,
+                        aluCommand, source, destination, dataInput, readWrite);
+                }).ToDictionary(microinstruction => microinstruction.Address);
         }
 
-        public IDictionary<byte, IMicroInstruction> ParseMicroInstructions(string microInstructions)
+        /// <summary>
+        /// Parse the given value using the given dictionary.
+        /// If the value does not exist in the dictionary: Throw an MpmParsingException
+        /// </summary>
+        private T ParseWithDictionary<T>(IDictionary<int, T> dictionary, int value)
         {
-            using(TextReader reader = new StringReader(microInstructions))
+            try
             {
-                return ParseMicroInstructions(microInstructions);
+                return dictionary[value];
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                throw new MpmParsingException("Failed to parse micro program memory: One of the given values was not found in the parsing table", e);
             }
         }
 
-        public IDictionary<byte, IMicroInstruction> ParseMicroInstructionsFile(string filename)
+        public IDictionary<int, IMicroInstruction> ParseMicroInstructions(string microInstructions1, string microInstructions2)
         {
-            using (TextReader reader = new StreamReader(filename, encoding))
+            using (TextReader reader1 = new StringReader(microInstructions1), reader2 = new StringReader(microInstructions2))
             {
-                return ParseMicroInstructions(reader);
+                return ParseMicroInstructions(reader1, reader2);
+            }
+        }
+
+        public IDictionary<int, IMicroInstruction> ParseMicroInstructionsFile(string filename1, string filename2)
+        {
+            using (TextReader reader1 = new StreamReader(filename1, encoding), reader2 = new StreamReader(filename2))
+            {
+                return ParseMicroInstructions(reader1, reader2);
             }
         }
     }

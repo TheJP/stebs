@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace ProcessorSimulation.MpmParser
     {
         public IEnumerable<IInstruction> Instructions { get; private set; }
 
-        public IDictionary<byte, IMicroInstruction> MicroInstructions { get; private set; }
+        public IDictionary<int, IMicroInstruction> MicroInstructions { get; private set; }
 
         public string RawInstructions { get; private set; }
 
@@ -40,7 +41,7 @@ namespace ProcessorSimulation.MpmParser
                 RawInstructions = reader.ReadToEnd();
             }
             Instructions = parser.ParseInstructions(RawInstructions);
-            //TODO: MicroInstructions = parser.ParseMicroInstructionsFile(rom1Filename);
+            MicroInstructions = parser.ParseMicroInstructionsFile(rom1Filename, rom2Filename).ToImmutableDictionary();
         }
     }
 }

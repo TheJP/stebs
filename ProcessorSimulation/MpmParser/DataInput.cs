@@ -8,7 +8,7 @@ namespace ProcessorSimulation.MpmParser
 {
     public enum DataInput
     {
-        IO,
-        Memory
+        Memory = 0,
+        IO = 1
     }
 }

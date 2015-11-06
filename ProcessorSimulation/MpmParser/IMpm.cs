@@ -25,8 +25,9 @@ namespace ProcessorSimulation.MpmParser
 
         /// <summary>
         /// Containes all micro instructions, referenced by their mpm address.
+        /// Mutative access to this dictionary is not possible.
         /// </summary>
-        IDictionary<byte, IMicroInstruction> MicroInstructions { get; }
+        IDictionary<int, IMicroInstruction> MicroInstructions { get; }
 
         /// <summary>
         /// This Method provides the mpm with initial data from the three given files.
