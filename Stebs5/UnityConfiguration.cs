@@ -29,6 +29,6 @@ namespace Stebs5
                 .RegisterType<IProcessorSimulator, ProcessorSimulator>(new ContainerControlledLifetimeManager());
             return container;
         });
-        public static UnityContainer Container { get; } = container.Value;
+        public static UnityContainer Container => container.Value;
     }
 }

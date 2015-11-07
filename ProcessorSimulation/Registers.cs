@@ -77,18 +77,25 @@ namespace ProcessorSimulation
         /// ALU register X.
         /// Left hand side parameter of ALU commands.
         /// </summary>
-        X = 13,
+        X = 17,
 
         /// <summary>
         /// ALU register Y.
         /// Right hand side parameter of ALU commands.
         /// </summary>
-        Y = 14,
+        Y = 18,
 
         /// <summary>
         /// ALU result register.
         /// Register that stores the result of the last ALU command.
         /// </summary>
-        RES = 12
+        RES = 12,
+
+        /// <summary>
+        /// Micro instruction pointer.
+        /// Register that stores the micro program address of the current executed micro instruction.
+        /// Caution: This is a 12 bit register.
+        /// </summary>
+        MIP = 19
     }
 }
