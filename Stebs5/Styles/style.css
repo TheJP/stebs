@@ -258,6 +258,7 @@ html, body, #canvas {
 }
 
 .runAndDebug .watcher .watchElem {
+    float: left;
     position: relative;
     border: 1px solid black;
     width: 75px;
@@ -276,3 +277,21 @@ html, body, #canvas {
 .runAndDebug .watcher .watchElem p {
     margin: 1px;
 }
+
+.runAndDebug .watcher #addWatchElem {
+    position: relative;
+    display: block;
+}
+
+.runAndDebug .watcher #addWatchElem button {
+    position: relative;
+    display: block;
+    width: 75px;
+    height: 40px;
+}
+
+.runAndDebug .watcher #addWatchElem h1 {
+    position: relative;
+    margin: 0px;
+}
+
