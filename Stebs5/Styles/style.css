@@ -220,7 +220,6 @@ html, body, #canvas {
     padding: 5px 5px;
 }
 
-
 #codingView #editableTxtArea {
     box-sizing: border-box;
     width: 100%;
@@ -230,6 +229,7 @@ html, body, #canvas {
     padding: 5px 5px;
 }
 
+/*Rund and Debug-Controll Panel*/
 .runAndDebug {
     position: relative;
     z-index: 3000;
@@ -242,9 +242,7 @@ html, body, #canvas {
 }
 
 .runAndDebug .btnView .runMode {
-    /*
-    display: none;
-    */
+    /*display: none;*/
 }
 
 .runMode button {
@@ -256,6 +254,26 @@ html, body, #canvas {
     border-spacing: 5px 0px; 
 }
 
-.error {
-    color: red;
+.runAndDebug .watcher {
+    position: relative;
+}
+
+.runAndDebug .watcher .watchElem {
+    position: relative;
+    border: 1px solid black;
+    width: 75px;
+    height: 40px;
+    padding: 4px;
+    margin: 5px;
+}
+
+.runAndDebug .watcher .watchElem button {
+    position: relative;
+    float: right;
+    border: 0px;
+    background-color: white;
+}
+
+.runAndDebug .watcher .watchElem p {
+    margin: 1px;
 }
