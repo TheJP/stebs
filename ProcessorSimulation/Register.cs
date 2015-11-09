@@ -9,8 +9,8 @@ namespace ProcessorSimulation
     public class Register : IRegister
     {
         public Registers Type { get; }
-        public byte Value { get; }
-        public Register(Registers type, byte value)
+        public uint Value { get; }
+        public Register(Registers type, uint value)
         {
             this.Type = type;
             this.Value = value;

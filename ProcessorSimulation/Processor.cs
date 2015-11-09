@@ -11,10 +11,12 @@ namespace ProcessorSimulation
 {
     public class Processor : IProcessor
     {
+        private object writeLock = new object();
+
+        #region Events
         //Because processor events are accessed by multiple threads custom locking has to be implemented
         //to guarantee thread safety. (See also the delegate chapter of 'C# in depth')
         private object eventLock = new object();
-        private object writeLock = new object();
 
         private Action<IProcessor, IRegister> registerChanged;
         public event Action<IProcessor, IRegister> RegisterChanged
@@ -28,6 +30,46 @@ namespace ProcessorSimulation
                 lock (eventLock) { registerChanged -= value; }
             }
         }
+
+        private Action<IProcessor, SimulationState, SimulationStepSize> simulationStateChanged;
+        public event Action<IProcessor, SimulationState, SimulationStepSize> SimulationStateChanged
+        {
+            add
+            {
+                lock (eventLock) { simulationStateChanged += value; }
+            }
+            remove
+            {
+                lock (eventLock) { simulationStateChanged -= value; }
+            }
+        }
+
+        private Action<IProcessor> macroStepStarted;
+        public event Action<IProcessor> MacroStepStarted
+        {
+            add
+            {
+                lock (eventLock) { macroStepStarted += value; }
+            }
+            remove
+            {
+                lock (eventLock) { macroStepStarted -= value; }
+            }
+        }
+
+        private Action<IProcessor> instructionStepStarted;
+        public event Action<IProcessor> InstructionStepStarted
+        {
+            add
+            {
+                lock (eventLock) { instructionStepStarted += value; }
+            }
+            remove
+            {
+                lock (eventLock) { instructionStepStarted -= value; }
+            }
+        }
+        #endregion
 
         private volatile ImmutableDictionary<Registers, IRegister> registers = ImmutableDictionary<Registers, IRegister>.Empty;
         private readonly Func<Registers, byte, IRegister> registerFactory;
@@ -77,6 +119,22 @@ namespace ProcessorSimulation
                 //Call handler outside of the lock, so called handle methods will not caue a deadlock.
                 //This is safe because delegates are immutable.
                 handler(this, register);
+            }
+        }
+
+        /// <summary>Notifies, that the simulator started/stopped a simulation step.</summary>
+        /// <param name="state">State in which the current simulation is.</param>
+        /// <param name="stepSize">Step size which is beeing simulated.</param>
+        public void NotifySimulationStateChanged(SimulationState state, SimulationStepSize stepSize)
+        {
+            Action<IProcessor, SimulationState, SimulationStepSize> handler;
+            lock (eventLock)
+            {
+                handler = simulationStateChanged;
+            }
+            if (handler != null)
+            {
+                handler(this, state, stepSize);
             }
         }
 

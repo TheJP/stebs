@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProcessorSimulation.MpmParser
+namespace ProcessorSimulation
 {
-    public enum ReadWrite
+    public enum SimulationStepSize
     {
-        Write = 0,
-        Read = 1
+        Micro, Macro, Instruction
     }
 }

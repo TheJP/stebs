@@ -25,9 +25,10 @@ namespace Stebs5
                 .RegisterType<IConstants, Constants>(new ContainerControlledLifetimeManager())
                 .RegisterType<IMpmParser, MpmFileParser>(new ContainerControlledLifetimeManager())
                 .RegisterType<IMpmFileParser, MpmFileParser>(new ContainerControlledLifetimeManager())
+                .RegisterType<IMpm, Mpm>(new ContainerControlledLifetimeManager())
                 .RegisterType<IProcessorSimulator, ProcessorSimulator>(new ContainerControlledLifetimeManager());
             return container;
         });
-        public static UnityContainer Container { get; } = container.Value;
+        public static UnityContainer Container => container.Value;
     }
 }

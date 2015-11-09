@@ -52,8 +52,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.1.38.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.1.38-beta-23225\lib\dotnet\System.Collections.Immutable.dll</HintPath>
+    <Reference Include="System.Collections.Immutable, Version=1.1.36.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.1.36\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
@@ -75,20 +75,22 @@
     <Compile Include="IRamSession.cs" />
     <Compile Include="IReadOnlyRam.cs" />
     <Compile Include="IRegister.cs" />
+    <Compile Include="MpmParser\IMpm.cs" />
     <Compile Include="MpmParser\IMpmFileParser.cs" />
     <Compile Include="MpmParser\IMpmParser.cs" />
     <Compile Include="MpmParser\Instruction.cs" />
-    <Compile Include="MpmParser\DataFlow.cs" />
+    <Compile Include="MpmParser\DataInput.cs" />
     <Compile Include="MpmParser\Destination.cs" />
     <Compile Include="MpmParser\IInstruction.cs" />
     <Compile Include="MpmParser\IMicroInstruction.cs" />
     <Compile Include="MpmParser\JumpCriteria.cs" />
     <Compile Include="MpmParser\MicroInstruction.cs" />
+    <Compile Include="MpmParser\Mpm.cs" />
     <Compile Include="MpmParser\MpmFileParser.cs" />
+    <Compile Include="MpmParser\MpmParsingException.cs" />
     <Compile Include="MpmParser\NextAddress.cs" />
     <Compile Include="MpmParser\OperandType.cs" />
     <Compile Include="MpmParser\ReadWrite.cs" />
-    <Compile Include="MpmParser\RomType.cs" />
     <Compile Include="MpmParser\Source.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="ProcessorFactory.cs" />
@@ -98,6 +100,8 @@
     <Compile Include="Ram.cs" />
     <Compile Include="Register.cs" />
     <Compile Include="Registers.cs" />
+    <Compile Include="SimulationState.cs" />
+    <Compile Include="SimulationStepSize.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\DECODER.data">

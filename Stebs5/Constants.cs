@@ -13,14 +13,13 @@ namespace Stebs5
     /// </summary>
     public class Constants : IConstants
     {
-        public const string InstructionsPath = @"~\bin\Resources\INSTRUCTION.data";
-        public string InstructionsAbsolutePath
-        {
-            get
-            {
-                var server = HttpContext.Current.Server;
-                return server.MapPath(InstructionsPath);
-            }
-        }
+        protected const string ResourcesPath = @"~\bin\Resources\";
+        public const string InstructionsPath = ResourcesPath + "INSTRUCTION.data";
+        public const string Rom1Path = ResourcesPath + "ROM1.data";
+        public const string Rom2Path = ResourcesPath + "ROM2.data";
+        protected string FromServerPath(string relativePath) => HttpContext.Current.Server.MapPath(relativePath);
+        public string InstructionsAbsolutePath => FromServerPath(InstructionsPath);
+        public string Rom1AbsolutePath => FromServerPath(Rom1Path);
+        public string Rom2AbsolutePath => FromServerPath(Rom2Path);
     }
 }
