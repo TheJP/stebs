@@ -147,6 +147,12 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Icons\Actions-arrow-right-icon.png" />
+    <Content Include="Icons\asm-533.png" />
+    <Content Include="Icons\Japanese-Beetle-icon.png" />
+    <Content Include="Icons\Mimetypes-text-x-hex-icon.png" />
+    <Content Include="Icons\new-file-icon.png" />
+    <Content Include="Icons\open-file-icon.png" />
     <Content Include="Icons\Save-icon.png" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
