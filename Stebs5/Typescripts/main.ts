@@ -103,37 +103,34 @@ module Stebs {
         },
 
         /**
+         * Sets the width of #codingFrame to a prozentual value.
+         * This allows correct browser resizing without additional client code.
+         */
+        setCodingFrameHeight(): void {
+            var height = (visible.output ? ' - ' + heights.containerSize : '') + (visible.ram ? ' - ' + heights.containerSize : '');
+            $('#codingFrame').css('height', 'calc(100% - ' + heights.bars + height + ')');
+        },
+
+        /**
          * Opens/Closes the ram bar.
          */
         toggleRAM(): void {
-            $('#codingFrame').animate({ height: (visible.ram ? '+=' : '-=') + heights.containerSize }, function () {
-                if (visible.output) {
-                    $('#codingFrame').css({ height: 'calc(100% - ' + heights.bars + ' - ' + heights.containerSize + (visible.ram ? '' : ' - ' + heights.containerSize) +')' });
-                } else {
-                    $('#codingFrame').css({ height: 'calc(100% - ' + heights.bars + (visible.ram ? '' : ' -' + heights.containerSize) + ')' });
-                }
-                visible.ram = !visible.ram;
-            });
+            $('#codingFrame').animate({ height: (visible.ram ? '+=' : '-=') + heights.containerSize }, ui.setCodingFrameHeight);
             $('.ram').animate({ height: heights.containerBar + (visible.ram ? '' : ' + ' + heights.containerSize) +  ')' });
             $('.ram-container').hide(visible.ram);
             $('.ram-container').show(!visible.ram);
+            visible.ram = !visible.ram;
         },
 
         /**
          * Opens/Closes the output bar.
          */
         toggleOutput(): void {
-            $('#codingFrame').animate({ height: (visible.output ? '+=' : '-=') + heights.containerSize }, function () {
-                if (visible.ram) {
-                    $('#codingFrame').css({ height: 'calc(100% - ' + heights.bars + ' - ' + heights.containerSize + (visible.output ? '' : ' - ' + heights.containerSize) + ')' });
-                } else {
-                    $('#codingFrame').css({ height: 'calc(100% - ' + heights.bars + (visible.output ? '' : ' -' + heights.containerSize) + ')' });
-                }
-                visible.output = !visible.output;
-            });
+            $('#codingFrame').animate({ height: (visible.output ? '+=' : '-=') + heights.containerSize }, ui.setCodingFrameHeight);
             $('.output').animate({ height: heights.containerBar + (visible.output ? '' : ' + ' + heights.containerSize) + ')' });
             $('.output-container').hide(visible.output);
             $('.output-container').show(!visible.output);
+            visible.output = !visible.output;
         },
 
         openOutput(): void {
