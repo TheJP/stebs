@@ -7,36 +7,39 @@ using assembler.support;
 using assembler;
 using System.IO;
 using Microsoft.Practices.Unity;
+using ProcessorSimulation.MpmParser;
 
 namespace Stebs5
 {
     public class StebsHub : Hub
     {
         private IConstants Constants { get; }
-        public StebsHub(IConstants constants)
+        private IMpm Mpm { get; }
+        public StebsHub(IConstants constants, IMpm mpm)
         {
             this.Constants = constants;
+            this.Mpm = mpm;
         }
 
         public void Assemble(string source)
         {
             lock (typeof(Common))
             {
-                //TODO: Improve performance
                 Assembler assembler = new Assembler(string.Empty);
-                using(var reader = new StreamReader(Constants.InstructionsAbsolutePath))
+                if (assembler.execute(source, Mpm.RawInstructions))
                 {
-                    var instructions = reader.ReadToEnd();
-                    if (assembler.execute(source, instructions))
-                    {
-                        Clients.Caller.Assembled(Common.getCodeList().toString());
-                    }
-                    else
-                    {
-                        Clients.Caller.AssembleError(Common.ERROR_MESSAGE);
-                    }
+                    Clients.Caller.Assembled(Common.getCodeList().toString());
+                }
+                else
+                {
+                    Clients.Caller.AssembleError(Common.ERROR_MESSAGE);
                 }
             }
+        }
+
+        public void GetInstructions()
+        {
+            Clients.Caller.Instructions(Mpm.Instructions);
         }
     }
 }
