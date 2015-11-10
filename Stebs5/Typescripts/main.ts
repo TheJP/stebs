@@ -39,7 +39,7 @@ module Stebs {
             Stebs.instructions = data;
             //Simplify input for syntax highlighting
             for (var instruction in data) {
-                assemblerInstruction[data[instruction].Mnemonic] = "variable-2";
+                assemblerInstruction[data[instruction].Mnemonic] = 'variable-2';
             }
         }
 

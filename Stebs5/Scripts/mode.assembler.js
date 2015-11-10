@@ -1,5 +1,7 @@
-var assemblerInstruction = {};
-CodeMirror.defineMode("assembler", function (_config) {
+var assemblerInstruction = {
+    END: 'variable-2'
+};
+CodeMirror.defineMode('assembler', function (_config) {
     'use strict';
 
     // If an architecture is specified, its initialization function may
@@ -7,30 +9,11 @@ CodeMirror.defineMode("assembler", function (_config) {
     // tried in the event that the standard functions do not find a match.
     var custom = [];
 
-    var directives = {
-        //ADD: "variable-2",
-        //MOV: "variable-2",
-        //DEC: "variable-2",
-        //INC: "variable-2",
-        //SHL: "variable-2",
-        //JNZ: "variable-2",
-        //JNO: "variable-2",
-        //END: "variable-2",
-        //IN: "variable-2",
-        //OUT: "variable-2",
-        //CALL: "variable-2",
-        //NOP: "variable-2",
-        //ORG: "variable-2",
-        //HALT: "variable-2",
-        //RET: "variable-2",
-        //JMP: "variable-2"
-    };
-
     var registers = {
-        AL: "keyword",
-        BL: "keyword",
-        CL: "keyword",
-        DL: "keyword"
+        AL: 'keyword',
+        BL: 'keyword',
+        CL: 'keyword',
+        DL: 'keyword'
     };
 
     function nextUntilUnescaped(stream, end) {
@@ -39,7 +22,7 @@ CodeMirror.defineMode("assembler", function (_config) {
             if (next === end && !escaped) {
                 return false;
             }
-            escaped = !escaped && next === "\\";
+            escaped = !escaped && next === '\\';
         }
         return escaped;
     }
@@ -47,13 +30,13 @@ CodeMirror.defineMode("assembler", function (_config) {
     function clikeComment(stream, state) {
         var maybeEnd = false, ch;
         while ((ch = stream.next()) != null) {
-            if (ch === "/" && maybeEnd) {
+            if (ch === '/' && maybeEnd) {
                 state.tokenize = null;
                 break;
             }
-            maybeEnd = (ch === "*");
+            maybeEnd = (ch === '*');
         }
-        return "comment";
+        return 'comment';
     }
 
     return {
@@ -74,8 +57,8 @@ CodeMirror.defineMode("assembler", function (_config) {
 
             var style, cur, ch = stream.next();
 
-            if (ch === "/") {
-                if (stream.eat("*")) {
+            if (ch === '/') {
+                if (stream.eat('*')) {
                     state.tokenize = clikeComment;
                     return clikeComment(stream, state);
                 }
@@ -83,27 +66,27 @@ CodeMirror.defineMode("assembler", function (_config) {
             //Comment
             if (ch === ';') {
                 stream.skipToEnd();
-                return "comment";
+                return 'comment';
             }
             if (ch === '"') {
                 nextUntilUnescaped(stream, '"');
-                return "string";
+                return 'string';
             }
             if (ch === '=') {
                 stream.eatWhile(/\w/);
-                return "tag";
+                return 'tag';
             }
             if (ch === '[' || ch === ']') {
-                return "braket";
+                return 'braket';
             }
             if (/\d/.test(ch)) {
                     stream.eatWhile(/[0-9a-fA-F]/);
-                    return "number";
+                    return 'number';
             }
             if (/\w/.test(ch)) {
                 stream.eatWhile(/\w/);
                 //Tag (Main:)
-                if (stream.eat(":")) {
+                if (stream.eat(':')) {
                     return 'tag';
                 }
                 cur = stream.current();
@@ -111,14 +94,19 @@ CodeMirror.defineMode("assembler", function (_config) {
                 style = registers[cur];
                 if (style != null) {
                     return style;
-                } else {
-                    //Check SpecialNames
-                    style = assemblerInstruction[cur];
                 }
-                return style || null;
+                //Check SpecialNames
+                style = assemblerInstruction[cur];
+                if (style != null) {
+                    return style;
+                } else if (/[0-9a-fA-F]/.test(ch)) {
+                    //TODO: Also 'AX' will be colored atm
+                    return 'number';
+                }
+                return null;
             }
         },
 
-        lineComment: ";",
+        lineComment: ';',
     };
 });
