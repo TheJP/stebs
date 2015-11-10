@@ -149,10 +149,10 @@ $(document).ready(function (){
     Stebs.ui.setupCanvas();
 
     var hub = $.connection.stebsHub;
-    //hub.client.hello = Stebs.ui.hello;
+    hub.client.instructions = function (i: any) { console.log(i); };
 
     $.connection.hub.start().done(function () {
-        //hub.server.hello('you');
+        hub.server.getInstructions();
     });
 
     $('#openDevices').click(Stebs.ui.toggleDevices);
