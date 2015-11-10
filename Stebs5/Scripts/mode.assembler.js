@@ -1,3 +1,4 @@
+var assemblerInstruction = {};
 CodeMirror.defineMode("assembler", function (_config) {
     'use strict';
 
@@ -7,22 +8,22 @@ CodeMirror.defineMode("assembler", function (_config) {
     var custom = [];
 
     var directives = {
-        ADD: "variable-2",
-        MOV: "variable-2",
-        DEC: "variable-2",
-        INC: "variable-2",
-        SHL: "variable-2",
-        JNZ: "variable-2",
-        JNO: "variable-2",
-        END: "variable-2",
-        IN: "variable-2",
-        OUT: "variable-2",
-        CALL: "variable-2",
-        NOP: "variable-2",
-        ORG: "variable-2",
-        HALT: "variable-2",
-        RET: "variable-2",
-        JMP: "variable-2"
+        //ADD: "variable-2",
+        //MOV: "variable-2",
+        //DEC: "variable-2",
+        //INC: "variable-2",
+        //SHL: "variable-2",
+        //JNZ: "variable-2",
+        //JNO: "variable-2",
+        //END: "variable-2",
+        //IN: "variable-2",
+        //OUT: "variable-2",
+        //CALL: "variable-2",
+        //NOP: "variable-2",
+        //ORG: "variable-2",
+        //HALT: "variable-2",
+        //RET: "variable-2",
+        //JMP: "variable-2"
     };
 
     var registers = {
@@ -112,7 +113,7 @@ CodeMirror.defineMode("assembler", function (_config) {
                     return style;
                 } else {
                     //Check SpecialNames
-                    style = directives[cur];
+                    style = assemblerInstruction[cur];
                 }
                 return style || null;
             }

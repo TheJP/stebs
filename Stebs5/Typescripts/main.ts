@@ -24,6 +24,27 @@ module Stebs {
     var ctx: CanvasRenderingContext2D;
     var canvas: HTMLCanvasElement;
 
+    export var instructions: any;
+
+    /**
+     * The clientHub is a public singleton object, which contains client methods that can be called by the SignalR server.
+     */
+    export var clientHub = {
+
+        /**
+         * Receive available assembly instructions from the server.
+         * TODO: Add type to data.
+         */
+        instructions(data: any): void {
+            Stebs.instructions = data;
+            //Simplify input for syntax highlighting
+            for (var instruction in data) {
+                assemblerInstruction[data[instruction].Mnemonic] = "variable-2";
+            }
+        }
+
+    };
+
     export var ui = {
 
         /**
@@ -114,6 +135,7 @@ module Stebs {
             $('.output-container').hide(visible.output);
             $('.output-container').show(!visible.output);
         },
+
         openOutput(): void {
             if (!visible.output) { this.toggleOutput(); }
         },
@@ -140,18 +162,19 @@ interface JQueryStatic {
     connection: any;
 }
 
-interface JQuery {
-    
-}
-
+/**
+ * Import of the javascript global variable from mode.assembler.js
+ */
+declare var assemblerInstruction: any;
 
 $(document).ready(function (){
     Stebs.ui.setupCanvas();
 
     var hub = $.connection.stebsHub;
-    hub.client.instructions = function (i: any) { console.log(i); };
+    hub.client.instructions = Stebs.clientHub.instructions;
 
     $.connection.hub.start().done(function () {
+        //Get available assembly instructions
         hub.server.getInstructions();
     });
 
