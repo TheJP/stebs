@@ -64,32 +64,44 @@
                <p id="outputText"></p>
             </div>
         </div>
-    </div>
-    
-    <div class="runAndDebug">
-        <div class="btnView">
-            <div class="runMode">
-                <table>
-                    <tr>
-                        <td><label><input id="btninstrStep" name="speedGroup" type="radio" /> Instruction Step</label></td>
-                        <td><button id="btnPause">Pause</button></td>
-                    </tr>
-                    <tr>
-                        <td><label><input id="btnmacroStep" name="speedGroup" type="radio" /> Macro Step</label></td>
-                        <td><button id="btnStop">Stop</button></td>
-                    </tr>
-                    <tr>
-                        <td><label><input id="btnmicroStep" name="speedGroup" type="radio" /> Micro Step</label></td>
-                        <td><button id="btnReset">Reset</button></td>
-                    </tr>
-                </table>
-                <input id="slider1" type="range" min="0" max="100" step="10" /> 
+        <div class="runAndDebug">
+            <div class="btnView">
+                <div class="runMode">
+                    <table>
+                        <tr>
+                            <td><label><input id="btninstrStep" name="speedGroup" type="radio" /> Instruction Step</label></td>
+                            <td><button id="btnPause">Pause</button></td>
+                        </tr>
+                        <tr>
+                            <td><label><input id="btnmacroStep" name="speedGroup" type="radio" /> Macro Step</label></td>
+                            <td><button id="btnStop">Stop</button></td>
+                        </tr>
+                        <tr>
+                            <td><label><input id="btnmicroStep" name="speedGroup" type="radio" /> Micro Step</label></td>
+                            <td><button id="btnReset">Reset</button></td>
+                        </tr>
+                    </table>
+                    <input id="slider1" type="range" min="0" max="100" step="10" />
+                </div>
+            </div>
+            <div class="watcher">
+                <div class="watchElem">
+                    <button>x</button>
+                    <p>AL</p>
+                    <p>0000'0000</p>
+                </div>
+                <div class="watchElem">
+                    <button>x</button>
+                    <p>BL</p>
+                    <p>FF</p>
+                </div>
+                <div class="watchElem" id="addWatchElem">
+                    <button>
+                        <h1>+</h1>
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="watcher">
-
-        </div>
     </div>
-
 </body>
 </html>
