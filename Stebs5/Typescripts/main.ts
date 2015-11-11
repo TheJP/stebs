@@ -38,6 +38,19 @@ module Stebs {
             $('.stepSizeButtons').show();
             Stebs.controlState = Stebs.controlStates.start;
         },
+        stop(): void {
+            $('#debug img').attr('src', 'Icons/Debug-icon.png');
+            $('#run img').attr('src', 'Icons/Play-icon.png');
+            $('#pauseRun img').attr('src', 'Icons/Play-icon.png');
+            $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
+
+            $('#debug').prop('disabled', false);
+            $('#run').prop('disabled', false);
+            $('#pauseRun').prop('disabled', false);
+            $('#stop').prop('disabled', true);
+
+            Stebs.controlState = Stebs.controlStates.stop;
+        },
         assembled(): void {
             $('#debug img').attr('src', 'Icons/Debug-icon.png');
             $('#run img').attr('src', 'Icons/Play-icon.png');
@@ -116,6 +129,23 @@ module Stebs {
             for (var instruction in data) {
                 assemblerInstruction[data[instruction].Mnemonic] = 'variable-2';
             }
+        },
+
+        /**
+         * Server finished assembling the sent source.
+         */
+        assembled(result: string): void {
+            ui.openOutput();
+            ui.showOutput(result);
+            Stebs.controlStates.assembled();
+        },
+
+        /**
+         * The sent source contains syntax errors. The assembling failed.
+         */
+        assembleError(error: string): void {
+            ui.openOutput();
+            ui.showOutput(error);
         }
 
     };
@@ -210,8 +240,10 @@ module Stebs {
             if (!visible.output) { this.toggleOutput(); }
         },
 
-        setOutput(text: string): void {
-            $('#outputText').text(text);
+        showOutput(text: string): void {
+            var output = $('#outputText');
+            output.text(text);
+            output.html(output.html().replace(/\n/g, '<br>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/\s/g, '&nbsp;'));
         }
     };
 
@@ -242,6 +274,8 @@ $(document).ready(function (){
 
     var hub = $.connection.stebsHub;
     hub.client.instructions = Stebs.clientHub.instructions;
+    hub.client.assembled = Stebs.clientHub.assembled;
+    hub.client.assembleError = Stebs.clientHub.assembleError;
 
     $.connection.hub.start().done(function () {
         //Get available assembly instructions
@@ -255,19 +289,9 @@ $(document).ready(function (){
 
     $('.ram-container').append(Stebs.ramCont.getAsTable(16 * 4));
 
-    hub.client.assembled = function (result: string) {
-        Stebs.ui.openOutput();
-        var output = $('#outputText');
-        output.text(result);
-        output.html(output.html().replace(/\n/g, '<br/>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/\s/g, '&nbsp;'));
-    };
-    hub.client.assembleError = hub.client.assembled;
-
     $('#assemble').click(function () {
         var newSource = editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
         $.connection.stebsHub.server.assemble(newSource);
-
-        Stebs.controlStates.assembled();
     });
 
     $('#run').click(function () {
@@ -279,7 +303,7 @@ $(document).ready(function (){
     });
 
     $('#pauseRun').click(function () {
-        if (Stebs.controlState == Stebs.controlStates.debuggingAndPause || Stebs.controlState == Stebs.controlStates.assembled) {
+        if (Stebs.controlState == Stebs.controlStates.debuggingAndPause || Stebs.controlState == Stebs.controlStates.assembled || Stebs.controlState == Stebs.controlStates.stop) {
             Stebs.controlStates.instructionSteps();
         } else {
             Stebs.controlStates.debuggingAndPause();
@@ -287,7 +311,7 @@ $(document).ready(function (){
     });
 
     $('#stop').click(function () {
-        Stebs.controlStates.debuggingAndPause();
+        Stebs.controlStates.stop();
     });
 
     var editor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#editableTxtArea').get(0), {
