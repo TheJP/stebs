@@ -72,7 +72,7 @@ namespace ProcessorSimulation
         #endregion
 
         private volatile ImmutableDictionary<Registers, IRegister> registers = ImmutableDictionary<Registers, IRegister>.Empty;
-        private readonly Func<Registers, byte, IRegister> registerFactory;
+        private readonly Func<Registers, uint, IRegister> registerFactory;
 
         public IAlu Alu { get; }
         private IRam ram;
@@ -89,7 +89,7 @@ namespace ProcessorSimulation
         /// <param name="alu">Alu, which is used for calculations in this processor.</param>
         /// <param name="ram">Ram, which is used as memory for this processor.</param>
         /// <param name="registerFactory">Factory function, that is used to create register instances.</param>
-        public Processor(IAlu alu, IRam ram, Func<Registers, byte, IRegister> registerFactory)
+        public Processor(IAlu alu, IRam ram, Func<Registers, uint, IRegister> registerFactory)
         {
             this.Alu = alu;
             this.ram = ram;
@@ -175,12 +175,13 @@ namespace ProcessorSimulation
         public sealed class ProcessorSession : IProcessorSession
         {
             private bool disposed = false;
-            private Processor Session { get; }
+            private Processor Processor { get; }
             public IRamSession RamSession { get; }
+            IProcessor IProcessorSession.Processor => Processor;
 
             private ProcessorSession(Processor processor, IRamSession ram)
             {
-                Session = processor;
+                this.Processor = processor;
                 this.RamSession = ram;
             }
 
@@ -196,15 +197,15 @@ namespace ProcessorSimulation
                 {
                     disposed = true;
                     RamSession.Dispose();
-                    Monitor.Exit(Session.writeLock);
+                    Monitor.Exit(Processor.writeLock);
                 }
             }
 
-            public void SetRegister(Registers type, byte value)
+            public void SetRegister(Registers type, uint value)
             {
-                var register = Session.registerFactory(type, value);
-                Session.registers = Session.registers.SetItem(type, register);
-                Session.NotifyRegisterChanged(register);
+                var register = Processor.registerFactory(type, value);
+                Processor.registers = Processor.registers.SetItem(type, register);
+                Processor.NotifyRegisterChanged(register);
             }
         }
     }

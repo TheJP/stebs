@@ -11,30 +11,30 @@ namespace ProcessorSimulation.MpmParser
     /// </summary>
     public enum JumpCriterion
     {
-        EMPTY = 0,
+        Empty = 0,
         /// <summary>
         /// Not zero
         /// </summary>
-        NZ = 1,
+        NotZero = 1,
         /// <summary>
         /// No overflow
         /// </summary>
-        NO = 2,
+        NoOverflow = 2,
         /// <summary>
         /// Not signed
         /// </summary>
-        NS = 3,
+        NotSigned = 3,
         /// <summary>
         /// Zero
         /// </summary>
-        Z = 4,
+        Zero = 4,
         /// <summary>
         /// Overflow
         /// </summary>
-        O = 5,
+        Overflow = 5,
         /// <summary>
         /// Signed
         /// </summary>
-        S = 6
+        Signed = 6
     }
 }
