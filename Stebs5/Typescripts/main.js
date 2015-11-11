@@ -1,19 +1,17 @@
-﻿/// <reference path="ram.ts"/>
-
-module Stebs {
-    export var visible = {
+/// <reference path="ram.ts"/>
+var Stebs;
+(function (Stebs) {
+    Stebs.visible = {
         devices: false,
         architecture: false,
         ram: false,
         output: false
     };
-
-    export var widths = {
+    Stebs.widths = {
         devices: '250px',
         architecture: '400px'
     };
-
-    export var heights = {
+    Stebs.heights = {
         topbar: '38px',
         containerBar: '38px',
         containerSize: '150px',
@@ -21,117 +19,97 @@ module Stebs {
         bars: '114px',
         runAndDebug: '100px'
     };
-
-    export var ctrlStates = {
-        start(): void {
+    Stebs.ctrlStates = {
+        start: function () {
             $('#btnDebug').find('img').attr("src", "Icons/Debug-icon-grey.png");
             $('#btnRun').find('img').attr("src", "Icons/Play-icon-grey.png");
             $('#btnPause').find('img').attr("src", "Icons/Pause-icon-grey.png");
             $('#btnStop').find('img').attr("src", "Icons/Stop-icon-grey.png");
-            
             $('#btnDebug').prop('disabled', true);
             $('#btnRun').prop('disabled', true);
             $('#btnPause').prop('disabled', true);
             $('#btnStop').prop('disabled', true);
-
             $('.stepSizeRadioB').hide();
             $('.stepSizeButtons').show();
         },
-        assembled(): void {
+        assembled: function () {
             $('#btnDebug').find('img').attr("src", "Icons/Debug-icon.png");
             $('#btnRun').find('img').attr("src", "Icons/Play-icon.png");
             $('#btnPause').find('img').attr("src", "Icons/Pause-icon-grey.png");
             $('#btnStop').find('img').attr("src", "Icons/Stop-icon-grey.png");
-
             $('#btnDebug').prop('disabled', false);
             $('#btnRun').prop('disabled', false);
             $('#btnPause').prop('disabled', true);
             $('#btnStop').prop('disabled', true);
-
             $('.stepSizeRadioB').hide();
             $('.stepSizeButtons').show();
         },
-        debuggingAndPause(): void {
+        debuggingAndPause: function () {
             $('#btnDebug').find('img').attr("src", "Icons/Debug-icon.png");
             $('#btnRun').find('img').attr("src", "Icons/Play-icon.png");
             $('#btnPause').find('img').attr("src", "Icons/Pause-icon-grey.png");
             $('#btnStop').find('img').attr("src", "Icons/Stop-icon.png");
-
             $('#btnDebug').prop('disabled', false);
             $('#btnRun').prop('disabled', false);
             $('#btnPause').prop('disabled', true);
             $('#btnStop').prop('disabled', false);
-
             $('.stepSizeRadioB').hide();
             $('.stepSizeButtons').show();
         },
-        instructionSteps(): void {
+        instructionSteps: function () {
             $('#btnDebug').find('img').attr("src", "Icons/Debug-icon.png");
             $('#btnRun').find('img').attr("src", "Icons/Play-icon.png");
             $('#btnPause').find('img').attr("src", "Icons/Pause-icon.png");
             $('#btnStop').find('img').attr("src", "Icons/Stop-icon.png");
-
             $('#btnDebug').prop('disabled', false);
             $('#btnRun').prop('disabled', false);
             $('#btnPause').prop('disabled', false);
             $('#btnStop').prop('disabled', false);
-
             $('.stepSizeRadioB').show();
             $('.stepSizeButtons').hide();
         },
-        macroSteps(): void {
+        macroSteps: function () {
             Stebs.ctrlStates.instructionSteps();
         },
-        microSteps(): void {
+        microSteps: function () {
             Stebs.ctrlStates.instructionSteps();
         }
     };
-    export var ctrlState = ctrlStates.start;
-
-    export 
-
-    var ctx: CanvasRenderingContext2D;
-    var canvas: HTMLCanvasElement;
-
-    export var instructions: any;
-
+    Stebs.ctrlState = Stebs.ctrlStates.start;
+    Stebs.ctx;
+    var canvas;
+    Stebs.instructions;
     /**
      * The clientHub is a public singleton object, which contains client methods that can be called by the SignalR server.
      */
-    export var clientHub = {
-
+    Stebs.clientHub = {
         /**
          * Receive available assembly instructions from the server.
          * TODO: Add type to data.
          */
-        instructions(data: any): void {
+        instructions: function (data) {
             Stebs.instructions = data;
             //Simplify input for syntax highlighting
             for (var instruction in data) {
                 assemblerInstruction[data[instruction].Mnemonic] = 'variable-2';
             }
         }
-
     };
-
-    export var ui = {
-
+    Stebs.ui = {
         /**
          * Stores a global reference of the canvas and sets the global style.
          */
-        setupCanvas(): void {
-            canvas = <HTMLCanvasElement>$('#canvas')[0];
-            ctx = canvas.getContext('2d');
+        setupCanvas: function () {
+            canvas = $('#canvas')[0];
+            Stebs.ctx = canvas.getContext('2d');
             this.normalizeCanvas();
-
-            ctx.font = '20pt Helvetica';
-            ctx.textAlign = 'center';
+            Stebs.ctx.font = '20pt Helvetica';
+            Stebs.ctx.textAlign = 'center';
         },
-
         /**
          * Resize canvas to real size (otherwise the content gets stretched).
          */
-        normalizeCanvas(): void {
+        normalizeCanvas: function () {
             var width = parseInt($('#canvas').css('width'), 10);
             var height = parseInt($('#canvas').css('height'), 10);
             if (canvas.width != width || canvas.height != height) {
@@ -139,143 +117,113 @@ module Stebs {
                 canvas.height = height;
             }
         },
-
         /**
          * Sets the width of #codingView to a prozentual value.
          * This allows correct browser resizing without additional client code.
          */
-        setCodingViewWidth(): void {
-            var width = (visible.architecture ? ' - ' + widths.architecture : '') + (visible.devices ? ' - ' + widths.devices : '');
+        setCodingViewWidth: function () {
+            var width = (Stebs.visible.architecture ? ' - ' + Stebs.widths.architecture : '') + (Stebs.visible.devices ? ' - ' + Stebs.widths.devices : '');
             $('#codingView').css('width', 'calc(100% - 50px' + width + ')');
         },
-
         /**
          * Opens/Closes the devices sidebar.
          */
-        toggleDevices(): void {
-            var animation = { left: (visible.devices ? '-=' : '+=') + widths.devices };
+        toggleDevices: function () {
+            var animation = { left: (Stebs.visible.devices ? '-=' : '+=') + Stebs.widths.devices };
             $('#devices, #architecture').animate(animation);
-            var animation2 = { left: animation.left, width: (visible.devices ? '+=' : '-=') + widths.devices };
-            $('#codingView').animate(animation2, ui.setCodingViewWidth);
-            visible.devices = !visible.devices;
+            var animation2 = { left: animation.left, width: (Stebs.visible.devices ? '+=' : '-=') + Stebs.widths.devices };
+            $('#codingView').animate(animation2, Stebs.ui.setCodingViewWidth);
+            Stebs.visible.devices = !Stebs.visible.devices;
         },
-
         /**
          * Opens/Closes the architecture sidebar.
          */
-        toggleArchitecture(): void {
-            var animation = { left: (visible.architecture ? '-=' : '+=') + widths.architecture };
+        toggleArchitecture: function () {
+            var animation = { left: (Stebs.visible.architecture ? '-=' : '+=') + Stebs.widths.architecture };
             $('#architecture').animate(animation);
-            var animation2 = { left: animation.left, width: (visible.architecture ? '+=' : '-=') + widths.architecture };
-            $('#codingView').animate(animation2, ui.setCodingViewWidth);
-            visible.architecture = !visible.architecture;
+            var animation2 = { left: animation.left, width: (Stebs.visible.architecture ? '+=' : '-=') + Stebs.widths.architecture };
+            $('#codingView').animate(animation2, Stebs.ui.setCodingViewWidth);
+            Stebs.visible.architecture = !Stebs.visible.architecture;
         },
-
         /**
          * Sets the width of #codingFrame to a prozentual value.
          * This allows correct browser resizing without additional client code.
          */
-        setCodingFrameHeight(): void {
-            var height = (visible.output ? ' - ' + heights.containerSize : '') + (visible.ram ? ' - ' + heights.containerSize : '');
-            $('#codingFrame').css('height', 'calc(100% - ' + heights.bars + ' - ' + heights.runAndDebug + height + ')');
+        setCodingFrameHeight: function () {
+            var height = (Stebs.visible.output ? ' - ' + Stebs.heights.containerSize : '') + (Stebs.visible.ram ? ' - ' + Stebs.heights.containerSize : '');
+            $('#codingFrame').css('height', 'calc(100% - ' + Stebs.heights.bars + ' - ' + Stebs.heights.runAndDebug + height + ')');
         },
-
         /**
          * Opens/Closes the ram bar.
          */
-        toggleRAM(): void {
-            $('#codingFrame').animate({ height: (visible.ram ? '+=' : '-=') + heights.containerSize }, ui.setCodingFrameHeight);
-            visible.ram = !visible.ram;
-            if (visible.ram) { $('.ram-container').slideDown(); }
-            else { $('.ram-container').slideUp(); }
+        toggleRAM: function () {
+            $('#codingFrame').animate({ height: (Stebs.visible.ram ? '+=' : '-=') + Stebs.heights.containerSize }, Stebs.ui.setCodingFrameHeight);
+            Stebs.visible.ram = !Stebs.visible.ram;
+            if (Stebs.visible.ram) {
+                $('.ram-container').slideDown();
+            }
+            else {
+                $('.ram-container').slideUp();
+            }
         },
-
         /**
          * Opens/Closes the output bar.
          */
-        toggleOutput(): void {
-            $('#codingFrame').animate({ height: (visible.output ? '+=' : '-=') + heights.containerSize }, ui.setCodingFrameHeight);
-            visible.output = !visible.output;
-            if (visible.output) { $('.output-container').slideDown(); }
-            else { $('.output-container').slideUp(); }
+        toggleOutput: function () {
+            $('#codingFrame').animate({ height: (Stebs.visible.output ? '+=' : '-=') + Stebs.heights.containerSize }, Stebs.ui.setCodingFrameHeight);
+            Stebs.visible.output = !Stebs.visible.output;
+            if (Stebs.visible.output) {
+                $('.output-container').slideDown();
+            }
+            else {
+                $('.output-container').slideUp();
+            }
         },
-
-        openOutput(): void {
-            if (!visible.output) { this.toggleOutput(); }
+        openOutput: function () {
+            if (!Stebs.visible.output) {
+                this.toggleOutput();
+            }
         },
-
-        setOutput(text: string): void {
+        setOutput: function (text) {
             $('#outputText').text(text);
         }
     };
-
-    export var ramCont = new Stebs.Ram(1024);
-
-    /**
-     * This interface allows the usage of the CodeMirror library.
-     */
-    export interface CodeMirror {
-        codeMirror: any;
-    }
-}
-
-/**
- * This interface allows the usage of the signalr library.
- */
-interface JQueryStatic {
-    connection: any;
-}
-
-/**
- * Import of the javascript global variable from mode.assembler.js
- */
-declare var assemblerInstruction: any;
-
-$(document).ready(function (){
+    Stebs.ramCont = new Stebs.Ram(1024);
+})(Stebs || (Stebs = {}));
+$(document).ready(function () {
     Stebs.ui.setupCanvas();
-
     var hub = $.connection.stebsHub;
     hub.client.instructions = Stebs.clientHub.instructions;
-
     $.connection.hub.start().done(function () {
         //Get available assembly instructions
         hub.server.getInstructions();
     });
-
     $('#openDevices').click(Stebs.ui.toggleDevices);
     $('#openArchitecture').click(Stebs.ui.toggleArchitecture);
     $('#openRam').click(Stebs.ui.toggleRAM);
     $('#openOutput').click(Stebs.ui.toggleOutput);
-
     $('.ram-container').append(Stebs.ramCont.getAsTable(16 * 4));
-
-    hub.client.assembled = function (result: string) {
+    hub.client.assembled = function (result) {
         Stebs.ui.openOutput();
         var output = $('#outputText');
         output.text(result);
         output.html(output.html().replace(/\n/g, '<br/>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/\s/g, '&nbsp;'));
     };
     hub.client.assembleError = hub.client.assembled;
-
     $('#btnAssemble').click(function () {
         var newSource = editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
         $.connection.stebsHub.server.assemble(newSource);
-
         Stebs.ctrlStates.assembled();
     });
-
     $('#btnRun').click(function () {
         Stebs.ctrlStates.instructionSteps();
     });
-
     $('#btnDebug').click(function () {
         Stebs.ctrlStates.debuggingAndPause();
     });
-
-    var editor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#editableTxtArea').get(0), {
+    var editor = CodeMirror.fromTextArea($('#editableTxtArea').get(0), {
         lineNumbers: true,
         mode: 'assembler'
     });
-
     Stebs.ctrlStates.start();
 });

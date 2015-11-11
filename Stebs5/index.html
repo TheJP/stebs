@@ -34,17 +34,15 @@
 
     <div id="codingView">
         <div id="codingTopBar">
-            <button id="new" title="New"><img src="Icons/new-file-icon.png" /></button>
-            <button id="open" title="Open"><img src="Icons/open-file-icon.png" /></button>
-            <button id="save" title="Save"><img src="Icons/Save-icon.png" /></button>
-            <button id="run" title="Run" disabled="disabled"><img src="Icons/Actions-arrow-right-icon.png" /></button>
-            <button id="debug" title="Debug" disabled="disabled"><img src="Icons/Japanese-Beetle-icon.png" /></button>
-            <button id="assemble" title="Assemble"><img src="Icons/Mimetypes-text-x-hex-icon.png" /></button>
+            <button id="btnNew" title="New"><img src="Icons/new-file-icon.png" /></button>
+            <button id="btnOpen" title="Open"><img src="Icons/open-file-icon.png" /></button>
+            <button id="btnSave" title="Save"><img src="Icons/Save-icon.png" /></button>
+            <button id="btnRun" title="Run"><img src="Icons/Play-icon-grey.png" /></button>
+            <button id="btnDebug" title="Debug"><img src="Icons/Debug-icon-grey.png" /></button>
+            <button id="btnAssemble" title="Assemble"><img src="Icons/Mimetypes-text-x-hex-icon.png" /></button>
             <input id="filename" type="text" name="filename" placeholder="FileName">
         </div>
         <div id="codingFrame">
-            <iframe id="editorWindow"></iframe>
-            <!-- https://developer.mozilla.org/de/docs/Rich-Text_Editing_in_Mozilla -->
             <textarea id="editableTxtArea"></textarea>
          </div>
 
@@ -66,22 +64,23 @@
         </div>
         <div class="runAndDebug">
             <div class="btnView">
-                <div class="runMode">
-                    <table>
-                        <tr>
-                            <td><label><input id="btninstrStep" name="speedGroup" type="radio" /> Instruction Step</label></td>
-                            <td><button id="btnPause">Pause</button></td>
-                        </tr>
-                        <tr>
-                            <td><label><input id="btnmacroStep" name="speedGroup" type="radio" /> Macro Step</label></td>
-                            <td><button id="btnStop">Stop</button></td>
-                        </tr>
-                        <tr>
-                            <td><label><input id="btnmicroStep" name="speedGroup" type="radio" /> Micro Step</label></td>
-                            <td><button id="btnReset">Reset</button></td>
-                        </tr>
-                    </table>
-                    <input id="slider1" type="range" min="0" max="100" step="10" />
+                <div class="ctrlButtons">
+                    <button id="btnPause" title="Pause"><img src="Icons/Pause-icon-grey.png" /></button>
+                    <button id="btnStop" title="Stop"><img src="Icons/Stop-icon-grey.png" /></button>
+                    <!-- <button id="btnReset">Reset</button> -->
+                </div>
+                <div class="stepSizeRadioB">
+                    <label><input id="sldinstrStep" name="speedGroup" type="radio" /> Instruction Step</label>
+                    <label><input id="sldmacroStep" name="speedGroup" type="radio" /> Macro Step</label>
+                    <label><input id="sldmicroStep" name="speedGroup" type="radio" /> Micro Step</label>
+                </div>
+                <div class="stepSizeButtons">
+                    <button id="btninstrStep">Instruction Step</button>
+                    <button id="btnmacroStep">Macro Step</button>
+                    <button id="btnmicroStep">Micro Step</button>
+                </div>
+                <div class="sliderDiv">
+                    <input id="slider1" type="range" min="0" max="100" step="10" value="10" />
                 </div>
             </div>
             <div class="watcher">
