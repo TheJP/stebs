@@ -96,6 +96,16 @@ namespace ProcessorSimulation
         /// Register that stores the micro program address of the current executed micro instruction.
         /// Caution: This is a 12 bit register.
         /// </summary>
-        MIP = 19
+        MIP = 19,
+
+        /// <summary>
+        /// Status Register which containes flags.
+        /// The contained flags are:
+        /// I=Interrupt Flag that determines that an interrupt has to be handled.
+        /// S=Signed Alu flag that is set, if the last alu instruction had a signed result.
+        /// O=Overflow Alu flag that is set, if there was an overflow in the last alu instruction.
+        /// Z=Zero Alu flag that is set, if the last alu instruction had zero as result.
+        /// </summary>
+        Status = 20
     }
 }

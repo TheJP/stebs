@@ -28,7 +28,7 @@ namespace ProcessorSimulation.MpmParser
             [0] = Destination.Empty,
             [1] = Destination.Y,
             [2] = Destination.X,
-            [3] = Destination.SR,
+            [3] = Destination.Status,
             [4] = Destination.SEL_REF,
             [5] = Destination.SEL,
             [6] = Destination.RES,
@@ -45,7 +45,7 @@ namespace ProcessorSimulation.MpmParser
         private static readonly Dictionary<int, Source> numberToSource = new Dictionary<int, Source>()
         {
             [0] = Source.Empty,
-            [3] = Source.SR,
+            [3] = Source.Status,
             [4] = Source.SEL_REF,
             [6] = Source.RES,
             [7] = Source.MDR,

@@ -29,11 +29,11 @@ namespace ProcessorSimulation.MpmParser
         /// </summary>
         RES = Registers.RES,
         /// <summary>
-        ///
+        /// Status register
         /// </summary>
-        Data = 20,
+        Status = Registers.Status,
+        Data = 21,
         SEL_REF,
-        SR,
         Empty
     }
 }

@@ -44,8 +44,11 @@ namespace ProcessorSimulation.MpmParser
         /// ALU register Y
         /// </summary>
         Y = Registers.Y,
+        /// <summary>
+        /// Status register
+        /// </summary>
+        Status = Registers.Status,
         SEL_REF,
-        SR,
         Empty
     }
 }

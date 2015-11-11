@@ -100,6 +100,7 @@
     <Compile Include="Registers.cs" />
     <Compile Include="SimulationState.cs" />
     <Compile Include="SimulationStepSize.cs" />
+    <Compile Include="StatusRegister.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\DECODER.data">

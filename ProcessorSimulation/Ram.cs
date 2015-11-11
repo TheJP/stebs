@@ -73,10 +73,12 @@ namespace ProcessorSimulation
         public sealed class RamSession : IRamSession
         {
             private bool disposed = false;
-            private Ram Session { get; }
+            private Ram Ram { get; }
+            IRam IRamSession.Ram => Ram;
+
             private RamSession(Ram ram)
             {
-                Session = ram;
+                this.Ram = ram;
             }
 
             public void Dispose()
@@ -84,7 +86,7 @@ namespace ProcessorSimulation
                 if (!disposed)
                 {
                     disposed = true;
-                    Monitor.Exit(Session.writeLock);
+                    Monitor.Exit(Ram.writeLock);
                 }
             }
 
@@ -96,8 +98,8 @@ namespace ProcessorSimulation
 
             public void Set(byte address, byte value)
             {
-                Session.data = Session.data.SetItem(address, value);
-                Session.NotifyRamChanged(address, value);
+                Ram.data = Ram.data.SetItem(address, value);
+                Ram.NotifyRamChanged(address, value);
             }
 
         }
