@@ -26,58 +26,64 @@ module Stebs {
         start(): void {
             $('#btnDebug').find('img').attr("src", "Icons/Debug-icon-grey.png");
             $('#btnRun').find('img').attr("src", "Icons/Play-icon-grey.png");
-            $('#btnPause').find('img').attr("src", "Icons/Pause-icon-grey.png");
+            $('#btnPauseRun').find('img').attr("src", "Icons/Pause-icon-grey.png");
             $('#btnStop').find('img').attr("src", "Icons/Stop-icon-grey.png");
             
             $('#btnDebug').prop('disabled', true);
             $('#btnRun').prop('disabled', true);
-            $('#btnPause').prop('disabled', true);
+            $('#btnPauseRun').prop('disabled', true);
             $('#btnStop').prop('disabled', true);
 
             $('.stepSizeRadioB').hide();
             $('.stepSizeButtons').show();
+            Stebs.ctrlState = Stebs.ctrlStates.start;
         },
         assembled(): void {
             $('#btnDebug').find('img').attr("src", "Icons/Debug-icon.png");
             $('#btnRun').find('img').attr("src", "Icons/Play-icon.png");
-            $('#btnPause').find('img').attr("src", "Icons/Pause-icon-grey.png");
+            $('#btnPauseRun').find('img').attr("src", "Icons/Play-icon.png");
             $('#btnStop').find('img').attr("src", "Icons/Stop-icon-grey.png");
 
             $('#btnDebug').prop('disabled', false);
             $('#btnRun').prop('disabled', false);
-            $('#btnPause').prop('disabled', true);
+            $('#btnPauseRun').prop('disabled', false);
             $('#btnStop').prop('disabled', true);
 
             $('.stepSizeRadioB').hide();
             $('.stepSizeButtons').show();
+            Stebs.ctrlState = Stebs.ctrlStates.assembled;
         },
         debuggingAndPause(): void {
             $('#btnDebug').find('img').attr("src", "Icons/Debug-icon.png");
             $('#btnRun').find('img').attr("src", "Icons/Play-icon.png");
-            $('#btnPause').find('img').attr("src", "Icons/Pause-icon-grey.png");
+            $('#btnPauseRun').find('img').attr("src", "Icons/Play-icon.png");
             $('#btnStop').find('img').attr("src", "Icons/Stop-icon.png");
 
             $('#btnDebug').prop('disabled', false);
             $('#btnRun').prop('disabled', false);
-            $('#btnPause').prop('disabled', true);
+            $('#btnPauseRun').prop('disabled', false);
             $('#btnStop').prop('disabled', false);
 
             $('.stepSizeRadioB').hide();
             $('.stepSizeButtons').show();
+            Stebs.ctrlState = Stebs.ctrlStates.debuggingAndPause;
         },
         instructionSteps(): void {
             $('#btnDebug').find('img').attr("src", "Icons/Debug-icon.png");
             $('#btnRun').find('img').attr("src", "Icons/Play-icon.png");
-            $('#btnPause').find('img').attr("src", "Icons/Pause-icon.png");
+            $('#btnPauseRun').find('img').attr("src", "Icons/Pause-icon.png");
             $('#btnStop').find('img').attr("src", "Icons/Stop-icon.png");
 
             $('#btnDebug').prop('disabled', false);
             $('#btnRun').prop('disabled', false);
-            $('#btnPause').prop('disabled', false);
+            $('#btnPauseRun').prop('disabled', false);
             $('#btnStop').prop('disabled', false);
 
             $('.stepSizeRadioB').show();
             $('.stepSizeButtons').hide();
+
+            $('#sldinstrStep').prop('checked', true);
+            Stebs.ctrlState = Stebs.ctrlStates.instructionSteps;
         },
         macroSteps(): void {
             Stebs.ctrlStates.instructionSteps();
@@ -269,6 +275,18 @@ $(document).ready(function (){
     });
 
     $('#btnDebug').click(function () {
+        Stebs.ctrlStates.debuggingAndPause();
+    });
+
+    $('#btnPauseRun').click(function () {
+        if (Stebs.ctrlState == Stebs.ctrlStates.debuggingAndPause || Stebs.ctrlState == Stebs.ctrlStates.assembled) {
+            Stebs.ctrlStates.instructionSteps();
+        } else {
+            Stebs.ctrlStates.debuggingAndPause();
+        }
+    });
+
+    $('#btnStop').click(function () {
         Stebs.ctrlStates.debuggingAndPause();
     });
 
