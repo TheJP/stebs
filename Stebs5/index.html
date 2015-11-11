@@ -34,12 +34,12 @@
 
     <div id="codingView">
         <div id="codingTopBar">
-            <button id="btnNew" title="New"><img src="Icons/new-file-icon.png" /></button>
-            <button id="btnOpen" title="Open"><img src="Icons/open-file-icon.png" /></button>
-            <button id="btnSave" title="Save"><img src="Icons/Save-icon.png" /></button>
-            <button id="btnRun" title="Run"><img src="Icons/Play-icon-grey.png" /></button>
-            <button id="btnDebug" title="Debug"><img src="Icons/Debug-icon-grey.png" /></button>
-            <button id="btnAssemble" title="Assemble"><img src="Icons/Mimetypes-text-x-hex-icon.png" /></button>
+            <button id="new" title="New"><img src="Icons/new-file-icon.png" /></button>
+            <button id="open" title="Open"><img src="Icons/open-file-icon.png" /></button>
+            <button id="save" title="Save"><img src="Icons/Save-icon.png" /></button>
+            <button id="run" title="Run"><img src="Icons/Play-icon-grey.png" /></button>
+            <button id="debug" title="Debug"><img src="Icons/Debug-icon-grey.png" /></button>
+            <button id="assemble" title="Assemble"><img src="Icons/Mimetypes-text-x-hex-icon.png" /></button>
             <input id="filename" type="text" name="filename" placeholder="FileName">
         </div>
         <div id="codingFrame">
@@ -63,38 +63,37 @@
             </div>
         </div>
         <div class="runAndDebug">
-            <div class="btnView">
-                <div class="ctrlButtons">
-                    <button id="btnPauseRun" title="Pause"><img src="Icons/Pause-icon-grey.png" /></button>
-                    <button id="btnStop" title="Stop"><img src="Icons/Stop-icon-grey.png" /></button>
-                    <!-- <button id="btnReset">Reset</button> -->
+            <div class="buttonView">
+                <div class="controlButtons">
+                    <button id="pauseRun" title="Pause"><img src="Icons/Pause-icon-grey.png" /></button>
+                    <button id="stop" title="Stop"><img src="Icons/Stop-icon-grey.png" /></button>
                 </div>
-                <div class="stepSizeRadioB">
-                    <label><input id="sldinstrStep" name="speedGroup" type="radio" /> Instruction Step</label>
-                    <label><input id="sldmacroStep" name="speedGroup" type="radio" /> Macro Step</label>
-                    <label><input id="sldmicroStep" name="speedGroup" type="radio" /> Micro Step</label>
+                <div class="stepSizeRadios">
+                    <label><input id="instructionStepSpeed" name="speedGroup" type="radio" /> Instruction Step</label>
+                    <label><input id="macroStepSpeed" name="speedGroup" type="radio" /> Macro Step</label>
+                    <label><input id="microStepSpeed" name="speedGroup" type="radio" /> Micro Step</label>
                 </div>
                 <div class="stepSizeButtons">
-                    <button id="btninstrStep">Instruction Step</button>
-                    <button id="btnmacroStep">Macro Step</button>
-                    <button id="btnmicroStep">Micro Step</button>
+                    <button id="instructionStep">Instruction Step</button>
+                    <button id="macroStep">Macro Step</button>
+                    <button id="microStep">Micro Step</button>
                 </div>
                 <div class="sliderDiv">
                     <input id="slider1" type="range" min="0" max="100" step="10" value="10" />
                 </div>
             </div>
             <div class="watcher">
-                <div class="watchElem">
+                <div class="watchElement">
                     <button>x</button>
                     <p>AL</p>
                     <p>0000'0000</p>
                 </div>
-                <div class="watchElem">
+                <div class="watchElement">
                     <button>x</button>
                     <p>BL</p>
                     <p>FF</p>
                 </div>
-                <div class="watchElem" id="addWatchElem">
+                <div class="watchElement" id="addWatchElement">
                     <button>
                         <h1>+</h1>
                     </button>

@@ -22,77 +22,77 @@ module Stebs {
         runAndDebug: '100px'
     };
 
-    export var ctrlStates = {
+    export var controlStates = {
         start(): void {
-            $('#btnDebug').find('img').attr("src", "Icons/Debug-icon-grey.png");
-            $('#btnRun').find('img').attr("src", "Icons/Play-icon-grey.png");
-            $('#btnPauseRun').find('img').attr("src", "Icons/Pause-icon-grey.png");
-            $('#btnStop').find('img').attr("src", "Icons/Stop-icon-grey.png");
+            $('#debug img').attr('src', 'Icons/Debug-icon-grey.png');
+            $('#run img').attr('src', 'Icons/Play-icon-grey.png');
+            $('#pauseRun img').attr('src', 'Icons/Pause-icon-grey.png');
+            $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
             
-            $('#btnDebug').prop('disabled', true);
-            $('#btnRun').prop('disabled', true);
-            $('#btnPauseRun').prop('disabled', true);
-            $('#btnStop').prop('disabled', true);
+            $('#debug').prop('disabled', true);
+            $('#run').prop('disabled', true);
+            $('#pauseRun').prop('disabled', true);
+            $('#stop').prop('disabled', true);
 
-            $('.stepSizeRadioB').hide();
+            $('.stepSizeRadios').hide();
             $('.stepSizeButtons').show();
-            Stebs.ctrlState = Stebs.ctrlStates.start;
+            Stebs.controlState = Stebs.controlStates.start;
         },
         assembled(): void {
-            $('#btnDebug').find('img').attr("src", "Icons/Debug-icon.png");
-            $('#btnRun').find('img').attr("src", "Icons/Play-icon.png");
-            $('#btnPauseRun').find('img').attr("src", "Icons/Play-icon.png");
-            $('#btnStop').find('img').attr("src", "Icons/Stop-icon-grey.png");
+            $('#debug img').attr('src', 'Icons/Debug-icon.png');
+            $('#run img').attr('src', 'Icons/Play-icon.png');
+            $('#pauseRun img').attr('src', 'Icons/Play-icon.png');
+            $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
 
-            $('#btnDebug').prop('disabled', false);
-            $('#btnRun').prop('disabled', false);
-            $('#btnPauseRun').prop('disabled', false);
-            $('#btnStop').prop('disabled', true);
+            $('#debug').prop('disabled', false);
+            $('#run').prop('disabled', false);
+            $('#pauseRun').prop('disabled', false);
+            $('#stop').prop('disabled', true);
 
-            $('.stepSizeRadioB').hide();
+            $('.stepSizeRadios').hide();
             $('.stepSizeButtons').show();
-            Stebs.ctrlState = Stebs.ctrlStates.assembled;
+            Stebs.controlState = Stebs.controlStates.assembled;
         },
         debuggingAndPause(): void {
-            $('#btnDebug').find('img').attr("src", "Icons/Debug-icon.png");
-            $('#btnRun').find('img').attr("src", "Icons/Play-icon.png");
-            $('#btnPauseRun').find('img').attr("src", "Icons/Play-icon.png");
-            $('#btnStop').find('img').attr("src", "Icons/Stop-icon.png");
+            $('#debug img').attr('src', 'Icons/Debug-icon.png');
+            $('#run img').attr('src', 'Icons/Play-icon.png');
+            $('#pauseRun img').attr('src', 'Icons/Play-icon.png');
+            $('#stop img').attr('src', 'Icons/Stop-icon.png');
 
-            $('#btnDebug').prop('disabled', false);
-            $('#btnRun').prop('disabled', false);
-            $('#btnPauseRun').prop('disabled', false);
-            $('#btnStop').prop('disabled', false);
+            $('#debug').prop('disabled', false);
+            $('#run').prop('disabled', false);
+            $('#pauseRun').prop('disabled', false);
+            $('#stop').prop('disabled', false);
 
-            $('.stepSizeRadioB').hide();
+            $('.stepSizeRadios').hide();
             $('.stepSizeButtons').show();
-            Stebs.ctrlState = Stebs.ctrlStates.debuggingAndPause;
+            Stebs.controlState = Stebs.controlStates.debuggingAndPause;
         },
         instructionSteps(): void {
-            $('#btnDebug').find('img').attr("src", "Icons/Debug-icon.png");
-            $('#btnRun').find('img').attr("src", "Icons/Play-icon.png");
-            $('#btnPauseRun').find('img').attr("src", "Icons/Pause-icon.png");
-            $('#btnStop').find('img').attr("src", "Icons/Stop-icon.png");
+            $('#debug img').attr('src', 'Icons/Debug-icon.png');
+            $('#run img').attr('src', 'Icons/Play-icon.png');
+            $('#pauseRun img').attr('src', 'Icons/Pause-icon.png');
+            $('#stop img').attr('src', 'Icons/Stop-icon.png');
 
-            $('#btnDebug').prop('disabled', false);
-            $('#btnRun').prop('disabled', false);
-            $('#btnPauseRun').prop('disabled', false);
-            $('#btnStop').prop('disabled', false);
+            $('#debug').prop('disabled', false);
+            $('#run').prop('disabled', false);
+            $('#pauseRun').prop('disabled', false);
+            $('#stop').prop('disabled', false);
 
-            $('.stepSizeRadioB').show();
+            $('.stepSizeRadios').show();
             $('.stepSizeButtons').hide();
 
-            $('#sldinstrStep').prop('checked', true);
-            Stebs.ctrlState = Stebs.ctrlStates.instructionSteps;
+            $('#instructionStepSpeed').prop('checked', true);
+            Stebs.controlState = Stebs.controlStates.instructionSteps;
         },
         macroSteps(): void {
-            Stebs.ctrlStates.instructionSteps();
+            Stebs.controlStates.instructionSteps();
         },
         microSteps(): void {
-            Stebs.ctrlStates.instructionSteps();
+            Stebs.controlStates.instructionSteps();
         }
     };
-    export var ctrlState = ctrlStates.start;
+    export var controlState = controlStates.start;
 
     export 
 
@@ -263,31 +263,31 @@ $(document).ready(function (){
     };
     hub.client.assembleError = hub.client.assembled;
 
-    $('#btnAssemble').click(function () {
+    $('#assemble').click(function () {
         var newSource = editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
         $.connection.stebsHub.server.assemble(newSource);
 
-        Stebs.ctrlStates.assembled();
+        Stebs.controlStates.assembled();
     });
 
-    $('#btnRun').click(function () {
-        Stebs.ctrlStates.instructionSteps();
+    $('#run').click(function () {
+        Stebs.controlStates.instructionSteps();
     });
 
-    $('#btnDebug').click(function () {
-        Stebs.ctrlStates.debuggingAndPause();
+    $('#debug').click(function () {
+        Stebs.controlStates.debuggingAndPause();
     });
 
-    $('#btnPauseRun').click(function () {
-        if (Stebs.ctrlState == Stebs.ctrlStates.debuggingAndPause || Stebs.ctrlState == Stebs.ctrlStates.assembled) {
-            Stebs.ctrlStates.instructionSteps();
+    $('#pauseRun').click(function () {
+        if (Stebs.controlState == Stebs.controlStates.debuggingAndPause || Stebs.controlState == Stebs.controlStates.assembled) {
+            Stebs.controlStates.instructionSteps();
         } else {
-            Stebs.ctrlStates.debuggingAndPause();
+            Stebs.controlStates.debuggingAndPause();
         }
     });
 
-    $('#btnStop').click(function () {
-        Stebs.ctrlStates.debuggingAndPause();
+    $('#stop').click(function () {
+        Stebs.controlStates.debuggingAndPause();
     });
 
     var editor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#editableTxtArea').get(0), {
@@ -295,5 +295,5 @@ $(document).ready(function (){
         mode: 'assembler'
     });
 
-    Stebs.ctrlStates.start();
+    Stebs.controlStates.start();
 });

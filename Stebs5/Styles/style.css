@@ -192,7 +192,7 @@ html, body, #canvas {
     background-color: #383;
 }
 
-#codingTopBar img, .btnView .ctrlButtons img {
+#codingTopBar img, .buttonView .controlButtons img {
     width: 20px;
     height: 20px;
 }
@@ -222,32 +222,32 @@ html, body, #canvas {
     height: 100px;
 }
 
-.runAndDebug .btnView {
+.runAndDebug .buttonView {
     float: right;
 }
 
-.runAndDebug .btnView .stepSizeRadioB {
+.runAndDebug .buttonView .stepSizeRadios {
     float: left;
 }
 
-.runAndDebug .btnView .stepSizeRadioB label, .runAndDebug .btnView button {
+.runAndDebug .buttonView .stepSizeRadios label, .runAndDebug .buttonView button {
     display: block;
     height: 25px;
 }
 
-.runAndDebug .btnView .stepSizeButtons {
+.runAndDebug .buttonView .stepSizeButtons {
     float: left;
 }
 
-.runAndDebug .btnView .stepSizeButtons button {
+.runAndDebug .buttonView .stepSizeButtons button {
     width: 140px;
 }
 
-.runAndDebug .btnView .ctrlButtons {
+.runAndDebug .buttonView .controlButtons {
     float: right;
 }
 
-.runAndDebug .btnView .ctrlButtons button {
+.runAndDebug .buttonView .controlButtons button {
     width: 60px;
     box-sizing: content-box;
     height: 20px;
@@ -258,12 +258,12 @@ html, body, #canvas {
     background-color: transparent;
 }
 
-.runAndDebug .btnView .sliderDiv {
+.runAndDebug .buttonView .sliderDiv {
     clear: both;
     width: 98%;
 }
 
-.runAndDebug .btnView .sliderDiv #slider1 {
+.runAndDebug .buttonView .sliderDiv #slider1 {
     width: 98%;
 }
 
@@ -271,7 +271,7 @@ html, body, #canvas {
     position: relative;
 }
 
-.runAndDebug .watcher .watchElem {
+.runAndDebug .watcher .watchElement {
     float: left;
     position: relative;
     border: 1px solid black;
@@ -281,30 +281,30 @@ html, body, #canvas {
     margin: 5px;
 }
 
-.runAndDebug .watcher .watchElem button {
+.runAndDebug .watcher .watchElement button {
     position: relative;
     float: right;
     border: 0px;
     background-color: white;
 }
 
-.runAndDebug .watcher .watchElem p {
+.runAndDebug .watcher .watchElement p {
     margin: 1px;
 }
 
-.runAndDebug .watcher #addWatchElem {
+.runAndDebug .watcher #addWatchElement {
     position: relative;
     display: block;
 }
 
-.runAndDebug .watcher #addWatchElem button {
+.runAndDebug .watcher #addWatchElement button {
     position: relative;
     display: block;
     width: 75px;
     height: 40px;
 }
 
-.runAndDebug .watcher #addWatchElem h1 {
+.runAndDebug .watcher #addWatchElement h1 {
     position: relative;
     margin: 0px;
 }
