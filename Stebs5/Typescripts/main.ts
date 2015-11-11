@@ -18,7 +18,8 @@ module Stebs {
         containerBar: '38px',
         containerSize: '150px',
         /* 1x topbar & 2x containerBar */
-        bars: '114px'
+        bars: '114px',
+        runAndDebug: '100px'
     };
 
     var ctx: CanvasRenderingContext2D;
@@ -108,7 +109,7 @@ module Stebs {
          */
         setCodingFrameHeight(): void {
             var height = (visible.output ? ' - ' + heights.containerSize : '') + (visible.ram ? ' - ' + heights.containerSize : '');
-            $('#codingFrame').css('height', 'calc(100% - ' + heights.bars + height + ')');
+            $('#codingFrame').css('height', 'calc(100% - ' + heights.bars + ' - ' + heights.runAndDebug + height + ')');
         },
 
         /**

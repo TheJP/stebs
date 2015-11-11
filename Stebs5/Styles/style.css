@@ -160,7 +160,7 @@ html, body, #canvas {
 #codingView {
     position: relative;
     z-index: 3000;
-    height: calc(100% - 100px);
+    height: 100%;
     width: calc(100% - 50px);
     left: 50px;
 }
@@ -203,7 +203,7 @@ html, body, #canvas {
 }
 
 #codingFrame {
-    height: calc(100% - 38px - 38px - 38px);
+    height: calc(100% - 38px - 38px - 38px - 100px);
 }
 
 #codingView #editorWindow {
@@ -230,7 +230,6 @@ html, body, #canvas {
 /*Rund and Debug-Controll Panel*/
 .runAndDebug {
     position: relative;
-    z-index: 3000;
     border: 1px solid black;
     height: 100px;
 }
