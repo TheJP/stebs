@@ -69,7 +69,6 @@
     <Compile Include="AluCmd.cs" />
     <Compile Include="IAlu.cs" />
     <Compile Include="IProcessor.cs" />
-    <Compile Include="IProcessorFactory.cs" />
     <Compile Include="IProcessorSession.cs" />
     <Compile Include="IRam.cs" />
     <Compile Include="IRamSession.cs" />
@@ -93,7 +92,6 @@
     <Compile Include="MpmParser\ReadWrite.cs" />
     <Compile Include="MpmParser\Source.cs" />
     <Compile Include="Processor.cs" />
-    <Compile Include="ProcessorFactory.cs" />
     <Compile Include="IProcessorSimulator.cs" />
     <Compile Include="ProcessorSimulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

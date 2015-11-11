@@ -1,5 +1,7 @@
 var assemblerInstruction = {
-    END: 'variable-2'
+    END: 'variable-2',
+    ORG: 'variable-2',
+    DB: 'variable-2'
 };
 CodeMirror.defineMode('assembler', function (_config) {
     'use strict';

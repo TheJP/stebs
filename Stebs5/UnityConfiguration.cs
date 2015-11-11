@@ -21,12 +21,17 @@ namespace Stebs5
                 //SignalR Hubs
                 .RegisterType<StebsHub>()
                 //Singletons
-                .RegisterType<IProcessorFactory, ProcessorFactory>(new ContainerControlledLifetimeManager())
                 .RegisterType<IConstants, Constants>(new ContainerControlledLifetimeManager())
                 .RegisterType<IMpmParser, MpmFileParser>(new ContainerControlledLifetimeManager())
                 .RegisterType<IMpmFileParser, MpmFileParser>(new ContainerControlledLifetimeManager())
                 .RegisterType<IMpm, Mpm>(new ContainerControlledLifetimeManager())
-                .RegisterType<IProcessorSimulator, ProcessorSimulator>(new ContainerControlledLifetimeManager());
+                .RegisterType<IProcessorSimulator, ProcessorSimulator>(new ContainerControlledLifetimeManager())
+                .RegisterType<IAlu, Alu>(new ContainerControlledLifetimeManager())
+                .RegisterType<IRam, Ram>(new ContainerControlledLifetimeManager())
+                .RegisterInstance<Func<Registers, uint, IRegister>>((type, value) => new Register(type, value))
+                //Factories
+                .RegisterType<IRam, Ram>()
+                .RegisterType<IProcessor, Processor>();
             return container;
         });
         public static UnityContainer Container => container.Value;

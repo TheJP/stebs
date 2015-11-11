@@ -84,13 +84,16 @@ namespace ProcessorSimulation
         {
             get { return registers; }
         }
-        /// <summary>Creates a processor. The different parts are created by resolving unity dependencies.</summary>
-        /// <param name="container">Container that allows the resolving of required dependencies.</param>
-        public Processor(UnityContainer container)
+
+        /// <summary>Processor constructor with needed dependencies.</summary>
+        /// <param name="alu">Alu, which is used for calculations in this processor.</param>
+        /// <param name="ram">Ram, which is used as memory for this processor.</param>
+        /// <param name="registerFactory">Factory function, that is used to create register instances.</param>
+        public Processor(IAlu alu, IRam ram, Func<Registers, byte, IRegister> registerFactory)
         {
-            Alu = container.Resolve<IAlu>();
-            ram = container.Resolve<IRam>();
-            registerFactory = container.Resolve<Func<Registers, byte, IRegister>>();
+            this.Alu = alu;
+            this.ram = ram;
+            this.registerFactory = registerFactory;
             //Initialize the registers dictionary with all existing registers
             registers = registers.AddRange(
                 ((Registers[])Enum.GetValues(typeof(Registers)))
