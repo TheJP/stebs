@@ -4,8 +4,8 @@
 
     1. General Style
     2. Left Sidebars
-    3. Coding View
-    4.
+    3. Bottom sidebar
+    4. Coding View
 
 */
 
@@ -76,46 +76,6 @@ html, body, #canvas {
     position: relative;
 }
 
-.ram-container {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    height: 150px;
-    display: none;
-    z-index: 4000;
-    text-align: center;
-}
-
-.ram-container table {
-    display: inline-block;
-    border-spacing: 2px;
-    border-collapse: separate;
-    font-size: 11px;
-}
-
-.ram-container table, th {
-    text-align: center;
-}
-
-.output-container {
-    position: relative;
-    display: inline-block;
-    /* 4debugging switch to none later!!! */
-    display: none;
-    width: 100%;
-    height: 150px;
-    z-index: 4000;
-    overflow-y: auto;
-}
-
-.output-container p {
-    margin: 0 0 0 5px;
-}
-
-#outputText {
-    font-family: Consolas,monaco,monospace;
-}
-
 /* 2. Left Sidebars */
 
 #devices, #architecture {
@@ -156,7 +116,46 @@ html, body, #canvas {
     left: -23px;
 }
 
-/* 3. Coding View */
+/* 3. Bottom sidebar */
+
+.ram-container {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    display: none;
+    z-index: 4000;
+    text-align: center;
+}
+
+.ram-container table {
+    display: inline-block;
+    border-spacing: 2px;
+    border-collapse: separate;
+    font-size: 11px;
+}
+
+.ram-container table, th {
+    text-align: center;
+}
+
+.output-container {
+    position: relative;
+    display: none;
+    width: 100%;
+    height: 150px;
+    z-index: 4000;
+    overflow-y: auto;
+}
+
+.output-container p {
+    margin: 0 0 0 5px;
+}
+
+#outputText {
+    font-family: Consolas,monaco,monospace;
+}
+
+/* 4. Coding View */
 
 #codingView {
     position: relative;

@@ -116,10 +116,9 @@ module Stebs {
          */
         toggleRAM(): void {
             $('#codingFrame').animate({ height: (visible.ram ? '+=' : '-=') + heights.containerSize }, ui.setCodingFrameHeight);
-            $('.ram').animate({ height: heights.containerBar + (visible.ram ? '' : ' + ' + heights.containerSize) +  ')' });
-            $('.ram-container').hide(visible.ram);
-            $('.ram-container').show(!visible.ram);
             visible.ram = !visible.ram;
+            if (visible.ram) { $('.ram-container').slideDown(); }
+            else { $('.ram-container').slideUp(); }
         },
 
         /**
@@ -127,10 +126,9 @@ module Stebs {
          */
         toggleOutput(): void {
             $('#codingFrame').animate({ height: (visible.output ? '+=' : '-=') + heights.containerSize }, ui.setCodingFrameHeight);
-            $('.output').animate({ height: heights.containerBar + (visible.output ? '' : ' + ' + heights.containerSize) + ')' });
-            $('.output-container').hide(visible.output);
-            $('.output-container').show(!visible.output);
             visible.output = !visible.output;
+            if (visible.output) { $('.output-container').slideDown(); }
+            else { $('.output-container').slideUp(); }
         },
 
         openOutput(): void {
