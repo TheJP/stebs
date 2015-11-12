@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Immutable;
 
 namespace ProcessorSimulation.MpmParser
 {
@@ -55,9 +56,9 @@ namespace ProcessorSimulation.MpmParser
             [12] = Source.Data
         };
 
-        private IEnumerable<IInstruction> ParseInstructions(TextReader reader)
+        private IDictionary<byte, IInstruction> ParseInstructions(TextReader reader)
         {
-            var result = new List<IInstruction>();
+            var result = ImmutableDictionary.CreateBuilder<byte, IInstruction>();
             //Csv configuration: No header, no empy lines,
             //remove leading and trailing whitespaces from cell values, ';' separated columns
             var csvConfig = new CsvConfiguration();
@@ -74,12 +75,12 @@ namespace ProcessorSimulation.MpmParser
                 var operandString = type.Length >= 2 ? type[1].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries) : new string[0];
                 var operandTypes = OperandType.FromStrings(operandString);
                 //TODO: Remove too tight coupling
-                result.Add(new Instruction(opCode, address, type[0], operandTypes));
+                result.Add(opCode, new Instruction(opCode, address, type[0], operandTypes));
             }
-            return result;
+            return result.ToImmutable();
         }
 
-        public IEnumerable<IInstruction> ParseInstructions(string instructions)
+        public IDictionary<byte, IInstruction> ParseInstructions(string instructions)
         {
             using (TextReader reader = new StringReader(instructions))
             {
@@ -87,7 +88,7 @@ namespace ProcessorSimulation.MpmParser
             }
         }
 
-        public IEnumerable<IInstruction> ParseInstructionsFile(string filename)
+        public IDictionary<byte, IInstruction> ParseInstructionsFile(string filename)
         {
             using(TextReader reader = new StreamReader(filename, encoding))
             {
@@ -133,7 +134,7 @@ namespace ProcessorSimulation.MpmParser
                     return (IMicroInstruction) new MicroInstruction(address, entry.NextAddress, entry.EnableValue,
                         entry.Value, entry.Criterion, entry.ClearInterrupt, entry.Affected,
                         aluCommand, source, destination, dataInput, readWrite);
-                }).ToDictionary(microinstruction => microinstruction.Address);
+                }).ToImmutableDictionary(microinstruction => microinstruction.Address);
         }
 
         /// <summary>

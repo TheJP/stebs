@@ -13,7 +13,7 @@ namespace ProcessorSimulation.MpmParser
     /// </summary>
     public class Mpm : IMpm
     {
-        public IEnumerable<IInstruction> Instructions { get; private set; }
+        public IDictionary<byte, IInstruction> Instructions { get; private set; }
 
         public IDictionary<int, IMicroInstruction> MicroInstructions { get; private set; }
 

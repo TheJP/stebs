@@ -21,7 +21,7 @@ namespace ProcessorSimulation.MpmParser
         /// <summary>
         /// The instructions, in the format they are needed for the opcode decoder.
         /// </summary>
-        IEnumerable<IInstruction> Instructions { get; }
+        IDictionary<byte, IInstruction> Instructions { get; }
 
         /// <summary>
         /// Containes all micro instructions, referenced by their mpm address.

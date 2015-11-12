@@ -16,6 +16,7 @@ namespace ProcessorSimulation
     /// </remarks>
     public class ProcessorSimulator : IProcessorSimulator
     {
+        //Immutable IMpm (allowed because it's not a state)
         private readonly IMpm mpm;
 
         public ProcessorSimulator(IMpm mpm)
@@ -44,16 +45,20 @@ namespace ProcessorSimulation
         /// <param name="mpmEntry">Current micro program memory entry</param>
         private void SetNextMip(IProcessorSession session, IMicroInstruction mpmEntry)
         {
+            var newMip = session.Processor.Registers[Registers.MIP].Value;
             switch (mpmEntry.NextAddress)
             {
                 case NextAddress.Next:
                     var status = new StatusRegister(session.Processor.Registers[Registers.Status]);
-                    var newMip = session.Processor.Registers[Registers.MIP].Value;
                     newMip += (uint)(SuccessfulJump(status, mpmEntry.JumpCriterion) ? mpmEntry.Value : 1);
-                    session.SetRegister(Registers.MIP, newMip);
                     break;
-                //TODO: Other cases
+                case NextAddress.Decode:
+                    var instruction = session.Processor.Registers[Registers.IR].Value;
+                    newMip = mpm.Instructions[(byte)instruction].OpCode;
+                    break;
+                    //TODO: Other case
             }
+            session.SetRegister(Registers.MIP, newMip);
         }
 
         /// <summary>Checks if the micro program memory entry is a jump and it is successful.</summary>
