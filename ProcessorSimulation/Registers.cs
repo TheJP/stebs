@@ -106,6 +106,13 @@ namespace ProcessorSimulation
         /// O=Overflow Alu flag that is set, if there was an overflow in the last alu instruction.
         /// Z=Zero Alu flag that is set, if the last alu instruction had zero as result.
         /// </summary>
-        Status = 20
+        Status = 20,
+
+        /// <summary>
+        /// Register which contains the IRF (Interrupt Flag) at the least significant position.
+        /// This flag is changed with the instructions CLI (set to 0) and STI (set to 1).
+        /// If the flag is 1, incoming interrupts are handled.
+        /// </summary>
+        InterruptEnabled = 21
     }
 }

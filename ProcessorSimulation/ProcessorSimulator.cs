@@ -19,6 +19,11 @@ namespace ProcessorSimulation
         //Immutable IMpm (allowed because it's not a state)
         private readonly IMpm mpm;
 
+        /// <summary>Micro programm memory address at which there is mpm code to fetch the next mpm address using the opcode decoder.</summary>
+        private const uint FetchAddress = 0x000;
+        /// <summary>Micro programm memory address at which an interrupt handling is executed. (=> Jump to the interrupt routine)</summary>
+        private const uint InterruptAddress = 0x010;
+
         public ProcessorSimulator(IMpm mpm)
         {
             this.mpm = mpm;
@@ -32,6 +37,7 @@ namespace ProcessorSimulation
                 var mpmEntry = mpm.MicroInstructions[(int)processor.Registers[Registers.MIP].Value];
 
                 SetNextMip(session, mpmEntry);
+                //TODO: Implement halt
                 //TODO: microstep
                 processor.NotifySimulationStateChanged(SimulationState.Stopped, SimulationStepSize.Micro);
             }
@@ -46,17 +52,20 @@ namespace ProcessorSimulation
         private void SetNextMip(IProcessorSession session, IMicroInstruction mpmEntry)
         {
             var newMip = session.Processor.Registers[Registers.MIP].Value;
+            var status = new StatusRegister(session.Processor.Registers[Registers.Status]);
             switch (mpmEntry.NextAddress)
             {
                 case NextAddress.Next:
-                    var status = new StatusRegister(session.Processor.Registers[Registers.Status]);
                     newMip += (uint)(SuccessfulJump(status, mpmEntry.JumpCriterion) ? mpmEntry.Value : 1);
                     break;
                 case NextAddress.Decode:
                     var instruction = session.Processor.Registers[Registers.IR].Value;
                     newMip = mpm.Instructions[(byte)instruction].OpCode;
                     break;
-                    //TODO: Other case
+                case NextAddress.Fetch:
+                    var interruptEnabled = session.Processor.Registers[Registers.InterruptEnabled];
+                    newMip = (status.Interrupt && interruptEnabled.Value == 1) ? InterruptAddress : FetchAddress;
+                    break;
             }
             session.SetRegister(Registers.MIP, newMip);
         }
