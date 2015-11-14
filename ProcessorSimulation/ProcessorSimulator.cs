@@ -36,7 +36,7 @@ namespace ProcessorSimulation
                 processor.NotifySimulationStateChanged(SimulationState.Started, SimulationStepSize.Micro);
                 var mpmEntry = mpm.MicroInstructions[(int)processor.Registers[Registers.MIP].Value];
 
-                SetNextMip(session, mpmEntry);
+                session.SetRegister(Registers.MIP, NextMip(processor, mpmEntry));
                 //TODO: Implement halt
                 //TODO: microstep
                 processor.NotifySimulationStateChanged(SimulationState.Stopped, SimulationStepSize.Micro);
@@ -44,30 +44,29 @@ namespace ProcessorSimulation
         }
 
         /// <summary>
-        /// Set the next micro instruction pointer (MIP).
+        /// Calculates the next micro instruction pointer (MIP).
         /// This is calculated from the processor state and the current micro program memory entry.
         /// </summary>
         /// <param name="session"></param>
         /// <param name="mpmEntry">Current micro program memory entry</param>
-        private void SetNextMip(IProcessorSession session, IMicroInstruction mpmEntry)
+        /// <returns>New micro instruction pointer</returns>
+        private uint NextMip(IProcessor processor, IMicroInstruction mpmEntry)
         {
-            var newMip = session.Processor.Registers[Registers.MIP].Value;
-            var status = new StatusRegister(session.Processor.Registers[Registers.Status]);
+            var mip = processor.Registers[Registers.MIP].Value;
+            var status = new StatusRegister(processor.Registers[Registers.Status]);
             switch (mpmEntry.NextAddress)
             {
                 case NextAddress.Next:
-                    newMip += (uint)(SuccessfulJump(status, mpmEntry.JumpCriterion) ? mpmEntry.Value : 1);
-                    break;
+                    return mip + (uint)(SuccessfulJump(status, mpmEntry.JumpCriterion) ? mpmEntry.Value : 1);
                 case NextAddress.Decode:
-                    var instruction = session.Processor.Registers[Registers.IR].Value;
-                    newMip = mpm.Instructions[(byte)instruction].OpCode;
-                    break;
+                    var instruction = processor.Registers[Registers.IR].Value;
+                    return (uint)mpm.Instructions[(byte)instruction].MpmAddress;
                 case NextAddress.Fetch:
-                    var interruptEnabled = session.Processor.Registers[Registers.InterruptEnabled];
-                    newMip = (status.Interrupt && interruptEnabled.Value == 1) ? InterruptAddress : FetchAddress;
-                    break;
+                    var interruptEnabled = processor.Registers[Registers.InterruptEnabled];
+                    return (status.Interrupt && interruptEnabled.Value == 1) ? InterruptAddress : FetchAddress;
+                default:
+                    throw new NotImplementedException();
             }
-            session.SetRegister(Registers.MIP, newMip);
         }
 
         /// <summary>Checks if the micro program memory entry is a jump and it is successful.</summary>
