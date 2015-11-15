@@ -48,6 +48,7 @@ namespace ProcessorSimulation
 
                 session.SetRegister(Registers.MIP, NextMip(processor, mpmEntry));
                 var dataBus = mpmEntry.EnableValue ? (uint)mpmEntry.Value : GetDataBusValue(processor, mpmEntry);
+                WriteDataBusToRegister(session, mpmEntry, dataBus);
                 //TODO: Implement halt
                 //TODO: microstep
                 processor.NotifySimulationStateChanged(SimulationState.Stopped, SimulationStepSize.Micro);
@@ -112,13 +113,47 @@ namespace ProcessorSimulation
                     var memoryAddress = (byte)processor.Registers[Registers.MAR].Value;
                     return processor.Ram.Data[memoryAddress];
                 case Source.SELReferenced:
-                    var sel = (byte)processor.Registers[Registers.SEL].Value;
-                    //TODO: Halt by runtime error 'invalid sel'
-                    if (!SELReference.ContainsKey(sel)) { throw new NotImplementedException(); }
-                    return processor.Registers[SELReference[sel]].Value;
+                    return processor.Registers[GetSELReferenced(processor)].Value;
                 default:
                     return processor.Registers[(Registers)mpmEntry.Source].Value;
             }
+        }
+
+        /// <summary>
+        /// Writes the given databus value to the register determined by the micro program memory entry.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="mpmEntry">Current micro program memory entry</param>
+        /// <param name="dataBus">DataBus value</param>
+        private void WriteDataBusToRegister(IProcessorSession session, IMicroInstruction mpmEntry, uint dataBus)
+        {
+            Registers target;
+            switch (mpmEntry.Destination)
+            {
+                case Destination.Empty:
+                    return;
+                case Destination.SELReferenced:
+                    target = GetSELReferenced(session.Processor);
+                    break;
+                //TODO: Should MDR be a special case?
+                default:
+                    target = (Registers)mpmEntry.Destination;
+                    break;
+            }
+            session.SetRegister(target, dataBus);
+        }
+
+        /// <summary>
+        /// Returns the working register, which is referenced by the SEL register.
+        /// </summary>
+        /// <param name="processor"></param>
+        /// <returns>Working register</returns>
+        private Registers GetSELReferenced(IProcessor processor)
+        {
+            var sel = (byte)processor.Registers[Registers.SEL].Value;
+            //TODO: Halt by runtime error 'invalid sel'
+            if (!SELReference.ContainsKey(sel)) { throw new NotImplementedException(); }
+            return SELReference[sel];
         }
     }
 }

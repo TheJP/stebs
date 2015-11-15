@@ -30,7 +30,7 @@ namespace ProcessorSimulation.MpmParser
             [1] = Destination.Y,
             [2] = Destination.X,
             [3] = Destination.Status,
-            [4] = Destination.SEL_REF,
+            [4] = Destination.SELReferenced,
             [5] = Destination.SEL,
             [6] = Destination.RES,
             [7] = Destination.MDR,
