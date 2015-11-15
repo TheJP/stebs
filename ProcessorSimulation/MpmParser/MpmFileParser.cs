@@ -47,7 +47,7 @@ namespace ProcessorSimulation.MpmParser
         {
             [0] = Source.Empty,
             [3] = Source.Status,
-            [4] = Source.SEL_REF,
+            [4] = Source.SELReferenced,
             [6] = Source.RES,
             [7] = Source.MDR,
             [8] = Source.MBR,
