@@ -28,7 +28,8 @@ namespace Stebs5
                 Assembler assembler = new Assembler(string.Empty);
                 if (assembler.execute(source, Mpm.RawInstructions))
                 {
-                    Clients.Caller.Assembled(Common.getCodeList().toString());
+                    Clients.Caller.Assembled(Common.getCodeList().toString(),
+                        Common.getRam(), assembler.getCodeToLineArr());
                 }
                 else
                 {

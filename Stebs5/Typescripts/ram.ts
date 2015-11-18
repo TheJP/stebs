@@ -1,6 +1,8 @@
 ﻿module Stebs {
     export class Ram {
         private ramContent: number[];
+        private ram2Line: number[];
+        private isHighlighted: string[] = [];
 
         constructor(size: number) {
             this.ramContent = Array(size);
@@ -9,19 +11,45 @@
             }
         }
 
-        public setContent(exising: string): boolean {
-            if (exising == null) {
-                return false;
-            }
-
-            return true;
+        public init() {
+            $('.ram-container').empty();
+            $('.ram-container').append(Stebs.ramCont.getAsTable(16 * 2));
         }
 
-        public setRamAt(pos: number, val: number): boolean {
-            if (pos < 0 || pos >= this.ramContent.length || val < 0 || val > 255) {
+        public setRam2Line(ram2Line: number[]): void {
+            this.ram2Line = ram2Line;
+        }
+
+        public setContent(ram: number[]): boolean {
+            if (ram == null && ram.length != this.ramContent.length) {
+                return false;
+            } else {
+                this.ramContent = ram;
+                this.init();
+                return true;
+            }
+        }
+
+        private highlight(elementName: string): void {
+            this.resetHighlights();
+            $(elementName).prop('class', 'changed');
+            this.isHighlighted.push(elementName);
+        }
+
+        private resetHighlights(): void {
+            this.isHighlighted.forEach(element => {
+                console.log("removed 4 " + element);
+                $(element).removeProp('class');
+            });
+        }
+
+        public setRamAt(pos: number, value: number): boolean {
+            if (pos < 0 || pos >= this.ramContent.length || value < 0 || value > 255) {
                 return false;
             }
-            this.ramContent[pos] = val;
+            this.ramContent[pos] = value;
+            $('#cell-' + pos).text(Stebs.utility.addLeadingZeros(value, 16, 2));
+            this.highlight('#cell-' + pos);
             return true;
         }
 
@@ -51,20 +79,22 @@
             var hrow = <HTMLTableRowElement> table.tHead.insertRow(0);
 
             hrow.insertCell(0).innerHTML = "";
-            for (var i: number = 0; i < lineLengh / 2; i++) {
+            for (var i: number = 0; i < lineLengh; i++) {
                 var cell = hrow.insertCell(i + 1);
                 cell.innerHTML = i.toString(16);
             }
             var newWith = (this.ramContent.length / (lineLengh));
-            for (var i: number = 0; i < newWith / 2; i++) {
+            for (var i: number = 0; i < newWith; i++) {
                 var row = <HTMLTableRowElement> table.tHead.insertRow(i + 1);
-                for (var j: number = 0; j < lineLengh / 2; j++) {
+                for (var j: number = 0; j < lineLengh; j++) {
                     if (j == 0) {
                         var cell = row.insertCell(0);
                         cell.innerHTML = i.toString(16);
                     }
                     var cell = row.insertCell(j + 1);
-                    cell.innerHTML = this.ramContent[(i * newWith) + (j * 2)].toString(16) + this.ramContent[(i * newWith) + (j * 2) + 1].toString(16);
+
+                    cell.innerHTML = Stebs.utility.addLeadingZeros(this.ramContent[(i * newWith) + j], 16, 2);
+                    cell.id = 'cell-' + ((i * newWith) + j);
                 }
             }
             return table;
