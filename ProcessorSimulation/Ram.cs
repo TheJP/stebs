@@ -13,6 +13,10 @@ namespace ProcessorSimulation
         private object eventLock = new object();
         private object writeLock = new object();
         private volatile ImmutableDictionary<byte, byte> data;
+
+        /// <summary>Size of the ram in byte</summary>
+        public const int RamSize = 256;
+
         public IDictionary<byte, byte> Data
         {
             get { return data; }
@@ -34,9 +38,9 @@ namespace ProcessorSimulation
         public Ram()
         {
             var dataBuilder = ImmutableDictionary.CreateBuilder<byte, byte>();
-            for(byte i = 0; i <= 0xFF; ++i)
+            for(int i = 0; i < RamSize; ++i)
             {
-                dataBuilder.Add(i, 0);
+                dataBuilder.Add((byte)i, 0);
             }
             data = dataBuilder.ToImmutable();
         }
