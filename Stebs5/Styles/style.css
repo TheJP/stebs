@@ -309,3 +309,8 @@ html, body, #canvas {
     margin: 0px;
 }
 
+/*Ram Content changed background*/
+.ram-container .changed {
+    background-color: indianred;
+}
+

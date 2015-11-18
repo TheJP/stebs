@@ -22,6 +22,12 @@ module Stebs {
         runAndDebug: '100px'
     };
 
+    export var utility = {
+        addLeadingZeros(value: number, radix: number, size: number): string {
+            return (Array(size + 1).join('0') + value.toString(radix)).substr(-size);
+        }
+    };
+
     export var controlStates = {
         start(): void {
             if (controlState != controlStates.start) {
@@ -134,9 +140,11 @@ module Stebs {
         /**
          * Server finished assembling the sent source.
          */
-        assembled(result: string): void {
+        assembled(result: string, ram: number[], code2Line: number[]): void {
             ui.openOutput();
             ui.showOutput(result);
+            Stebs.ramCont.setContent(ram);
+            Stebs.ramCont.setRam2Line(code2Line);
             Stebs.controlStates.assembled();
         },
 
@@ -147,7 +155,6 @@ module Stebs {
             ui.openOutput();
             ui.showOutput(error);
         }
-
     };
 
     export var ui = {
@@ -247,7 +254,7 @@ module Stebs {
         }
     };
 
-    export var ramCont = new Stebs.Ram(1024);
+    export var ramCont = new Stebs.Ram(256);
 
     /**
      * This interface allows the usage of the CodeMirror library.
@@ -296,7 +303,7 @@ $(document).ready(function () {
     $('#openRam').click(Stebs.ui.toggleRAM);
     $('#openOutput').click(Stebs.ui.toggleOutput);
 
-    $('.ram-container').append(Stebs.ramCont.getAsTable(16 * 4));
+    Stebs.ramCont.init();
 
     var assembleFunction = function () {
         var newSource = editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
