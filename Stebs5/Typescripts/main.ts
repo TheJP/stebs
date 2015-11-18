@@ -24,19 +24,21 @@ module Stebs {
 
     export var controlStates = {
         start(): void {
-            $('#debug img').attr('src', 'Icons/Debug-icon-grey.png');
-            $('#run img').attr('src', 'Icons/Play-icon-grey.png');
-            $('#pauseRun img').attr('src', 'Icons/Pause-icon-grey.png');
-            $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
-            
-            $('#debug').prop('disabled', true);
-            $('#run').prop('disabled', true);
-            $('#pauseRun').prop('disabled', true);
-            $('#stop').prop('disabled', true);
+            if (controlState != controlStates.start) {
+                $('#debug img').attr('src', 'Icons/Debug-icon-grey.png');
+                $('#run img').attr('src', 'Icons/Play-icon-grey.png');
+                $('#pauseRun img').attr('src', 'Icons/Pause-icon-grey.png');
+                $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
 
-            $('.stepSizeRadios').hide();
-            $('.stepSizeButtons').show();
-            Stebs.controlState = Stebs.controlStates.start;
+                $('#debug').prop('disabled', true);
+                $('#run').prop('disabled', true);
+                $('#pauseRun').prop('disabled', true);
+                $('#stop').prop('disabled', true);
+
+                $('.stepSizeRadios').hide();
+                $('.stepSizeButtons').show();
+                controlState = controlStates.start;
+            }
         },
         stop(): void {
             $('#debug img').attr('src', 'Icons/Debug-icon.png');
@@ -49,7 +51,7 @@ module Stebs {
             $('#pauseRun').prop('disabled', false);
             $('#stop').prop('disabled', true);
 
-            Stebs.controlState = Stebs.controlStates.stop;
+            controlState = controlStates.stop;
         },
         assembled(): void {
             $('#debug img').attr('src', 'Icons/Debug-icon.png');
@@ -64,7 +66,7 @@ module Stebs {
 
             $('.stepSizeRadios').hide();
             $('.stepSizeButtons').show();
-            Stebs.controlState = Stebs.controlStates.assembled;
+            controlState = controlStates.assembled;
         },
         debuggingAndPause(): void {
             $('#debug img').attr('src', 'Icons/Debug-icon.png');
@@ -79,7 +81,7 @@ module Stebs {
 
             $('.stepSizeRadios').hide();
             $('.stepSizeButtons').show();
-            Stebs.controlState = Stebs.controlStates.debuggingAndPause;
+            controlState = controlStates.debuggingAndPause;
         },
         instructionSteps(): void {
             $('#debug img').attr('src', 'Icons/Debug-icon.png');
@@ -96,18 +98,16 @@ module Stebs {
             $('.stepSizeButtons').hide();
 
             $('#instructionStepSpeed').prop('checked', true);
-            Stebs.controlState = Stebs.controlStates.instructionSteps;
+            controlState = controlStates.instructionSteps;
         },
         macroSteps(): void {
-            Stebs.controlStates.instructionSteps();
+            controlStates.instructionSteps();
         },
         microSteps(): void {
-            Stebs.controlStates.instructionSteps();
+            controlStates.instructionSteps();
         }
     };
     export var controlState = controlStates.start;
-
-    export 
 
     var ctx: CanvasRenderingContext2D;
     var canvas: HTMLCanvasElement;
@@ -265,11 +265,20 @@ interface JQueryStatic {
 }
 
 /**
+ * This interface allows the usage of the bindGlobal methods.
+ * These allow definitions of keybindings, which also work in the code mirror editor.
+ */
+interface MousetrapStatic {
+    bindGlobal(keys: string, callback: (e: ExtendedKeyboardEvent, combo: string) => any, action?: string): void;
+    bindGlobal(keyArray: string[], callback: (e: ExtendedKeyboardEvent, combo: string) => any, action?: string): void;
+}
+
+/**
  * Import of the javascript global variable from mode.assembler.js
  */
 declare var assemblerInstruction: any;
 
-$(document).ready(function (){
+$(document).ready(function () {
     Stebs.ui.setupCanvas();
 
     var hub = $.connection.stebsHub;
@@ -289,30 +298,34 @@ $(document).ready(function (){
 
     $('.ram-container').append(Stebs.ramCont.getAsTable(16 * 4));
 
-    $('#assemble').click(function () {
+    var assembleFunction = function () {
         var newSource = editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
         $.connection.stebsHub.server.assemble(newSource);
-    });
+    };
 
-    $('#run').click(function () {
-        Stebs.controlStates.instructionSteps();
-    });
-
-    $('#debug').click(function () {
-        Stebs.controlStates.debuggingAndPause();
-    });
-
-    $('#pauseRun').click(function () {
+    var pauseAndRunFunction = function () {
         if (Stebs.controlState == Stebs.controlStates.debuggingAndPause || Stebs.controlState == Stebs.controlStates.assembled || Stebs.controlState == Stebs.controlStates.stop) {
             Stebs.controlStates.instructionSteps();
         } else {
             Stebs.controlStates.debuggingAndPause();
         }
-    });
+    }
 
-    $('#stop').click(function () {
-        Stebs.controlStates.stop();
-    });
+    var falseDelegate = (delegate: () => void) => function () { delegate(); return false; };
+
+    $('#assemble').click(assembleFunction);
+    Mousetrap.bindGlobal('ctrl+b', falseDelegate(assembleFunction));
+
+    $('#debug').click(Stebs.controlStates.debuggingAndPause);
+    Mousetrap.bindGlobal('ctrl+d', falseDelegate(Stebs.controlStates.debuggingAndPause));
+
+    $('#run').click(Stebs.controlStates.instructionSteps);
+    $('#pauseRun').click(pauseAndRunFunction);
+    Mousetrap.bind('space', falseDelegate(pauseAndRunFunction));
+    Mousetrap.bindGlobal('ctrl+g', falseDelegate(pauseAndRunFunction));
+
+    $('#stop').click(Stebs.controlStates.stop);
+    Mousetrap.bindGlobal(['esc', 'ctrl+y'], falseDelegate(Stebs.controlStates.stop));
 
     var editor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#editableTxtArea').get(0), {
         lineNumbers: true,

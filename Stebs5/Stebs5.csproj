@@ -437,7 +437,10 @@
     <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
+    <TypeScriptCompile Include="Scripts\typings\mousetrap\mousetrap.d.ts" />
     <TypeScriptCompile Include="Typescripts\main.ts" />
+    <Content Include="Scripts\mousetrap-1.5.3.min.js" />
+    <Content Include="Scripts\mousetrap-global-bind.min.js" />
     <Content Include="Styles\normalize.css" />
     <Content Include="Styles\style.css" />
     <Content Include="Web.config" />
