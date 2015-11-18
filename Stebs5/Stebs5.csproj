@@ -147,9 +147,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Icons\Debug-icon-grey.png" />
     <Content Include="Icons\Play-icon-grey.png" />
     <Content Include="Icons\Play-icon.png" />
-    <Content Include="Icons\Debug-icon-grey.png" />
     <Content Include="Icons\Debug-icon.png" />
     <Content Include="Icons\Mimetypes-text-x-hex-icon.png" />
     <Content Include="Icons\new-file-icon.png" />
