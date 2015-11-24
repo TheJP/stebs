@@ -16,7 +16,7 @@ namespace Stebs5.Tests.ProcessorSimulation
         [TestInitialize]
         public void Setup()
         {
-            alu = new Alu(new UnityContainer());
+            alu = new Alu((registers, value) => new Register(registers, value));
         }
 
         [TestMethod]
@@ -158,10 +158,12 @@ namespace Stebs5.Tests.ProcessorSimulation
             //Test each case
             foreach(var testCase in testCases)
             {
+                StatusRegister status = new StatusRegister(new Register(Registers.Status, 0));
                 Assert.AreEqual(
                     testCase.Item4,
-                    alu.Execute(testCase.Item1, testCase.Item2, testCase.Item3),
+                    alu.Execute(testCase.Item1, testCase.Item2, testCase.Item3, ref status),
                     $"{testCase.Item1}({testCase.Item2}, {testCase.Item3})");
+                //TODO: Assert status correct
             }
         }
 
@@ -170,7 +172,8 @@ namespace Stebs5.Tests.ProcessorSimulation
         {
             try
             {
-                alu.Execute(DIV, 5, 0);
+                StatusRegister status = new StatusRegister(new Register(Registers.Status, 0));
+                alu.Execute(DIV, 5, 0, ref status);
                 Assert.Fail("Division by 0 doesn't throw an exception");
             }
             catch (DivideByZeroException) { }

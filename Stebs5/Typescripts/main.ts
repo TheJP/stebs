@@ -30,21 +30,19 @@ module Stebs {
 
     export var controlStates = {
         start(): void {
-            if (controlState != controlStates.start) {
-                $('#debug img').attr('src', 'Icons/Debug-icon-grey.png');
-                $('#run img').attr('src', 'Icons/Play-icon-grey.png');
-                $('#pauseRun img').attr('src', 'Icons/Pause-icon-grey.png');
-                $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
+            $('#debug img').attr('src', 'Icons/Debug-icon-grey.png');
+            $('#run img').attr('src', 'Icons/Play-icon-grey.png');
+            $('#pauseRun img').attr('src', 'Icons/Pause-icon-grey.png');
+            $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
 
-                $('#debug').prop('disabled', true);
-                $('#run').prop('disabled', true);
-                $('#pauseRun').prop('disabled', true);
-                $('#stop').prop('disabled', true);
+            $('#debug').prop('disabled', true);
+            $('#run').prop('disabled', true);
+            $('#pauseRun').prop('disabled', true);
+            $('#stop').prop('disabled', true);
 
-                $('.stepSizeRadios').hide();
-                $('.stepSizeButtons').show();
-                controlState = controlStates.start;
-            }
+            $('.stepSizeRadios').hide();
+            $('.stepSizeButtons').show();
+            controlState = controlStates.start;
         },
         stop(): void {
             $('#debug img').attr('src', 'Icons/Debug-icon.png');
@@ -143,8 +141,8 @@ module Stebs {
         assembled(result: string, ram: number[], code2Line: number[]): void {
             ui.openOutput();
             ui.showOutput(result);
-            Stebs.ramCont.setContent(ram);
-            Stebs.ramCont.setRam2Line(code2Line);
+            Stebs.ramContent.setContent(ram);
+            Stebs.ramContent.setRam2Line(code2Line);
             Stebs.controlStates.assembled();
         },
 
@@ -254,7 +252,7 @@ module Stebs {
         }
     };
 
-    export var ramCont = new Stebs.Ram(256);
+    export var ramContent = new Stebs.Ram(256);
 
     /**
      * This interface allows the usage of the CodeMirror library.
@@ -303,7 +301,7 @@ $(document).ready(function () {
     $('#openRam').click(Stebs.ui.toggleRAM);
     $('#openOutput').click(Stebs.ui.toggleOutput);
 
-    Stebs.ramCont.init();
+    Stebs.ramContent.init();
 
     var assembleFunction = function () {
         var newSource = editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');

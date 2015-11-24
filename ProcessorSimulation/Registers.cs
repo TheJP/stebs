@@ -102,6 +102,8 @@ namespace ProcessorSimulation
         /// Status Register which containes flags.
         /// The contained flags are:
         /// I=Interrupt Flag that determines that an interrupt has to be handled.
+        /// This flag is changed with the instructions CLI (set to 0) and STI (set to 1).
+        /// If the flag is 1, incoming interrupts are handled.
         /// S=Signed Alu flag that is set, if the last alu instruction had a signed result.
         /// O=Overflow Alu flag that is set, if there was an overflow in the last alu instruction.
         /// Z=Zero Alu flag that is set, if the last alu instruction had zero as result.
@@ -110,9 +112,8 @@ namespace ProcessorSimulation
 
         /// <summary>
         /// Register which contains the IRF (Interrupt Flag) at the least significant position.
-        /// This flag is changed with the instructions CLI (set to 0) and STI (set to 1).
-        /// If the flag is 1, incoming interrupts are handled.
+        /// This flag determines, if there is a pending interrupt (flag = 1), which has to be handled or not (flag = 0).
         /// </summary>
-        InterruptEnabled = 21
+        Interrupt = 21
     }
 }

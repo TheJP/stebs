@@ -39,19 +39,26 @@ namespace ProcessorSimulation
             [ROL] = (x, y) => unchecked(x << 1) | ((x & 0x80) >> 7)
         };
 
-        public Alu(UnityContainer container) { }
+        private readonly Func<Registers, uint, IRegister> registerFactory;
 
-        public byte Execute(AluCmd command, byte x, byte y)
+        public Alu(Func<Registers, uint, IRegister> registerFactory)
+        {
+            this.registerFactory = registerFactory;
+        }
+
+        public byte Execute(AluCmd command, byte x, byte y, ref StatusRegister status)
         {
             byte result = 0;
             Action cmd = () => result = (byte)commands[command](x, y);
             try
             {
                 checked { cmd(); }
+                status = status.SetOverflow(false, registerFactory);
             }
             catch (OverflowException)
             {
                 unchecked { cmd(); }
+                status = status.SetOverflow(true, registerFactory);
             }
             return result;
         }

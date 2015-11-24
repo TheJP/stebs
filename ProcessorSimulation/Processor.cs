@@ -207,6 +207,12 @@ namespace ProcessorSimulation
                 Processor.registers = Processor.registers.SetItem(type, register);
                 Processor.NotifyRegisterChanged(register);
             }
+
+            public void SetRegister(IRegister register)
+            {
+                Processor.registers = Processor.registers.SetItem(register.Type, register);
+                Processor.NotifyRegisterChanged(register);
+            }
         }
     }
 }
