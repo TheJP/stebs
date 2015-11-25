@@ -471,6 +471,10 @@
     <Compile Include="UnityConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ProcessorDispatcher\ProcessorDispatcher.csproj">
+      <Project>{ed8b7e99-ea6b-4f79-9507-d83b985c4621}</Project>
+      <Name>ProcessorDispatcher</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProcessorSimulation\ProcessorSimulation.csproj">
       <Project>{4f04ef35-3566-498a-971e-99bdb2269816}</Project>
       <Name>ProcessorSimulation</Name>
