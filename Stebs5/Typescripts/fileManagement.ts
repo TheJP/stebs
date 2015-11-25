@@ -35,7 +35,6 @@
                     var actualNode = Stebs.fileManagement.actualNode;
                     var newNode = new FileNode(-1, 'new File', actualNode, false, []);
                     actualNode.appendChild(newNode);
-                    //setEditable
                     fileManagement.setAndShowActualNode(actualNode);
                     newNode.setEditable();
                     fileManagement.addMode = true;
@@ -46,7 +45,6 @@
                     var actualNode = Stebs.fileManagement.actualNode;
                     var newNode = new FileNode(-1, 'new Folder', actualNode, true, []);
                     actualNode.appendChild(newNode);
-                    //setEditable
                     fileManagement.setAndShowActualNode(actualNode);
                     newNode.setEditable();
                     fileManagement.addMode = true;
@@ -139,6 +137,12 @@
             return this.id;
         }
 
+        public setId(id: number): void {
+            console.log('setId ' + id);
+            $('#file-' + this.id).prop('id', id);
+            this.id = id;
+        }
+
         public getNodename(): string {
             return this.nodeName;
         }
@@ -212,6 +216,16 @@
             var newName = $('#file-' + this.id + ' input').val();
             this.nodeName = newName;
             //sendToServer
+            if (this.id == -1) {
+                if (this.isFolder()) {
+                    $.connection.stebsHub.server.addFolder(this.parent.id, newName);
+                } else {
+                    $.connection.stebsHub.server.addFile(this.parent.id, newName);
+                }
+            } else {
+
+            }
+
             var textSpan = $('<span/>')
                 .addClass('text')
                 .text(this.nodeName);

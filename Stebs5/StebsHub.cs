@@ -42,5 +42,15 @@ namespace Stebs5
         {
             Clients.Caller.Instructions(Mpm.Instructions);
         }
+
+        public void AddFile(int parentId, string fileName)
+        {
+            //List<Tuple<int, int, string>> 
+            Clients.Caller.SetFileId(parentId + 10);
+        }
+        public void AddFolder(int parentId, string fileName)
+        {
+            Clients.Caller.SetFileId(parentId += 10);
+        }
     }
 }

@@ -152,7 +152,19 @@ module Stebs {
         assembleError(error: string): void {
             ui.openOutput();
             ui.showOutput(error);
+        },
+
+        /**
+        * Save the created file ID
+        */
+        setFileId(id: number): void {
+            var node = Stebs.fileManagement.actualNode.getById(-1);
+            console.log("node is " + node);
+            if (node != null) {
+                node.setId(id);
+            }
         }
+
     };
 
     export var ui = {
@@ -292,6 +304,7 @@ $(document).ready(function () {
     hub.client.instructions = Stebs.clientHub.instructions;
     hub.client.assembled = Stebs.clientHub.assembled;
     hub.client.assembleError = Stebs.clientHub.assembleError;
+    hub.client.setFileId = Stebs.clientHub.setFileId;
 
     $.connection.hub.start().done(function () {
         //Get available assembly instructions
