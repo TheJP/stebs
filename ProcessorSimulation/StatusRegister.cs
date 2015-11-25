@@ -19,9 +19,13 @@ namespace ProcessorSimulation
         public IRegister Register { get; }
         public uint Value => Register.Value;
         public Registers Type => Registers.Status;
+        /// <summary>Returns if interrupts are enabled. This is changed to true wit the command STI and to false with command CLI.</summary>
         public bool Interrupt => (Value & InterruptBit) != 0;
+        /// <summary>Returns if the last ALU result was negative in a 8-bit two complement representation.</summary>
         public bool Signed => (Value & SignedBit) != 0;
+        /// <summary>Returns if the last ALU operation caused an overflow.</summary>
         public bool Overflow => (Value & OverflowBit) != 0;
+        /// <summary>Returns if the last ALU result was 0.</summary>
         public bool Zero => (Value & ZeroBit) != 0;
         public StatusRegister(IRegister register)
         {

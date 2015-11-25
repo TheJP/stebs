@@ -13,9 +13,19 @@ namespace ProcessorSimulation
     public interface IProcessorSimulator
     {
         /// <summary>
-        /// Executes a microstep on the given processor.
+        /// Executes a micro step on the given processor.
         /// </summary>
         /// <param name="processor"></param>
         void ExecuteMicroStep(IProcessor processor);
+        /// <summary>
+        /// Executes a macro step on the given processor.
+        /// </summary>
+        /// <param name="processor"></param>
+        void ExecuteMacroStep(IProcessor processor);
+        /// <summary>
+        /// Executes a instruction step on the given processor.
+        /// </summary>
+        /// <param name="processor"></param>
+        void ExecuteInstructionStep(IProcessor processor);
     }
 }
