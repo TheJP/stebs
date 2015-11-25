@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.Practices.Unity;
+using ProcessorDispatcher;
 using ProcessorSimulation;
 using ProcessorSimulation.MpmParser;
 using System;
@@ -28,8 +29,10 @@ namespace Stebs5
                 .RegisterType<IProcessorSimulator, ProcessorSimulator>(new ContainerControlledLifetimeManager())
                 .RegisterType<IAlu, Alu>(new ContainerControlledLifetimeManager())
                 .RegisterType<IRam, Ram>(new ContainerControlledLifetimeManager())
-                .RegisterInstance<Func<Registers, uint, IRegister>>((type, value) => new Register(type, value))
+                .RegisterType<IDispatcher, Dispatcher>(new ContainerControlledLifetimeManager())
                 //Factories
+                .RegisterInstance<Func<Registers, uint, IRegister>>((type, value) => new Register(type, value))
+                .RegisterInstance(DispatcherItem.Factory)
                 .RegisterType<IRam, Ram>()
                 .RegisterType<IProcessor, Processor>();
             return container;

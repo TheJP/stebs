@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 namespace ProcessorSimulation
 {
     /// <summary>
+    /// Facory, which allows the creation of <see cref="IRegister"/>s.
+    /// </summary>
+    public delegate IRegister RegisterFactory(Registers type, uint value);
+
+    /// <summary>
     /// Immutable register in a processor.
     /// Caution: The type of the value field is uint, but mostly byte values are stored.
     /// This is because there exist special cases, with registers that need to store bigger values.

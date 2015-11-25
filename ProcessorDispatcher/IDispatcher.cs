@@ -8,5 +8,6 @@ namespace ProcessorDispatcher
 {
     public interface IDispatcher
     {
+        void Start();
     }
 }
