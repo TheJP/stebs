@@ -15,7 +15,7 @@ namespace ProcessorDispatcher
     /// <param name="running">Determines if steps should be executed automatically.</param>
     /// <param name="runDelay">Minimum delay between steps.</param>
     /// <returns></returns>
-    public delegate IDispatcherItem DispatcherItemFactory(Guid guid, IProcessor processor, bool running, TimeSpan runDelay);
+    public delegate IDispatcherItem DispatcherItemFactory(Guid guid, IProcessor processor, bool running, TimeSpan runDelay, SimulationStepSize stepSize);
 
     /// <summary>
     /// Item, which is used by the <see cref="IDispatcher"/> to store references to <see cref="IProcessor"/>, <see cref="System.Guid"/> and status.
@@ -29,6 +29,7 @@ namespace ProcessorDispatcher
         bool Running { get; }
         /// <summary>The minimum delay between executing a step on this dispatcher item.</summary>
         TimeSpan RunDelay { get; }
+        SimulationStepSize StepSize { get; }
         /// <summary>
         /// Creates a new <see cref="IDispatcherItem"/> with changed <see cref="Running"/> attribute.
         /// </summary>
@@ -41,5 +42,11 @@ namespace ProcessorDispatcher
         /// <param name="runDelay">New value for the attribute.</param>
         /// <returns></returns>
         IDispatcherItem SetRunDelay(TimeSpan runDelay);
+        /// <summary>
+        /// Creates a new <see cref="IDispatcherItem"/> with changed <see cref="StepSize"/> attribute.
+        /// </summary>
+        /// <param name="runDelay">New value for the attribute.</param>
+        /// <returns></returns>
+        IDispatcherItem SetStepSize(SimulationStepSize stepSize);
     }
 }
