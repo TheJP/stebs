@@ -14,7 +14,8 @@ namespace ProcessorSimulation
         /// <param name="command">Defines, which alu commond to execute.</param>
         /// <param name="x">Left hand side parameter.</param>
         /// <param name="y">Right hand side parameter.</param>
+        /// <param name="status">Resulting status register.</param>
         /// <returns>Result of the calculation.</returns>
-        byte Execute(AluCmd command, byte x, byte y);
+        byte Execute(AluCmd command, byte x, byte y, ref StatusRegister status);
     }
 }

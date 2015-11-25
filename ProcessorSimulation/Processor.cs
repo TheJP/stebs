@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Practices.Unity;
 using System.Collections.Immutable;
 using System.Threading;
 
@@ -205,6 +202,12 @@ namespace ProcessorSimulation
             {
                 var register = Processor.registerFactory(type, value);
                 Processor.registers = Processor.registers.SetItem(type, register);
+                Processor.NotifyRegisterChanged(register);
+            }
+
+            public void SetRegister(IRegister register)
+            {
+                Processor.registers = Processor.registers.SetItem(register.Type, register);
                 Processor.NotifyRegisterChanged(register);
             }
         }

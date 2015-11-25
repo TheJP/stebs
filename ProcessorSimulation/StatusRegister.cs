@@ -19,9 +19,13 @@ namespace ProcessorSimulation
         public IRegister Register { get; }
         public uint Value => Register.Value;
         public Registers Type => Registers.Status;
+        /// <summary>Returns if interrupts are enabled. This is changed to true wit the command STI and to false with command CLI.</summary>
         public bool Interrupt => (Value & InterruptBit) != 0;
+        /// <summary>Returns if the last ALU result was negative in a 8-bit two complement representation.</summary>
         public bool Signed => (Value & SignedBit) != 0;
+        /// <summary>Returns if the last ALU operation caused an overflow.</summary>
         public bool Overflow => (Value & OverflowBit) != 0;
+        /// <summary>Returns if the last ALU result was 0.</summary>
         public bool Zero => (Value & ZeroBit) != 0;
         public StatusRegister(IRegister register)
         {
@@ -31,14 +35,14 @@ namespace ProcessorSimulation
             }
             this.Register = register;
         }
-        private IRegister SetBit(bool flag, uint bit, Func<Registers, uint, IRegister> registerFactory) => registerFactory(Registers.Status, flag ? (Value | bit) : (Value & ~bit));
+        private StatusRegister SetBit(bool flag, uint bit, Func<Registers, uint, IRegister> registerFactory) => new StatusRegister(registerFactory(Registers.Status, flag ? (Value | bit) : (Value & ~bit)));
         /// <summary>Creates new IRegister, which only differs in the interrupt flag, which is set to the given value.</summary>
-        public IRegister SetInterrupt(bool flag, Func<Registers, uint, IRegister> registerFactory) => SetBit(flag, InterruptBit, registerFactory);
+        public StatusRegister SetInterrupt(bool flag, Func<Registers, uint, IRegister> registerFactory) => SetBit(flag, InterruptBit, registerFactory);
         /// <summary>Creates new IRegister, which only differs in the signed flag, which is set to the given value.</summary>
-        public IRegister SetSigned(bool flag, Func<Registers, uint, IRegister> registerFactory) => SetBit(flag, SignedBit, registerFactory);
+        public StatusRegister SetSigned(bool flag, Func<Registers, uint, IRegister> registerFactory) => SetBit(flag, SignedBit, registerFactory);
         /// <summary>Creates new IRegister, which only differs in the overflow flag, which is set to the given value.</summary>
-        public IRegister SetOverflow(bool flag, Func<Registers, uint, IRegister> registerFactory) => SetBit(flag, OverflowBit, registerFactory);
+        public StatusRegister SetOverflow(bool flag, Func<Registers, uint, IRegister> registerFactory) => SetBit(flag, OverflowBit, registerFactory);
         /// <summary>Creates new IRegister, which only differs in the zero flag, which is set to the given value.</summary>
-        public IRegister SetZero(bool flag, Func<Registers, uint, IRegister> registerFactory) => SetBit(flag, ZeroBit, registerFactory);
+        public StatusRegister SetZero(bool flag, Func<Registers, uint, IRegister> registerFactory) => SetBit(flag, ZeroBit, registerFactory);
     }
 }

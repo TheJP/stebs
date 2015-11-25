@@ -1,8 +1,5 @@
-﻿using Microsoft.Practices.Unity;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using static ProcessorSimulation.AluCmd;
 
 namespace ProcessorSimulation
@@ -33,26 +30,34 @@ namespace ProcessorSimulation
             [XOR] = (x, y) => x ^ y,
             [NOT] = (x, y) => ~x,
             [AND] = (x, y) => x & y,
-            [SHR] = (x, y) => x >> 1,
-            [SHL] = (x, y) => x << 1,
+            [SHR] = (x, y) => unchecked(x >> 1),
+            [SHL] = (x, y) => unchecked(x << 1),
             [ROR] = (x, y) => unchecked(x >> 1) | ((x & 0x01) << 7),
             [ROL] = (x, y) => unchecked(x << 1) | ((x & 0x80) >> 7)
         };
 
-        public Alu(UnityContainer container) { }
+        private readonly Func<Registers, uint, IRegister> registerFactory;
 
-        public byte Execute(AluCmd command, byte x, byte y)
+        public Alu(Func<Registers, uint, IRegister> registerFactory)
+        {
+            this.registerFactory = registerFactory;
+        }
+
+        public byte Execute(AluCmd command, byte x, byte y, ref StatusRegister status)
         {
             byte result = 0;
-            Action cmd = () => result = (byte)commands[command](x, y);
             try
             {
-                checked { cmd(); }
+                result = checked((byte)commands[command](x, y));
+                status = status.SetOverflow(false, registerFactory);
             }
             catch (OverflowException)
             {
-                unchecked { cmd(); }
+                result = unchecked((byte)commands[command](x, y));
+                status = status.SetOverflow(true, registerFactory);
             }
+            status = status.SetSigned((result & 0x80) != 0, registerFactory);
+            status = status.SetZero(result == 0, registerFactory);
             return result;
         }
     }

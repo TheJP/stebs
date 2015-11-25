@@ -12,6 +12,11 @@ namespace ProcessorSimulation
         /// <param name="register">Register type</param>
         /// <param name="value">New value</param>
         void SetRegister(Registers type, uint value);
+
+        /// <summary>Method to set a register value.</summary>
+        /// <param name="register">New register to be set.</param>
+        void SetRegister(IRegister register);
+
         /// <summary>
         /// Session instance, that allows write access to the ram, used by the accessed processor.
         /// </summary>

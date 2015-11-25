@@ -42,6 +42,7 @@ module Stebs {
 
             $('.stepSizeRadios').hide();
             $('.stepSizeButtons').show();
+            controlState = controlStates.start;
         },
         stop(): void {
             $('#debug img').attr('src', 'Icons/Debug-icon.png');
@@ -140,8 +141,8 @@ module Stebs {
         assembled(result: string, ram: number[], code2Line: number[]): void {
             ui.openOutput();
             ui.showOutput(result);
-            Stebs.ramCont.setContent(ram);
-            Stebs.ramCont.setRam2Line(code2Line);
+            Stebs.ramContent.setContent(ram);
+            Stebs.ramContent.setRam2Line(code2Line);
             Stebs.controlStates.assembled();
         },
 
@@ -251,7 +252,7 @@ module Stebs {
         }
     };
 
-    export var ramCont = new Stebs.Ram(256);
+    export var ramContent = new Stebs.Ram(256);
 
     export var fileManagement = new Stebs.FileManagement();
 
@@ -302,7 +303,7 @@ $(document).ready(function () {
     $('#openRam').click(Stebs.ui.toggleRAM);
     $('#openOutput').click(Stebs.ui.toggleOutput);
 
-    Stebs.ramCont.init();
+    Stebs.ramContent.init();
 
     var assembleFunction = function () {
         var newSource = editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');

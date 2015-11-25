@@ -39,20 +39,63 @@ namespace ProcessorSimulation
             this.mpm = mpm;
         }
 
+        public void ExecuteInstructionStep(IProcessor processor)
+        {
+            using (var session = processor.createSession())
+            {
+                processor.NotifySimulationStateChanged(SimulationState.Started, SimulationStepSize.Instruction);
+                do
+                {
+                    ExecuteMicroStep(processor, session);
+                } while (processor.Registers[Registers.MIP].Value != 0);
+                processor.NotifySimulationStateChanged(SimulationState.Stopped, SimulationStepSize.Instruction);
+            }
+        }
+
+        public void ExecuteMacroStep(IProcessor processor)
+        {
+            using (var session = processor.createSession())
+            {
+                processor.NotifySimulationStateChanged(SimulationState.Started, SimulationStepSize.Macro);
+                do
+                {
+                    ExecuteMicroStep(processor, session);
+                } while (processor.Registers[Registers.MIP].Value % 8 != 0);
+                processor.NotifySimulationStateChanged(SimulationState.Stopped, SimulationStepSize.Macro);
+            }
+        }
+
         public void ExecuteMicroStep(IProcessor processor)
         {
             using (var session = processor.createSession())
             {
-                processor.NotifySimulationStateChanged(SimulationState.Started, SimulationStepSize.Micro);
-                var mpmEntry = mpm.MicroInstructions[(int)processor.Registers[Registers.MIP].Value];
-
-                session.SetRegister(Registers.MIP, NextMip(processor, mpmEntry));
-                var dataBus = mpmEntry.EnableValue ? (uint)mpmEntry.Value : GetDataBusValue(processor, mpmEntry);
-                WriteDataBusToRegister(session, mpmEntry, dataBus);
-                //TODO: Implement halt
-                //TODO: microstep
-                processor.NotifySimulationStateChanged(SimulationState.Stopped, SimulationStepSize.Micro);
+                ExecuteMicroStep(processor, session);
             }
+        }
+
+        private void ExecuteMicroStep(IProcessor processor, IProcessorSession session)
+        {
+            processor.NotifySimulationStateChanged(SimulationState.Started, SimulationStepSize.Micro);
+            var mpmEntry = mpm.MicroInstructions[(int)processor.Registers[Registers.MIP].Value];
+            //Transfer data from source to target
+            session.SetRegister(Registers.MIP, NextMip(processor, mpmEntry));
+            var dataBus = mpmEntry.EnableValue ? (uint)mpmEntry.Value : GetDataBusValue(processor, mpmEntry);
+            WriteDataBusToRegister(session, mpmEntry, dataBus);
+            //Reset interrupt flag
+            if (mpmEntry.ClearInterrupt)
+            {
+                session.SetRegister(Registers.Interrupt, 0);
+            }
+            //Execute ALU command if one is contained in the mpm entry
+            if (mpmEntry.AluCommand != AluCmd.NOP)
+            {
+                var status = new StatusRegister(processor.Registers[Registers.Status]);
+                var result = processor.Alu.Execute(mpmEntry.AluCommand, (byte)processor.Registers[Registers.X].Value, (byte)processor.Registers[Registers.Y].Value, ref status);
+                session.SetRegister(Registers.RES, result);
+                session.SetRegister(status.Register);
+            }
+            //TODO: Implement halt
+            processor.NotifySimulationStateChanged(SimulationState.Stopped, SimulationStepSize.Micro);
         }
 
         /// <summary>
@@ -74,8 +117,8 @@ namespace ProcessorSimulation
                     var instruction = processor.Registers[Registers.IR].Value;
                     return (uint)mpm.Instructions[(byte)instruction].MpmAddress;
                 case NextAddress.Fetch:
-                    var interruptEnabled = processor.Registers[Registers.InterruptEnabled];
-                    return (status.Interrupt && interruptEnabled.Value == 1) ? InterruptAddress : FetchAddress;
+                    var interrupt = processor.Registers[Registers.Interrupt];
+                    return (status.Interrupt && interrupt.Value == 1) ? InterruptAddress : FetchAddress;
                 default:
                     throw new NotImplementedException();
             }
