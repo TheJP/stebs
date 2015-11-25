@@ -13,7 +13,7 @@
 
         public init() {
             $('.ram-container').empty();
-            $('.ram-container').append(Stebs.ramContent.getAsTable(16 * 2));
+            $('.ram-container').append(this.getAsTable(16 * 2));
         }
 
         public setRam2Line(ram2Line: number[]): void {

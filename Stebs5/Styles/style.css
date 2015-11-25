@@ -314,3 +314,90 @@ html, body, #canvas {
     background-color: indianred;
 }
 
+
+/*FileManagement styles*/
+.fileSystem {
+    z-index: 5000;
+    display: block;
+    position: absolute;
+    left: 2px;
+    top: 38px;
+    width: 300px;
+    height: 300px;
+    background-color: white;
+    border: 1px solid black;
+}
+
+.fileSystem #folderPath {
+    margin-left: 5px;
+}
+
+.fileSystem #files{
+    width: 100%;
+    height: 250px;
+    overflow-y: auto;
+}
+
+.fileSystem #files .file-node {
+    width: 100%;
+    height: 20px;
+    border-bottom: 1px solid white;
+    padding-bottom: 5px;
+}
+
+.fileSystem #files .file-node:hover {
+    background-color:ghostwhite;
+}
+
+.fileSystem #files .file-node a {
+    width: calc(100% - 80px);
+    display: inline-block;
+    text-decoration: none;
+}
+
+.fileSystem #files .file-node input {
+    width: calc(100% - 86px);
+    display: inline-block;
+}
+
+.fileSystem #files .file-node .img {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-image: url(/Icons/file-text-icon.png);
+}
+
+.fileSystem #files .file-node .img.folder {
+    background-image: url(/Icons/folder-close-icon.png);
+}
+
+.fileSystem #files .file-node .img.editElement {
+    background-image: url(/Icons/Pencil-icon.png);
+}
+
+.fileSystem #files .file-node .img.removeElement {
+    background-image: url(/Icons/trash-icon.png);
+}
+
+.fileSystem #files .file-node .img.okElement {
+    background-image: url(/Icons/ok-icon.png);
+}
+
+.fileSystem #files .file-node .img.cancelElement {
+    background-image: url(/Icons/delete-2-icon.png);
+}
+
+.fileSystem .addElement button {
+    width: 49%;
+    background-color: none;
+    border: 0px none;
+}
+
+.fileSystem .addElement img {
+    width: 20px;
+    height: 20px;
+}
+

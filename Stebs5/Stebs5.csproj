@@ -152,6 +152,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icons\Debug-icon-grey.png" />
+    <Content Include="Icons\delete-2-icon.png" />
+    <Content Include="Icons\file-text-icon.png" />
+    <Content Include="Icons\folder-close-icon.png" />
+    <Content Include="Icons\ok-icon.png" />
+    <Content Include="Icons\Pencil-icon.png" />
     <Content Include="Icons\Play-icon-grey.png" />
     <Content Include="Icons\Play-icon.png" />
     <Content Include="Icons\Debug-icon.png" />
@@ -163,6 +168,7 @@
     <Content Include="Icons\Save-icon.png" />
     <Content Include="Icons\Stop-icon-grey.png" />
     <Content Include="Icons\Stop-icon.png" />
+    <Content Include="Icons\trash-icon.png" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Stebs.JP.pubxml" />
@@ -442,6 +448,7 @@
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
     <TypeScriptCompile Include="Scripts\typings\mousetrap\mousetrap.d.ts" />
+    <TypeScriptCompile Include="Typescripts\fileManagement.ts" />
     <TypeScriptCompile Include="Typescripts\main.ts" />
     <Content Include="Scripts\mousetrap-1.5.3.min.js" />
     <Content Include="Scripts\mousetrap-global-bind.min.js" />
