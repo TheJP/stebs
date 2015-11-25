@@ -26,7 +26,8 @@
         }
 
         public asHtml(): JQuery {
-
+            var element = $('<div>');
+            return element;
         }
 
     }
