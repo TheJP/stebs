@@ -69,7 +69,7 @@ namespace ProcessorSimulation
         #endregion
 
         private volatile ImmutableDictionary<Registers, IRegister> registers = ImmutableDictionary<Registers, IRegister>.Empty;
-        private readonly Func<Registers, uint, IRegister> registerFactory;
+        private readonly RegisterFactory registerFactory;
 
         public IAlu Alu { get; }
         private IRam ram;
@@ -86,7 +86,7 @@ namespace ProcessorSimulation
         /// <param name="alu">Alu, which is used for calculations in this processor.</param>
         /// <param name="ram">Ram, which is used as memory for this processor.</param>
         /// <param name="registerFactory">Factory function, that is used to create register instances.</param>
-        public Processor(IAlu alu, IRam ram, Func<Registers, uint, IRegister> registerFactory)
+        public Processor(IAlu alu, IRam ram, RegisterFactory registerFactory)
         {
             this.Alu = alu;
             this.ram = ram;

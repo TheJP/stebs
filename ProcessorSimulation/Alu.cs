@@ -36,9 +36,9 @@ namespace ProcessorSimulation
             [ROL] = (x, y) => unchecked(x << 1) | ((x & 0x80) >> 7)
         };
 
-        private readonly Func<Registers, uint, IRegister> registerFactory;
+        private readonly RegisterFactory registerFactory;
 
-        public Alu(Func<Registers, uint, IRegister> registerFactory)
+        public Alu(RegisterFactory registerFactory)
         {
             this.registerFactory = registerFactory;
         }

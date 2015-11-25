@@ -31,7 +31,7 @@ namespace Stebs5
                 .RegisterType<IRam, Ram>(new ContainerControlledLifetimeManager())
                 .RegisterType<IDispatcher, Dispatcher>(new ContainerControlledLifetimeManager())
                 //Factories
-                .RegisterInstance<Func<Registers, uint, IRegister>>((type, value) => new Register(type, value))
+                .RegisterInstance(Register.Factory)
                 .RegisterInstance(DispatcherItem.Factory)
                 .RegisterType<IRam, Ram>()
                 .RegisterType<IProcessor, Processor>();

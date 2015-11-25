@@ -35,14 +35,14 @@ namespace ProcessorSimulation
             }
             this.Register = register;
         }
-        private StatusRegister SetBit(bool flag, uint bit, Func<Registers, uint, IRegister> registerFactory) => new StatusRegister(registerFactory(Registers.Status, flag ? (Value | bit) : (Value & ~bit)));
+        private StatusRegister SetBit(bool flag, uint bit, RegisterFactory registerFactory) => new StatusRegister(registerFactory(Registers.Status, flag ? (Value | bit) : (Value & ~bit)));
         /// <summary>Creates new IRegister, which only differs in the interrupt flag, which is set to the given value.</summary>
-        public StatusRegister SetInterrupt(bool flag, Func<Registers, uint, IRegister> registerFactory) => SetBit(flag, InterruptBit, registerFactory);
+        public StatusRegister SetInterrupt(bool flag, RegisterFactory registerFactory) => SetBit(flag, InterruptBit, registerFactory);
         /// <summary>Creates new IRegister, which only differs in the signed flag, which is set to the given value.</summary>
-        public StatusRegister SetSigned(bool flag, Func<Registers, uint, IRegister> registerFactory) => SetBit(flag, SignedBit, registerFactory);
+        public StatusRegister SetSigned(bool flag, RegisterFactory registerFactory) => SetBit(flag, SignedBit, registerFactory);
         /// <summary>Creates new IRegister, which only differs in the overflow flag, which is set to the given value.</summary>
-        public StatusRegister SetOverflow(bool flag, Func<Registers, uint, IRegister> registerFactory) => SetBit(flag, OverflowBit, registerFactory);
+        public StatusRegister SetOverflow(bool flag, RegisterFactory registerFactory) => SetBit(flag, OverflowBit, registerFactory);
         /// <summary>Creates new IRegister, which only differs in the zero flag, which is set to the given value.</summary>
-        public StatusRegister SetZero(bool flag, Func<Registers, uint, IRegister> registerFactory) => SetBit(flag, ZeroBit, registerFactory);
+        public StatusRegister SetZero(bool flag, RegisterFactory registerFactory) => SetBit(flag, ZeroBit, registerFactory);
     }
 }

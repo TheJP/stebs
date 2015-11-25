@@ -8,6 +8,7 @@ namespace ProcessorSimulation
 {
     public class Register : IRegister
     {
+        public static RegisterFactory Factory { get; } = (type, value) => new Register(type, value);
         public Registers Type { get; }
         public uint Value { get; }
         public Register(Registers type, uint value)
