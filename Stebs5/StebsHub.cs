@@ -8,6 +8,7 @@ using assembler;
 using System.IO;
 using Microsoft.Practices.Unity;
 using ProcessorSimulation.MpmParser;
+using ProcessorSimulation;
 
 namespace Stebs5
 {
@@ -51,6 +52,12 @@ namespace Stebs5
         public void AddFolder(int parentId, string fileName)
         {
             Clients.Caller.SetFileId(parentId += 10);
+        }
+
+        public void LoadRegisters()
+        {
+            Clients.Caller.SetAvailableRegisters(((Registers[])Enum.GetValues(typeof(Registers)))
+                .Select(type => type.ToString()));
         }
     }
 }

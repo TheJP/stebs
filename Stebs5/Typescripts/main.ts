@@ -261,6 +261,10 @@ module Stebs {
             var output = $('#outputText');
             output.text(text);
             output.html(output.html().replace(/\n/g, '<br>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/\s/g, '&nbsp;'));
+        },
+
+        loadRegisters(registerList: string[]) {
+
         }
     };
 

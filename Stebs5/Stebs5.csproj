@@ -461,6 +461,7 @@
     <TypeScriptCompile Include="Scripts\typings\codemirror\codemirror.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\codemirror\searchcursor.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Typescripts\watchElements.ts" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
