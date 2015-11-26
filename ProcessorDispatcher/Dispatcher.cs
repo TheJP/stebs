@@ -7,11 +7,15 @@ using System.Collections.Concurrent;
 using ProcessorSimulation;
 using Microsoft.Practices.Unity;
 using System.Collections.Immutable;
+using System.Threading;
 
 namespace ProcessorDispatcher
 {
     public class Dispatcher : IDispatcher
     {
+        private CancellationTokenSource tokenSource;
+        private CancellationToken cancel => tokenSource.Token;
+
         private readonly IProcessorSimulator simulator;
         private readonly UnityContainer container;
         private readonly DispatcherItemFactory itemFactory;
@@ -19,7 +23,10 @@ namespace ProcessorDispatcher
         private readonly ConcurrentDictionary<Guid, ImmutableList<SimulationStepSize>> stepRequests = new ConcurrentDictionary<Guid, ImmutableList<SimulationStepSize>>();
 
         private readonly object executionLock = new object();
+        /// <summary>Mapping of processor ids to last execution times. This should only be accessed if a lock to <see cref="executionLock"/> was acquired.</summary>
         private readonly Dictionary<Guid, DateTime> lastExecutions = new Dictionary<Guid, DateTime>();
+        /// <summary></summary>
+        private bool running = false;
 
         public Dispatcher(IProcessorSimulator simulator, DispatcherItemFactory itemFactory, UnityContainer container)
         {
@@ -28,15 +35,23 @@ namespace ProcessorDispatcher
             this.itemFactory = itemFactory;
         }
 
-        public KeyValuePair<Guid, IProcessor>? CreateProcessor(bool running, TimeSpan runDelay, SimulationStepSize stepSize)
+        public IDispatcherItem CreateProcessor(bool running, TimeSpan runDelay, SimulationStepSize stepSize)
         {
-            var guid = Guid.NewGuid();
-            var processor = container.Resolve<IProcessor>();
-            if(processors.TryAdd(guid, itemFactory(guid, processor, running, runDelay, stepSize)))
+            IDispatcherItem item;
+            do
             {
-                return new KeyValuePair<Guid, IProcessor>(guid, processor);
-            }
-            return null;
+                item = itemFactory(Guid.NewGuid(), container.Resolve<IProcessor>(), running, runDelay, stepSize);
+            } while (!processors.TryAdd(item.Guid, item));
+            return item;
+        }
+
+        public IDispatcherItem this[Guid id] => processors[id];
+        public bool ContainsGuid(Guid id) => processors.ContainsKey(id);
+        public bool Update(IDispatcherItem updated, IDispatcherItem comparison) => processors.TryUpdate(updated.Guid, updated, comparison);
+        public bool Remove(Guid id)
+        {
+            IDispatcherItem item;
+            return processors.TryRemove(id, out item);
         }
 
         public void Step(Guid id, SimulationStepSize stepSize)
@@ -71,7 +86,7 @@ namespace ProcessorDispatcher
         }
 
 
-        /// <summary></summary>
+        /// <summary>Collect running processors, which need an automatic execution step.</summary>
         /// <param name="executions"></param>
         private void AddRunningProcessors(Dictionary<Guid, SimulationStepSize> executions)
         {
@@ -115,10 +130,29 @@ namespace ProcessorDispatcher
                     lastExecutions[item.Guid] = DateTime.Now;
                 }
             }
+            Task.Factory.StartNew(Execute, cancel);
         }
 
         public void Start()
         {
+<<<<<<< HEAD
+=======
+            lock (executionLock)
+            {
+                running = true;
+                tokenSource = new CancellationTokenSource();
+                Task.Factory.StartNew(Execute, cancel);
+            }
+        }
+
+        public void Stop()
+        {
+            lock (executionLock)
+            {
+                tokenSource.Cancel();
+                running = false;
+            }
+>>>>>>> 5bc0c5e158dd5b656bee37ecd99c9e2658b67215
         }
     }
 }
