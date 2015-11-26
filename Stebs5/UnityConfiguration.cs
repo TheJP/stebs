@@ -19,6 +19,7 @@ namespace Stebs5
         {
             var container = new UnityContainer();
             container
+                .RegisterInstance(container)
                 //SignalR Hubs
                 .RegisterType<StebsHub>()
                 //Singletons
