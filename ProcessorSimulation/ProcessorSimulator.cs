@@ -41,7 +41,7 @@ namespace ProcessorSimulation
 
         public void ExecuteInstructionStep(IProcessor processor)
         {
-            using (var session = processor.createSession())
+            using (var session = processor.CreateSession())
             {
                 processor.NotifySimulationStateChanged(SimulationState.Started, SimulationStepSize.Instruction);
                 do
@@ -54,7 +54,7 @@ namespace ProcessorSimulation
 
         public void ExecuteMacroStep(IProcessor processor)
         {
-            using (var session = processor.createSession())
+            using (var session = processor.CreateSession())
             {
                 processor.NotifySimulationStateChanged(SimulationState.Started, SimulationStepSize.Macro);
                 do
@@ -67,7 +67,7 @@ namespace ProcessorSimulation
 
         public void ExecuteMicroStep(IProcessor processor)
         {
-            using (var session = processor.createSession())
+            using (var session = processor.CreateSession())
             {
                 ExecuteMicroStep(processor, session);
             }

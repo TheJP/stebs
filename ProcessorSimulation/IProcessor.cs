@@ -20,7 +20,7 @@ namespace ProcessorSimulation
         /// <summary>Create session, with which the processor state can be modified.</summary>
         /// <returns>Session instance</returns>
         /// <remarks>This method can block, because only one session should exist and it should be used by one thread only.</remarks>
-        IProcessorSession createSession();
+        IProcessorSession CreateSession();
 
         /// <summary>Notifies, that the simulator started/stopped a simulation step.</summary>
         /// <param name="state">State in which the current simulation is.</param>

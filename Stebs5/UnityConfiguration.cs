@@ -30,6 +30,7 @@ namespace Stebs5
                 .RegisterType<IAlu, Alu>(new ContainerControlledLifetimeManager())
                 .RegisterType<IRam, Ram>(new ContainerControlledLifetimeManager())
                 .RegisterType<IDispatcher, Dispatcher>(new ContainerControlledLifetimeManager())
+                .RegisterType<IProcessorManager, ProcessorManager>(new ContainerControlledLifetimeManager())
                 //Factories
                 .RegisterInstance(Register.Factory)
                 .RegisterInstance(DispatcherItem.Factory)

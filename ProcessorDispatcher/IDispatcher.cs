@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProcessorDispatcher
 {
+    /// <summary>
+    /// Manages the simulation of processor steps.
+    /// </summary>
     public interface IDispatcher
     {
         /// <summary>
