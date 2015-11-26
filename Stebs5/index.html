@@ -84,15 +84,17 @@
                     <input id="slider1" type="range" min="0" max="100" step="10" value="10" />
                 </div>
             </div>
-            <div class="watcher">
-                <div class="watchElement" id="addWatchElement">
-                    <button>
+            <div id="watcher-container">
+                <div id="watcher-elements">
+                </div>
+                <div class="watcher watchElement" id="addWatchElement">
+                    <button id="newWatchesButton">
                         <h1>+</h1>
                     </button>
                 </div>
             </div>
         </div>
-        <div class='fileSystem'>
+        <div id='fileSystem'>
             <div id="folderPath"></div>
             <div id="files"></div>
             <div class="addElement">
@@ -100,6 +102,11 @@
                 <button id="addFolder"><img src="Icons/folder-close-icon.png"> Add</button>
             </div>
         </div>
+    </div>
+    <div id="addWatches">
+        <a id="closeWatches" href="#">x</a>
+        <span>Select</span>
+        <div id="elementList"></div>
     </div>
 </body>
 </html>

@@ -171,13 +171,8 @@ module Stebs {
         * Add all available registers
         */
         setAvailableRegisters(registers: string[]) {
-            Stebs.watchControl.availableElements = registers;
-            var defaultRegisters: string[] = ['AL', 'BL', 'CL', 'DL', 'IP', 'SP'];
-            for (var i = 0; i < registers.length; i++) {
-                if (defaultRegisters.indexOf(registers[i]) != -1) {
-                    Stebs.watchControl.addEmpty(registers[i]);
-                }
-            }
+            Stebs.registerControl.addAll(registers);
+            
         }
 
     };
@@ -324,10 +319,13 @@ $(document).ready(function () {
     hub.client.assembled = Stebs.clientHub.assembled;
     hub.client.assembleError = Stebs.clientHub.assembleError;
     hub.client.setFileId = Stebs.clientHub.setFileId;
+    hub.client.setAvailableRegisters = Stebs.clientHub.setAvailableRegisters;
 
     $.connection.hub.start().done(function () {
         //Get available assembly instructions
         hub.server.getInstructions();
+        Stebs.fileManagement.init();
+        Stebs.registerControl.init();
         //Manual steps
         $('#instructionStep').click(function () { hub.server.step(Stebs.SimulationStepSize.Instruction); });
         $('#macroStep').click(function () { hub.server.step(Stebs.SimulationStepSize.Macro); });
@@ -376,5 +374,5 @@ $(document).ready(function () {
     });
 
     Stebs.controlStates.start();
-    Stebs.fileManagement.init();
+
 });
