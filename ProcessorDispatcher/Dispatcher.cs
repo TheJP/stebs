@@ -135,8 +135,6 @@ namespace ProcessorDispatcher
 
         public void Start()
         {
-<<<<<<< HEAD
-=======
             lock (executionLock)
             {
                 running = true;
@@ -152,7 +150,6 @@ namespace ProcessorDispatcher
                 tokenSource.Cancel();
                 running = false;
             }
->>>>>>> 5bc0c5e158dd5b656bee37ecd99c9e2658b67215
         }
     }
 }
