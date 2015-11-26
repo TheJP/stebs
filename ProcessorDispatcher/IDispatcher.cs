@@ -33,12 +33,12 @@ namespace ProcessorDispatcher
         bool ContainsGuid(Guid id);
 
         /// <summary>
-        /// Replaces the item with the <see cref="Guid"/> of the given <see cref="IDispatcherItem"/> with the given <see cref="IDispatcherItem"/>.
+        /// Replaces the item with the given <see cref="Guid"/> with the <see cref="IDispatcherItem"/> resulting by applying the function.
         /// </summary>
-        /// <param name="updated">Updated <see cref="IDispatcherItem"/></param>
-        /// <param name="comparison">Comparison <see cref="IDispatcherItem"/>: This is the previous value, which is used for the compare and swap.</param>
+        /// <param name="id">Id of the <see cref="IDispatcherItem"/> which should be updated.</param>
+        /// <param name="updated">Pure update function. This is potentially called multiple times to guarantee thread safety.</param>
         /// <returns>Returns if the update was successful.</returns>
-        bool Update(IDispatcherItem updated, IDispatcherItem comparison);
+        bool Update(Guid id, Func<IDispatcherItem, IDispatcherItem> update);
 
         /// <summary>
         /// Removes the <see cref="IProcessor"/> with the given <see cref="Guid"/> from the <see cref="IDispatcher"/>.

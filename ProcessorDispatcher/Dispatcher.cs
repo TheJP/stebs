@@ -47,7 +47,16 @@ namespace ProcessorDispatcher
 
         public IDispatcherItem this[Guid id] => processors[id];
         public bool ContainsGuid(Guid id) => processors.ContainsKey(id);
-        public bool Update(IDispatcherItem updated, IDispatcherItem comparison) => processors.TryUpdate(updated.Guid, updated, comparison);
+        public bool Update(Guid id, Func<IDispatcherItem, IDispatcherItem> update)
+        {
+            IDispatcherItem item;
+            do
+            {
+                var success = processors.TryGetValue(id, out item);
+                if (!success) { item = null; }
+            } while (item != null && !processors.TryUpdate(id, item, update(item)));
+            return item != null;
+        }
         public bool Remove(Guid id)
         {
             IDispatcherItem item;
