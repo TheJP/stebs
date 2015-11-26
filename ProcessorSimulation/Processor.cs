@@ -8,6 +8,7 @@ namespace ProcessorSimulation
 {
     public class Processor : IProcessor
     {
+        private const uint InitialStackPointer = 0xbf;
         private object writeLock = new object();
 
         #region Events
@@ -95,6 +96,7 @@ namespace ProcessorSimulation
             registers = registers.AddRange(
                 ((Registers[])Enum.GetValues(typeof(Registers)))
                 .Select(type => new KeyValuePair<Registers, IRegister>(type, registerFactory(type, 0))));
+            registers = registers.SetItem(ProcessorSimulation.Registers.SP, registerFactory(ProcessorSimulation.Registers.SP, InitialStackPointer));
         }
 
         /// <summary>Notifies that the register with the given type changed.</summary>
@@ -138,9 +140,9 @@ namespace ProcessorSimulation
             }
         }
 
-        public IProcessorSession createSession()
+        public IProcessorSession CreateSession()
         {
-            return ProcessorSession.createSession(this);
+            return ProcessorSession.CreateSession(this);
         }
 
         /// <summary>Proxy Pattern to protect write access to the ram.</summary>
@@ -182,10 +184,10 @@ namespace ProcessorSimulation
                 this.RamSession = ram;
             }
 
-            public static ProcessorSession createSession(Processor processor)
+            public static ProcessorSession CreateSession(Processor processor)
             {
                 Monitor.Enter(processor.writeLock);
-                return new ProcessorSession(processor, processor.ram.createSession());
+                return new ProcessorSession(processor, processor.ram.CreateSession());
             }
 
             public void Dispose()

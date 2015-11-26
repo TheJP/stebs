@@ -69,9 +69,9 @@ namespace ProcessorSimulation
             }
         }
 
-        public IRamSession createSession()
+        public IRamSession CreateSession()
         {
-            return RamSession.createSession(this);
+            return RamSession.CreateSession(this);
         }
 
         public sealed class RamSession : IRamSession
@@ -94,7 +94,7 @@ namespace ProcessorSimulation
                 }
             }
 
-            public static RamSession createSession(Ram ram)
+            public static RamSession CreateSession(Ram ram)
             {
                 Monitor.Enter(ram.writeLock);
                 return new RamSession(ram);
@@ -106,6 +106,16 @@ namespace ProcessorSimulation
                 Ram.NotifyRamChanged(address, value);
             }
 
+            public void Set(byte[] values)
+            {
+                if(values.Length != RamSize) { throw new ArgumentException($"{values.Length} should be written to the Ram, but the Ram has size {RamSize}"); }
+                var dataBuilder = ImmutableDictionary.CreateBuilder<byte, byte>();
+                for (int i = 0; i < RamSize; ++i)
+                {
+                    dataBuilder.Add((byte)i, values[i]);
+                }
+                Ram.data = dataBuilder.ToImmutable();
+            }
         }
     }
 }

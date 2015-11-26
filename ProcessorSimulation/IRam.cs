@@ -23,6 +23,6 @@ namespace ProcessorSimulation
         /// <summary>Create session, with which the ram state can be modified.</summary>
         /// <returns>Session instance</returns>
         /// <remarks>This method can block, because only one session should exist and it should be used by one thread only.</remarks>
-        IRamSession createSession();
+        IRamSession CreateSession();
     }
 }

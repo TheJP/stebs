@@ -20,7 +20,7 @@ namespace ProcessorDispatcher
         private readonly UnityContainer container;
         private readonly DispatcherItemFactory itemFactory;
         private readonly ConcurrentDictionary<Guid, IDispatcherItem> processors = new ConcurrentDictionary<Guid, IDispatcherItem>();
-        private readonly ConcurrentDictionary<Guid, ImmutableList<SimulationStepSize>> stepRequests = new ConcurrentDictionary<Guid, ImmutableList<SimulationStepSize>>();
+        private readonly ConcurrentDictionary<Guid, ImmutableQueue<SimulationStepSize>> stepRequests = new ConcurrentDictionary<Guid, ImmutableQueue<SimulationStepSize>>();
 
         private readonly object executionLock = new object();
         /// <summary>Mapping of processor ids to last execution times. This should only be accessed if a lock to <see cref="executionLock"/> was acquired.</summary>
@@ -47,7 +47,16 @@ namespace ProcessorDispatcher
 
         public IDispatcherItem this[Guid id] => processors[id];
         public bool ContainsGuid(Guid id) => processors.ContainsKey(id);
-        public bool Update(IDispatcherItem updated, IDispatcherItem comparison) => processors.TryUpdate(updated.Guid, updated, comparison);
+        public bool Update(Guid id, Func<IDispatcherItem, IDispatcherItem> update)
+        {
+            IDispatcherItem item;
+            do
+            {
+                var success = processors.TryGetValue(id, out item);
+                if (!success) { item = null; }
+            } while (item != null && !processors.TryUpdate(id, item, update(item)));
+            return item != null;
+        }
         public bool Remove(Guid id)
         {
             IDispatcherItem item;
@@ -56,7 +65,7 @@ namespace ProcessorDispatcher
 
         public void Step(Guid id, SimulationStepSize stepSize)
         {
-            stepRequests.AddOrUpdate(id, ImmutableList.Create(stepSize), (key, list) => list.Add(stepSize));
+            stepRequests.AddOrUpdate(id, ImmutableQueue.Create(stepSize), (key, list) => list.Enqueue(stepSize));
         }
 
         /// <summary>Collect execution stebs, which were triggered manually on the client side.</summary>
@@ -66,21 +75,18 @@ namespace ProcessorDispatcher
             foreach (var request in stepRequests)
             {
                 //Remove first request from the current processor step queue
-                var stepSizeList = request.Value;
-                while (!stepRequests.TryUpdate(request.Key, stepSizeList.RemoveAt(0), stepSizeList))
+                var stepSizeQueue = request.Value;
+                SimulationStepSize stepSize;
+                while (!stepRequests.TryUpdate(request.Key, stepSizeQueue.Dequeue(out stepSize), stepSizeQueue))
                 {
-                    if (!stepRequests.TryGetValue(request.Key, out stepSizeList)) { break; }
+                    if (!stepRequests.TryGetValue(request.Key, out stepSizeQueue)) { break; }
                 }
                 //Add the removed request to the executions
-                if (stepSizeList != null && stepSizeList.Count > 0)
-                {
-                    SimulationStepSize stepSize = stepSizeList[0];
-                    executions.Add(request.Key, stepSize);
-                }
+                if (stepSizeQueue != null){ executions.Add(request.Key, stepSize); }
                 //Remove the step queue if it is empty
-                if (stepSizeList != null && stepSizeList.Count <= 1)
+                if (stepSizeQueue != null && stepSizeQueue.Dequeue(out stepSize).IsEmpty)
                 {
-                    stepRequests.TryRemove(request.Key, out stepSizeList);
+                    stepRequests.TryRemove(request.Key, out stepSizeQueue);
                 }
             }
         }
@@ -108,6 +114,7 @@ namespace ProcessorDispatcher
         {
             lock (executionLock)
             {
+                if (cancel.IsCancellationRequested) { return; }
                 var executions = new Dictionary<Guid, SimulationStepSize>();
                 AddStepRequests(executions);
                 AddRunningProcessors(executions);
@@ -137,9 +144,12 @@ namespace ProcessorDispatcher
         {
             lock (executionLock)
             {
-                running = true;
-                tokenSource = new CancellationTokenSource();
-                Task.Factory.StartNew(Execute, cancel);
+                if (!running)
+                {
+                    running = true;
+                    tokenSource = new CancellationTokenSource();
+                    Task.Factory.StartNew(Execute, cancel);
+                }
             }
         }
 
@@ -147,8 +157,11 @@ namespace ProcessorDispatcher
         {
             lock (executionLock)
             {
-                tokenSource.Cancel();
-                running = false;
+                if (running)
+                {
+                    tokenSource.Cancel();
+                    running = false;
+                }
             }
         }
     }

@@ -466,6 +466,8 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="IConstants.cs" />
+    <Compile Include="IProcessorManager.cs" />
+    <Compile Include="ProcessorManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="StebsHub.cs" />
