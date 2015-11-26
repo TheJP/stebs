@@ -6,6 +6,31 @@
 
         init(): void {
             $.connection.stebsHub.server.loadRegisters();
+            $('#newWatchesButton').click(function () {
+                var registerNames = registerControl.registersWithoutWatches();
+                $('#elementList').empty();
+                for (var i = 0; i < registerNames.length; i++) {
+                    var link = function () {
+                        var name = registerNames[i];
+                        return $('<a>')
+                            .prop('href', '#')
+                            .addClass('registerLink')
+                            .text(name)
+                            .click(function () {
+                                Stebs.registerControl.registerAddWatch(name);
+                                $('#addWatches').hide();
+                            });
+                    } ();
+                    $('#elementList').append(link);
+                }
+                var offset = $('#newWatchesButton').offset();
+                $('#addWatches').css('left', offset.left).css('bottom', Stebs.heights.runAndDebug);
+                $('#addWatches').show();
+            });
+
+            $('#closeWatches').click(function () {
+                $('#addWatches').hide();
+            });
         },
 
         addAll(registersByNames: string[]) {
@@ -106,8 +131,8 @@
         }
 
         public removeWatchElement() {
-            Stebs.watchControl.remove(this.watchElement);
-            this.watchElement = null
+            //Stebs.watchControl.remove(this.watchElement);
+            this.watchElement = null;
         }
     };
 

@@ -277,14 +277,14 @@ html, body, #canvas {
 .runAndDebug #watcher-container #watcher-elements {
     height: 100%;
     float: left;
-    max-width: 90%;
+    max-width: calc(100% - 100px);
 }
 
 .runAndDebug #watcher-container .watcher {
     float: left;
     position: relative;
     border: 1px solid black;
-    min-width: 44px;
+    min-width: 88px;
     height: 40px;
     padding-left: 2px;
     padding-right: 2px;
@@ -321,7 +321,7 @@ html, body, #canvas {
 .runAndDebug #watcher-container #addWatchElement button {
     position: relative;
     display: block;
-    width: 44px;
+    width: 88px;
     height: 40px;
 }
 
@@ -338,14 +338,34 @@ html, body, #canvas {
 /*Register watches*/
 #addWatches {
     z-index: 5000;
-    display: none;
     position: absolute;
     left: 2px;
-    top: 38px;
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    min-height: 40px;
     background-color: white;
     border: 1px solid black;  
+}
+
+#addWatches #closeWatches {
+    float: right;
+    width: 15px;
+}
+
+#addWatches span {
+    font-weight: bold;
+    padding-left: 5px;
+}
+
+#addWatches a {
+    width: 190px;
+    padding-left: 5px;
+    display: block;
+    color: black;
+    text-decoration: none;
+}
+
+#addWatches a:hover {
+    background-color: ghostwhite;
 }
 
 /*FileManagement styles*/
