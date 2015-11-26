@@ -8,11 +8,11 @@
             $.connection.stebsHub.server.loadRegisters();
         },
 
-        addAll(registersByName: string[]) {
-            for (var i = 0; i < registersByName.length; i++) {
-                var newRegister = new Register(registersByName[i]);
-                this.registers[registersByName[i]] = newRegister;
-                if (Stebs.registerControl.defaultRegisters.indexOf(registersByName[i]) != -1) {
+        addAll(registersByNames: string[]) {
+            for (var i = 0; i < registersByNames.length; i++) {
+                var newRegister = new Register(registersByNames[i]);
+                this.registers[registersByNames[i]] = newRegister;
+                if (Stebs.registerControl.defaultRegisters.indexOf(registersByNames[i]) != -1) {
                     newRegister.addWatchElement();
                 }
             }
@@ -27,6 +27,23 @@
         registerAddWatch(name: string) {
             if (Stebs.registerControl.registers[name] != null) {
                 Stebs.registerControl.registers[name].addWatchElement();
+            }
+        },
+
+        registersWithoutWatches(): string[] {
+            var registerNames: string[] = [];
+            for (var name in registerControl.registers) {
+                var register = registerControl.registers[name];
+                if (!register.hasWatchElemet()) {
+                    registerNames.push(name);
+                }
+            }
+            return registerNames;
+        },
+
+        addWatch(name: string) {
+            if (Stebs.registerControl.registers[name] != null) {
+                registerControl.registers[name].addWatchElement();
             }
         }
 
@@ -70,6 +87,10 @@
 
         public getValue(): number {
             return this.value;
+        }
+
+        public hasWatchElemet(): boolean {
+            return this.watchElement != null;
         }
 
         public updateValue(newValue: number) {
