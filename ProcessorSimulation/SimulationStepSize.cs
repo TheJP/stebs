@@ -8,6 +8,8 @@ namespace ProcessorSimulation
 {
     public enum SimulationStepSize
     {
-        Micro, Macro, Instruction
+        Micro = 0,
+        Macro = 1,
+        Instruction = 2
     }
 }

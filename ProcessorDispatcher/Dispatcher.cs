@@ -25,14 +25,56 @@ namespace ProcessorDispatcher
         private readonly object executionLock = new object();
         /// <summary>Mapping of processor ids to last execution times. This should only be accessed if a lock to <see cref="executionLock"/> was acquired.</summary>
         private readonly Dictionary<Guid, DateTime> lastExecutions = new Dictionary<Guid, DateTime>();
-        /// <summary></summary>
+        /// <summary>Running flag, which determines, if the dispatcher is running. Used in the Start and Stop method and should only be accessed if a lock to <see cref="executionLock"/> was acquired.</summary>
         private bool running = false;
+        /// <summary>Collector, which is used to get processor and ram changes. Should only be accessed if a lock to <see cref="executionLock"/> was acquired.</summary>
+        private IChangesCollector collector;
 
-        public Dispatcher(IProcessorSimulator simulator, DispatcherItemFactory itemFactory, UnityContainer container)
+        #region Events
+        //Because processor events are accessed by multiple threads custom locking has to be implemented
+        //to guarantee thread safety. (See also the delegate chapter of 'C# in depth')
+        private object eventLock = new object();
+
+        private Action<IDispatcherItem, SimulationStepSize, IDictionary<byte, byte>, IDictionary<Registers, IRegister>> finishedStep;
+        public event Action<IDispatcherItem, SimulationStepSize, IDictionary<byte, byte>, IDictionary<Registers, IRegister>> FinishedStep
+        {
+            add
+            {
+                lock (eventLock) { finishedStep += value; }
+            }
+            remove
+            {
+                lock (eventLock) { finishedStep -= value; }
+            }
+        }
+
+        /// <summary>Notifies, simulation step finished.</summary>
+        /// <param name="item">Processor which was simulated</param>
+        /// <param name="stepSize">Simulated step size.</param>
+        /// <param name="ramChanges">Changes done to the ram during the simulation step.</param>
+        /// <param name="registerChanges">Changes done to the registers during the simulation step.</param>
+        private void NotifyRegisterChanged(IDispatcherItem item, SimulationStepSize stepSize, IDictionary<byte, byte> ramChanges, IDictionary<Registers, IRegister> registerChanges)
+        {
+            Action<IDispatcherItem, SimulationStepSize, IDictionary<byte, byte>, IDictionary<Registers, IRegister>> handler;
+            lock (eventLock)
+            {
+                handler = finishedStep;
+            }
+            if (handler != null)
+            {
+                //Call handler outside of the lock, so called handle methods will not caue a deadlock.
+                //This is safe because delegates are immutable.
+                handler(item, stepSize, ramChanges, registerChanges);
+            }
+        }
+        #endregion
+
+        public Dispatcher(IProcessorSimulator simulator, DispatcherItemFactory itemFactory, IChangesCollector collector, UnityContainer container)
         {
             this.simulator = simulator;
             this.container = container;
             this.itemFactory = itemFactory;
+            this.collector = collector;
         }
 
         public IDispatcherItem CreateProcessor(bool running, TimeSpan runDelay, SimulationStepSize stepSize)
@@ -122,6 +164,7 @@ namespace ProcessorDispatcher
                 {
                     IDispatcherItem item;
                     if(!processors.TryGetValue(execution.Key, out item)) { continue; }
+                    collector.BindTo(item.Processor);
                     switch (execution.Value)
                     {
                         case SimulationStepSize.Instruction:
@@ -134,9 +177,15 @@ namespace ProcessorDispatcher
                             simulator.ExecuteMicroStep(item.Processor);
                             break;
                     }
+                    collector.Unbind();
+
                     lastExecutions[item.Guid] = DateTime.Now;
                 }
             }
+#if DEBUG
+            //TODO: Potential performance improvement
+            Thread.Sleep(10);
+#endif
             Task.Factory.StartNew(Execute, cancel);
         }
 

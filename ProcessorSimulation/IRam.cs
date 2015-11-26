@@ -10,8 +10,8 @@ namespace ProcessorSimulation
     {
         /// <summary>
         /// Event that is fired, when the ram is changed.
-        /// The 2nd parameter is the address, where the ram was changed.
-        /// The 3rd parameter is the value at that ram position.
+        /// The 1st parameter is the address, where the ram was changed.
+        /// The 2nd parameter is the value at that ram position.
         /// </summary>
         event Action<byte, byte> RamChanged;
 

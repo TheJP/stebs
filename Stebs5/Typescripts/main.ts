@@ -22,6 +22,8 @@ module Stebs {
         runAndDebug: '100px'
     };
 
+    export enum SimulationStepSize { Micro = 0, Macro = 1, Instruction = 2 };
+
     export var utility = {
         addLeadingZeros(value: number, radix: number, size: number): string {
             return (Array(size + 1).join('0') + value.toString(radix)).substr(-size);
@@ -326,6 +328,10 @@ $(document).ready(function () {
     $.connection.hub.start().done(function () {
         //Get available assembly instructions
         hub.server.getInstructions();
+        //Manual steps
+        $('#instructionStep').click(function () { hub.server.step(Stebs.SimulationStepSize.Instruction); });
+        $('#macroStep').click(function () { hub.server.step(Stebs.SimulationStepSize.Macro); });
+        $('#microStep').click(function () { hub.server.step(Stebs.SimulationStepSize.Micro); });
     });
 
     $('#openDevices').click(Stebs.ui.toggleDevices);

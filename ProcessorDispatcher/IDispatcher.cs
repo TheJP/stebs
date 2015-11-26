@@ -13,6 +13,15 @@ namespace ProcessorDispatcher
     public interface IDispatcher
     {
         /// <summary>
+        /// Event, which is fired, when the <see cref="IDispatcher"/> finished the execution of a step simulation.
+        /// 1st parameter: Processor which was simulated.
+        /// 2nd parameter: Simulated step size.
+        /// 3rd parameter: Changes done to the ram during the simulation step.
+        /// 4th parameter: Changes done to the registers during the simulation step.
+        /// </summary>
+        event Action<IDispatcherItem, SimulationStepSize, IDictionary<byte, byte>, IDictionary<Registers, IRegister>> FinishedStep;
+
+        /// <summary>
         /// Add a <see cref="IProcessor"/> to be managed by the <see cref="IDispatcher"/>.
         /// </summary>
         /// <param name="running">Determines if the processor is running. (Default: false)</param>

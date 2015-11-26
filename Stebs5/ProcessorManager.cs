@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Web;
+using ProcessorSimulation;
 
 namespace Stebs5
 {
@@ -46,8 +47,31 @@ namespace Stebs5
             {
                 using (var session = item.Processor.CreateSession())
                 {
-                    session.RamSession.Set(newContent.Select(i => (byte)i).ToArray());
+                    session.RamSession.Set(newContent.Select(ram => (byte)ram).ToArray());
                 }
+            }
+        }
+
+        private void Update(string clientId, Func<IDispatcherItem, IDispatcherItem> update)
+        {
+            IDispatcherItem item;
+            if (processors.TryGetValue(clientId, out item))
+            {
+                Dispatcher.Update(item.Guid, update);
+            }
+        }
+
+        public void Run(string clientId) => Update(clientId, item => item.SetRunning(true));
+        public void Pause(string clientId) => Update(clientId, item => item.SetRunning(false));
+        public void ChangeSetpSize(string clientId, SimulationStepSize stepSize) => Update(clientId, item => item.SetStepSize(stepSize));
+        public void ChangeRunDelay(string clientId, TimeSpan runDelay) => Update(clientId, item => item.SetRunDelay(runDelay));
+
+        public void Step(string clientId, SimulationStepSize stepSize)
+        {
+            IDispatcherItem item;
+            if (processors.TryGetValue(clientId, out item))
+            {
+                Dispatcher.Step(item.Guid, stepSize);
             }
         }
     }
