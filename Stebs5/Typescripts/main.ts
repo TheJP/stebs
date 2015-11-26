@@ -163,6 +163,19 @@ module Stebs {
             if (node != null) {
                 node.setId(id);
             }
+        },
+
+        /**
+        * Add all available registers
+        */
+        setAvailableRegisters(registers: string[]) {
+            Stebs.watchControl.availableElements = registers;
+            var defaultRegisters: string[] = ['AL', 'BL', 'CL', 'DL', 'IP', 'SP'];
+            for (var i = 0; i < registers.length; i++) {
+                if (defaultRegisters.indexOf(registers[i]) != -1) {
+                    Stebs.watchControl.addEmpty(registers[i]);
+                }
+            }
         }
 
     };

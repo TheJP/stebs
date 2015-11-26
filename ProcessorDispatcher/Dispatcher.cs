@@ -119,7 +119,6 @@ namespace ProcessorDispatcher
 
         public void Start()
         {
-            throw new NotImplementedException();
         }
     }
 }
