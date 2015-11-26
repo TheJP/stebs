@@ -17,14 +17,13 @@
         public init() {
             var fileManagement = this;
             this.setAndShowActualNode(this.actualNode);
-            $('.fileSystem').hide();
 
             $('#open').click(function () {
-                $('.fileSystem').show();
+                $('#fileSystem').show();
             });
 
             $('#new').click(function () {
-                $('.fileSystem').show();
+                $('#fileSystem').show();
             });
 
             $('#save').click(function () {
@@ -58,7 +57,7 @@
                 this.showActualPath();
             } else {
                 //hideView
-                $('.fileSystem').hide();
+                $('#fileSystem').hide();
                 console.log('openfile');
             }
         }
