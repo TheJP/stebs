@@ -18,6 +18,9 @@
             $('#hideShowRam').click(function () {
                 me.transactionHideShowRam();
             });
+            $('#downloadRam').click(function () {
+                console.log('implement download here');
+            });
         }
 
         private transactionHideShowRam() {
