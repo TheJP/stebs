@@ -201,8 +201,12 @@ html, body, #canvas {
     height: 36px;
 }
 
+#codingTopBar #filename {
+    width: 30%;
+    float: left;
+}
+
 #codingTopBar button {
-    float: right;
     box-sizing: content-box;
     height: 20px;
     padding-top: 5px;
@@ -213,6 +217,10 @@ html, body, #canvas {
     background-color: transparent;
 }
 
+#codingTopBar .simulationControl {
+     float: right;  
+}
+
 #codingTopBar button:hover {
     background-color: #383;
 }
@@ -220,11 +228,6 @@ html, body, #canvas {
 #codingTopBar img, .buttonView .controlButtons img {
     width: 20px;
     height: 20px;
-}
-
-
-#codingTopBar #fileName {
-    width: 30%;
 }
 
 #codingFrame {
