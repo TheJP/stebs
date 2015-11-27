@@ -47,7 +47,8 @@
                 return false;
             } else {
                 this.ramContent = ram;
-                this.init();
+                $('#ramTable').empty();
+                $('#ramTable').append(this.getAsTable(16));
                 return true;
             }
         }
