@@ -78,28 +78,28 @@ html, body, #canvas {
 
 /* 2. Left Sidebars */
 
+#devices {
+    z-index: 5000;
+    left: -350px;
+}
+
 #devices, #architecture {
     position: absolute;
-    width: 400px;
+    width: 350px;
     height: 100%;
     /*for debugging
     display: none;*/
 }
 
-#devices {
-    z-index: 5000;
-    left: -400px;
-}
-
 .devices-container {
-    width: 400px;
+    width: 350px;
     height: 100%;
     background-color: lightblue;
 }
 
 #architecture {
     z-index: 4000;
-    left: -400px;
+    left: -350px;
 }
 
 .architecture-container {
@@ -117,7 +117,7 @@ html, body, #canvas {
 }
 
 /* 3. Bottom sidebar */
-
+/*remove .ram-container because moved to devices!!*/
 .ram-container {
     position: relative;
     width: 100%;
@@ -127,15 +127,40 @@ html, body, #canvas {
     text-align: center;
 }
 
-.ram-container table {
-    display: inline-block;
-    border-spacing: 2px;
-    border-collapse: separate;
-    font-size: 11px;
+#ramDevice {
+    border: 1px solid black;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 315px;
+    height: 380px;
+    padding-left: 5px;
+    overflow: hidden;
+    top: calc(-50% + 10px);
+    position: relative;
 }
 
-.ram-container table, th {
+#ramDevice button {
+    float: right;
+}
+
+#ramDevice table {
+    position: relative;
+    border-spacing: 2px;
+    border-collapse: separate;
+    font-size: 11pt;
+}
+
+#ramDevice #bold-elem {
+    font-weight: bold;
+}
+
+#ramDevice table, th {
     text-align: center;
+}
+
+#ramDevice .changed {
+    background-color: indianred;
 }
 
 .output-container {
@@ -203,7 +228,7 @@ html, body, #canvas {
 }
 
 #codingFrame {
-    height: calc(100% - 38px - 38px - 38px - 100px);
+    height: calc(100% - 38px - 38px - 100px);
 }
 
 #codingView #editableTxtArea {
@@ -330,11 +355,6 @@ html, body, #canvas {
     margin: 0px;
 }
 
-/*Ram Content changed background*/
-.ram-container .changed {
-    background-color: indianred;
-}
-
 /*Register watches*/
 #addWatches {
     z-index: 5000;
@@ -402,7 +422,7 @@ html, body, #canvas {
     background-color:ghostwhite;
 }
 
-#fileSystem #files .file-node a {
+#fileSystem #files .file-node .openLink {
     width: calc(100% - 80px);
     display: inline-block;
     text-decoration: none;
@@ -413,44 +433,57 @@ html, body, #canvas {
     display: inline-block;
 }
 
-#fileSystem #files .file-node .img {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-    background-size: 20px 20px;
-    background-repeat: no-repeat;
-    background-image: url(/Icons/file-text-icon.png);
-}
-
-#fileSystem #files .file-node .img.folder {
-    background-image: url(/Icons/folder-close-icon.png);
-}
-
-#fileSystem #files .file-node .img.editElement {
-    background-image: url(/Icons/Pencil-icon.png);
-}
-
-#fileSystem #files .file-node .img.removeElement {
-    background-image: url(/Icons/trash-icon.png);
-}
-
-#fileSystem #files .file-node .img.okElement {
-    background-image: url(/Icons/ok-icon.png);
-}
-
-#fileSystem #files .file-node .img.cancelElement {
-    background-image: url(/Icons/delete-2-icon.png);
-}
-
 #fileSystem .addElement button {
     width: 49%;
     background-color: none;
     border: 0px none;
 }
 
-#fileSystem .addElement img {
+/* ICONs */
+.icon {
+    display: inline-block;
     width: 20px;
     height: 20px;
+    margin-right: 5px;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;   
 }
 
+.fileIcon {
+    background-image: url(/Icons/file-text-icon.png);
+}
+
+.folderIcon {
+    background-image: url(/Icons/folder-close-icon.png);
+}
+
+.editIcon {
+    background-image: url(/Icons/Pencil-icon.png);
+}
+
+.removeIcon {
+    background-image: url(/Icons/trash-icon.png);
+}
+
+.okIcon {
+    background-image: url(/Icons/ok-icon.png);
+}
+
+.cancelIcon {
+    background-image: url(/Icons/delete-2-icon.png);
+}
+
+.saveIcon {
+    background-size: 15px 15px;
+    background-image: url(/Icons/Save-icon.png);   
+}
+
+.arrowUpIcon {
+    background-size: 15px 15px;
+    background-image: url(/Icons/up-icon.png); 
+}
+
+.arrowDownIcon {
+    background-size: 15px 15px;
+    background-image: url(/Icons/down-icon.png); 
+}

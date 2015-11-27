@@ -9,7 +9,7 @@ module Stebs {
     };
 
     export var widths = {
-        devices: '250px',
+        devices: '350px',
         architecture: '400px'
     };
 

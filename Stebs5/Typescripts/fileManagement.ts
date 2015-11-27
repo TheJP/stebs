@@ -193,17 +193,17 @@
             $('#file-' + this.id + ' a.openLink').replaceWith(editableText);
             var okLink = $('<a>')
                 
-            $('#file-' + this.id + ' a.editElement')
-                .removeClass('editElement')
-                .addClass('okElement')
+            $('#file-' + this.id + ' a.editIcon')
+                .removeClass('editIcon')
+                .addClass('okIcon')
                 .prop('href', '#')
                 .click(function () {
                     node.setText();
                 });
 
-            $('#file-' + this.id + ' a.removeElement')
-                .removeClass('removeElement')
-                .addClass('cancelElement')
+            $('#file-' + this.id + ' a.removeIcon')
+                .removeClass('removeIcon')
+                .addClass('cancelIcon')
                 .prop('href', '#')
                 .click(function () {
                     node.cancelEditMode();
@@ -237,17 +237,17 @@
                 });
             $('#file-' + this.id + ' input').replaceWith(openLink);
 
-            $('#file-' + this.id + ' a.okElement')
-                .removeClass('okElement')
-                .addClass('editElement')
+            $('#file-' + this.id + ' a.okIcon')
+                .removeClass('okIcon')
+                .addClass('editIcon')
                 .prop('href', '#')
                 .click(function () {
                     node.setEditable();
                 });
 
-            $('#file-' + this.id + ' a.cancelElement')
-                .removeClass('cancelElement')
-                .addClass('removeElement')
+            $('#file-' + this.id + ' a.cancelIcon')
+                .removeClass('cancelIcon')
+                .addClass('removeIcon')
                 .prop('href', '#')
                 .click(function () {
                     node.deleteFile();
@@ -260,9 +260,9 @@
             $('#file-' + this.id + ' input').val(this.nodeName);
             this.setText();
 
-            $('#file-' + this.id + ' a.cancelElement')
-                .removeClass('cancelElement')
-                .addClass('removeElement')
+            $('#file-' + this.id + ' a.cancelIcon')
+                .removeClass('cancelIcon')
+                .addClass('removeIcon')
                 .prop('href', '#')
                 .click(function () {
                     node.deleteFile();
@@ -288,9 +288,10 @@
                 .addClass('file-node')
                 .prop('id', 'file-' + this.id);
             var imgSpan = $('<span/>')
-                .addClass('img');
+                .addClass('icon')
+                .addClass('fileIcon');
             if (this.isFolder()) {
-                imgSpan.addClass('folder');
+                imgSpan.addClass('folderIcon');
             }
             nodeJQuery.append(imgSpan);
 
@@ -306,16 +307,16 @@
                 });
             nodeJQuery.append(openLink);
             var editJQuery = $('<a>')
-                .addClass('img')
-                .addClass('editElement')
+                .addClass('icon')
+                .addClass('editIcon')
                 .prop('href', '#')
                 .click(function () {
                     node.setEditable();
                 });
             nodeJQuery.append(editJQuery);
             var deleteJQuery = $('<a>')
-                .addClass('img')
-                .addClass('removeElement')
+                .addClass('icon')
+                .addClass('removeIcon')
                 .prop('href', '#')
                 .click(function () {
                     node.deleteFile();
