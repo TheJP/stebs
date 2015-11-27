@@ -172,9 +172,9 @@
                 fileManagement.showFileManagement(fileNode);
                 fileManagement.showActualPath();
             } else {
-                //hideView
+                //TODO send to load file
+                $('#filename').text(fileNode.getNodename());
                 $('#fileSystem').hide();
-                console.log('openfile');
             }
         },
         showFileManagement(fileNode: FileNode) {
@@ -320,6 +320,10 @@
                 }
                 fileManagement.addMode = false;
             }
+        },
+
+        fileContentToEditor(fileId: number, filetext: string) {
+
         }
     }
 

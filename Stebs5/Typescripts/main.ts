@@ -142,9 +142,9 @@ module Stebs {
         assembled(result: string, ram: number[], code2Line: number[]): void {
             ui.openOutput();
             ui.showOutput(result);
-            Stebs.ramContent.setContent(ram);
-            Stebs.ramContent.setRam2Line(code2Line);
-            Stebs.controlStates.assembled();
+            ramContent.setContent(ram);
+            ramContent.setRam2Line(code2Line);
+            controlStates.assembled();
         },
 
         /**
@@ -159,19 +159,22 @@ module Stebs {
         * Save the created file ID.
         */
         setFileId(id: number): void {
-            var node = Stebs.fileManagement.actualNode.getById(-1);
+            var node = fileManagement.actualNode.getById(-1);
             console.log("node is " + node);
             if (node != null) {
                 node.setId(id);
             }
         },
 
+        fileContent(fileId: number, fileContent: string) {
+            fileManagement.fileContentToEditor(fileId, fileContent);
+        },
+
         /**
         * Add all available registers.
         */
         setAvailableRegisters(registers: string[]) {
-            Stebs.registerControl.addAll(registers);
-            
+            registerControl.addAll(registers);
         },
 
         /**

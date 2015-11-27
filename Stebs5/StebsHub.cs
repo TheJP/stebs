@@ -80,12 +80,12 @@ namespace Stebs5
             Clients.Caller.SetFileId(parentId + 10);
         }
 
-        public void deleteFile(int parentId, int myId)
+        public void DeleteFile(int parentId, int myId)
         {
             Clients.Caller.SetFileId(parentId + 10);
         }
 
-        public void fileContent(int fileId)
+        public void FileContent(int fileId)
         {
             Clients.Caller.setFileContent(fileId, "MOV AL, 00\nEND");
         }

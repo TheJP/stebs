@@ -20,6 +20,7 @@
             $('#ramTable').append(this.getAsTable(16));
             $('#hideShowRam').click(function () {
                 me.transactionHideShowRam();
+                $('#ramTable').slideToggle();
             });
             $('#downloadRam').click(function () {
                 console.log('implement download here');
@@ -34,7 +35,6 @@
                 $('#hideShowRam').removeClass('arrowUpIcon')
                     .addClass('arrowDownIcon');
             }
-            $('#ramTable').slideToggle();
             this.isHidden = !this.isHidden;
         }
 
