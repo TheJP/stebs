@@ -4,6 +4,7 @@
         registers: <{ [register: string]: Register } >{},
         defaultRegisters: ['AL', 'BL', 'CL', 'DL', 'IP', 'SP'],
         propagateToRam: ['IP', 'SP'],
+        lastChanges: <string[]>[],
 
         init(): void {
             $.connection.stebsHub.server.loadRegisters();
@@ -45,8 +46,8 @@
         },
 
         updateRegister(name: string, value: number) {
-            if (Stebs.registerControl.registers[name] != null) {
-                Stebs.registerControl.registers[name].updateValue(value);
+            if (registerControl.registers[name] != null) {
+                registerControl.registers[name].updateValue(value);
                 if (name == 'IP') {
                     Stebs.ramContent.setInstructionPointer(value);
                 }
@@ -93,7 +94,15 @@
 
         updateElement(watchElement: WatchElement): void {
             $('#watch-' + watchElement.getRegister().getName() + ' .watch-element-value')
-                .text(watchElement.getValueFormated());
+                .text(watchElement.getValueFormated())
+                .addClass('changed');
+            for (var i = 0; i < registerControl.lastChanges.length; i++) {
+                var registerName = registerControl.lastChanges[i];
+                $('#watch-' + registerName + ' .watch-element-value')
+                    .removeClass('changed');
+            }
+            registerControl.lastChanges = [];
+            registerControl.lastChanges.push(watchElement.getRegister().getName());
         },
 
         setToBinayORHex(watchElement: WatchElement): void {

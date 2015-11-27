@@ -87,7 +87,36 @@ namespace Stebs5
 
         public void FileContent(int fileId)
         {
-            Clients.Caller.setFileContent(fileId, "MOV AL, 00\nEND");
+            Clients.Caller.FileContent("; -------------------------------------------------------------------------\n"+
+                "; Conditional Jump JNZ\n"+
+                "; -------------------------------------------------------------------------\n"+
+                "Main:\n"+
+                "Init:\n"+
+                "    MOV AL,00; Imput 0\n"+
+                "    MOV BL,01; Imput 1\n"+
+                "    MOV CL,00; Result\n"+
+                "    MOV DL,40; RAM Position\n"+
+                "\n"+
+                "    MOV[DL],AL\n"+
+                "    INC   DL\n"+
+                "    MOV[DL], BL\n"+
+                "    INC DL\n"+
+                "\n"+
+                "Loop:      ; Perform loop\n"+
+                "; SHL AL; Shift bit to the left\n" +
+                "    ADD   CL,AL\n" +
+                "    ADD   CL,BL\n" +
+                "    MOV[DL], CL\n" +
+                "\n"+
+                "    MOV AL, BL\n" +
+                "    MOV BL, CL\n" +
+                "    MOV CL,00\n" +
+                "\n"+
+                "    INC DL\n" +
+                "    JNO Loop; Jump if NOT Overflow\n" +
+                "\n"+
+                "    END\n" +
+                " ; -------------------------------------------------------------------------");
         }
 
         public void LoadRegisters()

@@ -135,7 +135,7 @@
             fileManagement.setAndShowActualNode(fileManagement.actualNode);
 
             $('#open').click(function () {
-                $('#fileSystem').show();
+                $('#fileSystem').toggle();
             });
 
             $('#new').click(function () {
@@ -173,8 +173,10 @@
                 fileManagement.showActualPath();
             } else {
                 //TODO send to load file
+                console.log("loadFile");
+                $.connection.stebsHub.server.fileContent(fileNode.getId());
                 $('#filename').text(fileNode.getNodename());
-                $('#fileSystem').hide();
+                $('#fileSystem').toggle();
             }
         },
         showFileManagement(fileNode: FileNode) {
@@ -320,11 +322,8 @@
                 }
                 fileManagement.addMode = false;
             }
-        },
-
-        fileContentToEditor(fileId: number, filetext: string) {
-
         }
+
     }
 
 }
