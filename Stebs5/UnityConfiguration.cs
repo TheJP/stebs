@@ -36,7 +36,8 @@ namespace Stebs5
                 .RegisterInstance(Register.Factory)
                 .RegisterInstance(DispatcherItem.Factory)
                 .RegisterType<IRam, Ram>()
-                .RegisterType<IProcessor, Processor>();
+                .RegisterType<IProcessor, Processor>()
+                .RegisterType<IChangesCollector, ChangesCollector>();
             return container;
         });
         public static UnityContainer Container => container.Value;

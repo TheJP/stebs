@@ -61,10 +61,10 @@ namespace Stebs5
             }
         }
 
-        public void GetInstructions()
-        {
-            Clients.Caller.Instructions(Mpm.Instructions);
-        }
+        public void Run() => Manager.Run(Context.ConnectionId);
+        public void Pause() => Manager.Pause(Context.ConnectionId);
+        public void Step(SimulationStepSize stepSize) => Manager.Step(Context.ConnectionId, stepSize);
+        public void GetInstructions() => Clients.Caller.Instructions(Mpm.Instructions);
 
         public void AddFile(int parentId, string fileName)
         {

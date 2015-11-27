@@ -38,5 +38,38 @@ namespace Stebs5
         /// <param name="clientId"></param>
         /// <param name="newContent">New content, which should be set to the ram.</param>
         void ChangeRamContent(string clientId, int[] newContent);
+
+        /// <summary>
+        /// Set the state of the processor of the given client id to running.
+        /// </summary>
+        /// <param name="clientId"></param>
+        void Run(string clientId);
+
+        /// <summary>
+        /// Set the state of the processor of the given client id to not running.
+        /// </summary>
+        /// <param name="clientId"></param>
+        void Pause(string clientId);
+
+        /// <summary>
+        /// Execute a step with the given size on the processor of the given client id.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="stepSize"></param>
+        void Step(string clientId, SimulationStepSize stepSize);
+
+        /// <summary>
+        /// Change step size of automatic running processor of the given client id.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="stepSize"></param>
+        void ChangeSetpSize(string clientId, SimulationStepSize stepSize);
+
+        /// <summary>
+        /// Change minimum run delay of automatic processor of the given client id.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="runDelay"></param>
+        void ChangeRunDelay(string clientId, TimeSpan runDelay);
     }
 }

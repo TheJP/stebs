@@ -65,8 +65,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangesCollector.cs" />
     <Compile Include="Dispatcher.cs" />
     <Compile Include="DispatcherItem.cs" />
+    <Compile Include="IChangesCollector.cs" />
     <Compile Include="IDispatcher.cs" />
     <Compile Include="IDispatcherItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
