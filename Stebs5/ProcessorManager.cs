@@ -11,11 +11,22 @@ namespace Stebs5
     public class ProcessorManager : IProcessorManager
     {
         private IDispatcher Dispatcher { get; }
-        private ConcurrentDictionary<string, IDispatcherItem> processors = new ConcurrentDictionary<string, IDispatcherItem>();
+        private readonly ConcurrentDictionary<string, IDispatcherItem> processors = new ConcurrentDictionary<string, IDispatcherItem>();
 
         public ProcessorManager(IDispatcher dispatcher)
         {
             this.Dispatcher = dispatcher;
+            this.Dispatcher.FinishedStep += FinishedStep;
+        }
+
+        /// <summary>Called, when a simulation step was processed.</summary>
+        /// <param name="item">Processor which was simulated</param>
+        /// <param name="stepSize">Simulated step size.</param>
+        /// <param name="ramChanges">Changes done to the ram during the simulation step.</param>
+        /// <param name="registerChanges">Changes done to the registers during the simulation step.</param>
+        private void FinishedStep(IDispatcherItem item, SimulationStepSize stepSize, IReadOnlyDictionary<byte, byte> ramChanges, IReadOnlyDictionary<Registers, IRegister> registerChanges)
+        {
+            throw new NotImplementedException();
         }
 
         public void CreateProcessor(string clientId)

@@ -19,7 +19,7 @@ namespace ProcessorDispatcher
         /// 3rd parameter: Changes done to the ram during the simulation step.
         /// 4th parameter: Changes done to the registers during the simulation step.
         /// </summary>
-        event Action<IDispatcherItem, SimulationStepSize, IDictionary<byte, byte>, IDictionary<Registers, IRegister>> FinishedStep;
+        event Action<IDispatcherItem, SimulationStepSize, IReadOnlyDictionary<byte, byte>, IReadOnlyDictionary<Registers, IRegister>> FinishedStep;
 
         /// <summary>
         /// Add a <see cref="IProcessor"/> to be managed by the <see cref="IDispatcher"/>.

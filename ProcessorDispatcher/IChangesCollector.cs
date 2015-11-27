@@ -26,11 +26,11 @@ namespace ProcessorDispatcher
         /// <summary>
         /// Changes that happened to the ram during the subscribed phase.
         /// </summary>
-        IDictionary<byte, byte> RamChanges { get; }
+        IReadOnlyDictionary<byte, byte> RamChanges { get; }
 
         /// <summary>
         /// Changes that happened to the registers during the subscribed phase.
         /// </summary>
-        IDictionary<Registers, IRegister> RegisterChanges { get; }
+        IReadOnlyDictionary<Registers, IRegister> RegisterChanges { get; }
     }
 }

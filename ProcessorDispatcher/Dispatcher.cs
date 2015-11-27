@@ -35,8 +35,8 @@ namespace ProcessorDispatcher
         //to guarantee thread safety. (See also the delegate chapter of 'C# in depth')
         private object eventLock = new object();
 
-        private Action<IDispatcherItem, SimulationStepSize, IDictionary<byte, byte>, IDictionary<Registers, IRegister>> finishedStep;
-        public event Action<IDispatcherItem, SimulationStepSize, IDictionary<byte, byte>, IDictionary<Registers, IRegister>> FinishedStep
+        private Action<IDispatcherItem, SimulationStepSize, IReadOnlyDictionary<byte, byte>, IReadOnlyDictionary<Registers, IRegister>> finishedStep;
+        public event Action<IDispatcherItem, SimulationStepSize, IReadOnlyDictionary<byte, byte>, IReadOnlyDictionary<Registers, IRegister>> FinishedStep
         {
             add
             {
@@ -53,9 +53,9 @@ namespace ProcessorDispatcher
         /// <param name="stepSize">Simulated step size.</param>
         /// <param name="ramChanges">Changes done to the ram during the simulation step.</param>
         /// <param name="registerChanges">Changes done to the registers during the simulation step.</param>
-        private void NotifyRegisterChanged(IDispatcherItem item, SimulationStepSize stepSize, IDictionary<byte, byte> ramChanges, IDictionary<Registers, IRegister> registerChanges)
+        private void NotifyFinishedStep(IDispatcherItem item, SimulationStepSize stepSize, IReadOnlyDictionary<byte, byte> ramChanges, IReadOnlyDictionary<Registers, IRegister> registerChanges)
         {
-            Action<IDispatcherItem, SimulationStepSize, IDictionary<byte, byte>, IDictionary<Registers, IRegister>> handler;
+            Action<IDispatcherItem, SimulationStepSize, IReadOnlyDictionary<byte, byte>, IReadOnlyDictionary<Registers, IRegister>> handler;
             lock (eventLock)
             {
                 handler = finishedStep;
@@ -178,7 +178,7 @@ namespace ProcessorDispatcher
                             break;
                     }
                     collector.Unbind();
-
+                    NotifyFinishedStep(item, execution.Value, collector.RamChanges, collector.RegisterChanges);
                     lastExecutions[item.Guid] = DateTime.Now;
                 }
             }

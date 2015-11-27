@@ -11,9 +11,9 @@ namespace ProcessorDispatcher
     public class ChangesCollector : IChangesCollector
     {
         private Dictionary<byte, byte> ramChanges = new Dictionary<byte, byte>();
-        public IDictionary<byte, byte> RamChanges => new ReadOnlyDictionary<byte, byte>(ramChanges);
+        public IReadOnlyDictionary<byte, byte> RamChanges => new ReadOnlyDictionary<byte, byte>(ramChanges);
         private Dictionary<Registers, IRegister> registerChanges = new Dictionary<Registers, IRegister>();
-        public IDictionary<Registers, IRegister> RegisterChanges => new ReadOnlyDictionary<Registers, IRegister>(registerChanges);
+        public IReadOnlyDictionary<Registers, IRegister> RegisterChanges => new ReadOnlyDictionary<Registers, IRegister>(registerChanges);
 
         private IProcessor processor = null;
 
