@@ -3,6 +3,7 @@
     export var registerControl = {
         registers: <{ [register: string]: Register } >{},
         defaultRegisters: <string[]>['AL', 'BL', 'CL', 'DL', 'IP', 'SP'],
+        propagateToRam: <string[]>['IP', 'SP'],
 
         init(): void {
             $.connection.stebsHub.server.loadRegisters();
@@ -46,6 +47,12 @@
         updateRegister(name: string, value: number) {
             if (Stebs.registerControl.registers[name] != null) {
                 Stebs.registerControl.registers[name].updateValue(value);
+                if (name == 'IP') {
+                    Stebs.ramContent.setInstructionPointer(value);
+                }
+                if (name == 'SP') {
+                    Stebs.ramContent.setStackPointer(value);
+                }
             }
         },
 

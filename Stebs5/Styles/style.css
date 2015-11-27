@@ -81,11 +81,11 @@ html, body, #canvas {
 #devices {
     z-index: 5000;
     left: -350px;
+    width: 350px;
 }
 
 #devices, #architecture {
     position: absolute;
-    width: 350px;
     height: 100%;
     /*for debugging
     display: none;*/
@@ -94,12 +94,13 @@ html, body, #canvas {
 .devices-container {
     width: 350px;
     height: 100%;
-    background-color: lightblue;
+    background-color: white;
 }
 
 #architecture {
     z-index: 4000;
-    left: -350px;
+    width: 400px;
+    left: -400px;
 }
 
 .architecture-container {
@@ -163,6 +164,14 @@ html, body, #canvas {
     background-color: indianred;
 }
 
+#ramDevice .stackPointer {
+    background-color: blue;
+}
+
+#ramDevice .instructionPointer {
+    background-color: red;
+}
+
 .output-container {
     position: relative;
     display: none;
@@ -202,7 +211,8 @@ html, body, #canvas {
 }
 
 #codingTopBar #filename {
-    width: 30%;
+    min-width: 10%;
+    max-width: 30%;
     float: left;
 }
 

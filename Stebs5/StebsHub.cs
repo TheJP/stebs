@@ -71,7 +71,13 @@ namespace Stebs5
             //List<Tuple<int, int, string>>
             Clients.Caller.SetFileId(parentId + 10);
         }
+
         public void AddFolder(int parentId, string fileName)
+        {
+            Clients.Caller.SetFileId(parentId + 10);
+        }
+
+        public void deleteFile(int parentId, int myId)
         {
             Clients.Caller.SetFileId(parentId + 10);
         }

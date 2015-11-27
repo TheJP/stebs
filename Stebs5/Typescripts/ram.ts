@@ -4,6 +4,8 @@
         private ram2Line: number[];
         private isHighlighted: string[] = [];
         private isHidden: boolean = false;
+        private stackPointerPos: number = 0;
+        private instructionPointerPos: number = 0;
 
         constructor(size: number) {
             this.ramContent = Array(size);
@@ -25,7 +27,7 @@
 
         private transactionHideShowRam() {
             if (this.isHidden) {
-                $('#ramDevice').animate({ height: '370px' });
+                $('#ramDevice').animate({ height: '380px' });
                 $('#hideShowRam').removeClass('arrowDownIcon')
                     .addClass('arrowUpIcon');
             } else {
@@ -58,9 +60,20 @@
 
         private resetHighlights(): void {
             this.isHighlighted.forEach(element => {
-                console.log('removed 4 ' + element);
-                $(element).removeProp('class');
+                $(element).removeClass('changed');
             });
+        }
+
+        public setStackPointer(position: number) {
+            $('#cell-' + this.stackPointerPos).removeClass('stackPointer');
+            $('#cell-' + position).addClass('stackPointer');
+            this.stackPointerPos = position;
+        }
+
+        public setInstructionPointer(position: number) {
+            $('#cell-' + this.instructionPointerPos).removeClass('instructionPointer');
+            $('#cell-' + position).addClass('instructionPointer');
+            this.instructionPointerPos = position;
         }
 
         public setRamAt(pos: number, value: number): boolean {
