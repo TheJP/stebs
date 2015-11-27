@@ -26,24 +26,39 @@ namespace Stebs5
             this.Manager = manager;
         }
 
-        public override Task OnConnected()
+        private void RemoveProcessor()
+        {
+            var guid = Manager.RemoveProcessor(Context.ConnectionId);
+            if (guid != null) { Groups.Remove(Context.ConnectionId, guid.Value.ToString()); }
+        }
+
+        private void CreateProcessor()
         {
             var guid = Manager.CreateProcessor(Context.ConnectionId).ToString();
             Groups.Add(Context.ConnectionId, guid);
+        }
+
+        private void AssureProcessorExists()
+        {
+            var guid = Manager.AssureProcessorExists(Context.ConnectionId).ToString();
+            Groups.Add(Context.ConnectionId, guid);
+        }
+
+        public override Task OnConnected()
+        {
+            CreateProcessor();
             return base.OnConnected();
         }
 
         public override Task OnReconnected()
         {
-            var guid = Manager.AssureProcessorExists(Context.ConnectionId).ToString();
-            Groups.Add(Context.ConnectionId, guid);
+            AssureProcessorExists();
             return base.OnReconnected();
         }
 
         public override Task OnDisconnected(bool stopCalled)
         {
-            var guid = Manager.RemoveProcessor(Context.ConnectionId);
-            if(guid != null) { Groups.Remove(Context.ConnectionId, guid.Value.ToString()); }
+            RemoveProcessor();
             return base.OnDisconnected(stopCalled);
         }
 
@@ -54,6 +69,8 @@ namespace Stebs5
                 Assembler assembler = new Assembler(string.Empty);
                 if (assembler.execute(source, Mpm.RawInstructions))
                 {
+                    RemoveProcessor();
+                    AssureProcessorExists();
                     Clients.Caller.Assembled(Common.getCodeList().toString(), Common.getRam(), assembler.getCodeToLineArr());
                     Manager.ChangeRamContent(Context.ConnectionId, Common.getRam());
                 }
