@@ -10,7 +10,7 @@ namespace ProcessorSimulation.MpmParser
     /// <summary>
     /// Immutable implementation of the IMicroInstruction.
     /// </summary>
-    [DebuggerDisplay("Address = {Address}, NextAddress = {NextAddress}, EnableValue = {EnableValue}, ALU = {AluCommand}")]
+    [DebuggerDisplay("Address = {Address}, {Source}->{Destination}, ALU = {AluCommand}, NextAddress = {NextAddress}, JumpCriterion = {JumpCriterion}")]
     public class MicroInstruction : IMicroInstruction
     {
         public int Address { get; }

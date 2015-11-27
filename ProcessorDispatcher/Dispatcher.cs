@@ -165,17 +165,25 @@ namespace ProcessorDispatcher
                     IDispatcherItem item;
                     if(!processors.TryGetValue(execution.Key, out item)) { continue; }
                     collector.BindTo(item.Processor);
-                    switch (execution.Value)
+                    try
                     {
-                        case SimulationStepSize.Instruction:
-                            simulator.ExecuteInstructionStep(item.Processor);
-                            break;
-                        case SimulationStepSize.Macro:
-                            simulator.ExecuteMacroStep(item.Processor);
-                            break;
-                        case SimulationStepSize.Micro:
-                            simulator.ExecuteMicroStep(item.Processor);
-                            break;
+                        switch (execution.Value)
+                        {
+                            case SimulationStepSize.Instruction:
+                                simulator.ExecuteInstructionStep(item.Processor);
+                                break;
+                            case SimulationStepSize.Macro:
+                                simulator.ExecuteMacroStep(item.Processor);
+                                break;
+                            case SimulationStepSize.Micro:
+                                simulator.ExecuteMicroStep(item.Processor);
+                                break;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //TODO: proper error handling
+                        //e.g. Halt on "div by 0" or not implemented exceptions
                     }
                     collector.Unbind();
                     NotifyFinishedStep(item, execution.Value, collector.RamChanges, collector.RegisterChanges);
