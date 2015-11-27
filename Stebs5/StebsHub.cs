@@ -82,6 +82,11 @@ namespace Stebs5
             Clients.Caller.SetFileId(parentId + 10);
         }
 
+        public void fileContent(int fileId)
+        {
+            Clients.Caller.setFileContent(fileId, "MOV AL, 00\nEND");
+        }
+
         public void LoadRegisters()
         {
             Clients.Caller.SetAvailableRegisters(((Registers[])Enum.GetValues(typeof(Registers)))

@@ -2,8 +2,8 @@
 
     export var registerControl = {
         registers: <{ [register: string]: Register } >{},
-        defaultRegisters: <string[]>['AL', 'BL', 'CL', 'DL', 'IP', 'SP'],
-        propagateToRam: <string[]>['IP', 'SP'],
+        defaultRegisters: ['AL', 'BL', 'CL', 'DL', 'IP', 'SP'],
+        propagateToRam: ['IP', 'SP'],
 
         init(): void {
             $.connection.stebsHub.server.loadRegisters();

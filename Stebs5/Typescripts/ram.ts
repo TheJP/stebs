@@ -136,4 +136,5 @@
             return table;
         }
     };
+    export var ramContent = new Stebs.Ram(256);
 }

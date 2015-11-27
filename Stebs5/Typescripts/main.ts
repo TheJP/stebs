@@ -278,10 +278,6 @@ module Stebs {
         }
     };
 
-    export var ramContent = new Stebs.Ram(256);
-
-    export var fileManagement = new Stebs.FileManagement();
-
     /**
      * This interface allows the usage of the CodeMirror library.
      */
