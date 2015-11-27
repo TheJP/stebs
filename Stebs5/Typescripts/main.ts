@@ -9,7 +9,7 @@ module Stebs {
     };
 
     export var widths = {
-        devices: '250px',
+        devices: '350px',
         architecture: '400px'
     };
 
@@ -291,10 +291,6 @@ module Stebs {
 
         }
     };
-
-    export var ramContent = new Stebs.Ram(256);
-
-    export var fileManagement = new Stebs.FileManagement();
 
     /**
      * This interface allows the usage of the CodeMirror library.

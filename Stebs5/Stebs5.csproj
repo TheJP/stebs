@@ -153,6 +153,7 @@
   <ItemGroup>
     <Content Include="Icons\Debug-icon-grey.png" />
     <Content Include="Icons\delete-2-icon.png" />
+    <Content Include="Icons\down-icon.png" />
     <Content Include="Icons\file-text-icon.png" />
     <Content Include="Icons\folder-close-icon.png" />
     <Content Include="Icons\ok-icon.png" />
@@ -169,6 +170,7 @@
     <Content Include="Icons\Stop-icon-grey.png" />
     <Content Include="Icons\Stop-icon.png" />
     <Content Include="Icons\trash-icon.png" />
+    <Content Include="Icons\up-icon.png" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Stebs.JP.pubxml" />
@@ -461,7 +463,7 @@
     <TypeScriptCompile Include="Scripts\typings\codemirror\codemirror.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\codemirror\searchcursor.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="Typescripts\watchElements.ts" />
+    <TypeScriptCompile Include="Typescripts\registers.ts" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
@@ -486,6 +488,7 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
