@@ -5,16 +5,20 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Web;
 using ProcessorSimulation;
+using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 
 namespace Stebs5
 {
     public class ProcessorManager : IProcessorManager
     {
+        private IHubConnectionContext<dynamic> Clients { get; }
         private IDispatcher Dispatcher { get; }
         private readonly ConcurrentDictionary<string, IDispatcherItem> processors = new ConcurrentDictionary<string, IDispatcherItem>();
 
         public ProcessorManager(IDispatcher dispatcher)
         {
+            this.Clients = GlobalHost.ConnectionManager.GetHubContext<StebsHub>().Clients;
             this.Dispatcher = dispatcher;
             this.Dispatcher.FinishedStep += FinishedStep;
         }
@@ -26,29 +30,32 @@ namespace Stebs5
         /// <param name="registerChanges">Changes done to the registers during the simulation step.</param>
         private void FinishedStep(IDispatcherItem item, SimulationStepSize stepSize, IReadOnlyDictionary<byte, byte> ramChanges, IReadOnlyDictionary<Registers, IRegister> registerChanges)
         {
-            throw new NotImplementedException();
+            var guid = item.Guid.ToString();
+            Clients.Group(guid).UpdateProcessor(stepSize, ramChanges, registerChanges);
         }
 
-        public void CreateProcessor(string clientId)
+        public Guid CreateProcessor(string clientId)
         {
             //Remove processor, if it exists for given client id
             //This assures, that a new client does not get an existing processor
             RemoveProcessor(clientId);
             //Add new processor for given client id
-            AssureProcessorExists(clientId);
+            return AssureProcessorExists(clientId);
         }
 
-        public void AssureProcessorExists(string clientId) =>
+        public Guid AssureProcessorExists(string clientId) =>
             //Create new processor if none exists; Use existing otherwise
-            processors.AddOrUpdate(clientId, id => Dispatcher.CreateProcessor(), (id, processor) => processor);
+            processors.AddOrUpdate(clientId, id => Dispatcher.CreateProcessor(), (id, processor) => processor).Guid;
 
-        public void RemoveProcessor(string clientId)
+        public Guid? RemoveProcessor(string clientId)
         {
             IDispatcherItem processor;
             if (processors.TryRemove(clientId, out processor))
             {
                 Dispatcher.Remove(processor.Guid);
+                return processor.Guid;
             }
+            return null;
         }
 
         public void ChangeRamContent(string clientId, int[] newContent)

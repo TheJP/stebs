@@ -18,19 +18,22 @@ namespace Stebs5
         /// Create new processor for client id.
         /// </summary>
         /// <param name="clientId"></param>
-        void CreateProcessor(string clientId);
+        /// <returns>Id of the new processor.</returns>
+        Guid CreateProcessor(string clientId);
 
         /// <summary>
         /// Creates new processor for client id, if it does not exist yet.
         /// </summary>
         /// <param name="clientId"></param>
-        void AssureProcessorExists(string clientId);
+        /// <returns>Id of the processor.</returns>
+        Guid AssureProcessorExists(string clientId);
 
         /// <summary>
         /// Removes processor if it exists for the given client id.
         /// </summary>
         /// <param name="clientId"></param>
-        void RemoveProcessor(string clientId);
+        /// <returns>Id of the removed processor.</returns>
+        Guid? RemoveProcessor(string clientId);
 
         /// <summary>
         /// Set the ram of the processor of the given client id to the given new content.

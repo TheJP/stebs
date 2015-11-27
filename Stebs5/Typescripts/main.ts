@@ -157,7 +157,7 @@ module Stebs {
         },
 
         /**
-        * Save the created file ID
+        * Save the created file ID.
         */
         setFileId(id: number): void {
             var node = Stebs.fileManagement.actualNode.getById(-1);
@@ -168,11 +168,25 @@ module Stebs {
         },
 
         /**
-        * Add all available registers
+        * Add all available registers.
         */
         setAvailableRegisters(registers: string[]) {
             Stebs.registerControl.addAll(registers);
             
+        },
+
+        /**
+         * Update ram and register with sent updates.
+         */
+        updateProcessor(stepSize: SimulationStepSize, ramChanges: { [address: number]: number }, registerChanges: { [register: string]: { Type: number, Value: number } }) {
+            console.log(ramChanges);
+            console.log(registerChanges);
+            for (var address in ramChanges) {
+                ramContent.setRamAt(address, ramChanges[address]);
+            }
+            for (var register in registerChanges) {
+                registerControl.updateRegister(register, registerChanges[register].Value);
+            }
         }
 
     };
@@ -320,6 +334,7 @@ $(document).ready(function () {
     hub.client.assembleError = Stebs.clientHub.assembleError;
     hub.client.setFileId = Stebs.clientHub.setFileId;
     hub.client.setAvailableRegisters = Stebs.clientHub.setAvailableRegisters;
+    hub.client.updateProcessor = Stebs.clientHub.updateProcessor;
 
     $.connection.hub.start().done(function () {
         //Get available assembly instructions

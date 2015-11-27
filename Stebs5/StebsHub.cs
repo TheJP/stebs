@@ -28,19 +28,22 @@ namespace Stebs5
 
         public override Task OnConnected()
         {
-            Manager.CreateProcessor(Context.ConnectionId);
+            var guid = Manager.CreateProcessor(Context.ConnectionId).ToString();
+            Groups.Add(Context.ConnectionId, guid);
             return base.OnConnected();
         }
 
         public override Task OnReconnected()
         {
-            Manager.AssureProcessorExists(Context.ConnectionId);
+            var guid = Manager.AssureProcessorExists(Context.ConnectionId).ToString();
+            Groups.Add(Context.ConnectionId, guid);
             return base.OnReconnected();
         }
 
         public override Task OnDisconnected(bool stopCalled)
         {
-            Manager.RemoveProcessor(Context.ConnectionId);
+            var guid = Manager.RemoveProcessor(Context.ConnectionId);
+            if(guid != null) { Groups.Remove(Context.ConnectionId, guid.Value.ToString()); }
             return base.OnDisconnected(stopCalled);
         }
 
