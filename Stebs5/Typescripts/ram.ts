@@ -16,7 +16,8 @@
 
         public init() {
             var me = this;
-            $('#ramDevice').append(this.getAsTable(16));
+            $('#ramTable').empty();
+            $('#ramTable').append(this.getAsTable(16));
             $('#hideShowRam').click(function () {
                 me.transactionHideShowRam();
             });
@@ -27,14 +28,13 @@
 
         private transactionHideShowRam() {
             if (this.isHidden) {
-                $('#ramDevice').animate({ height: '380px' });
                 $('#hideShowRam').removeClass('arrowDownIcon')
                     .addClass('arrowUpIcon');
             } else {
-                $('#ramDevice').animate({ height: '25px' });
                 $('#hideShowRam').removeClass('arrowUpIcon')
                     .addClass('arrowDownIcon');
             }
+            $('#ramTable').slideToggle();
             this.isHidden = !this.isHidden;
         }
 
