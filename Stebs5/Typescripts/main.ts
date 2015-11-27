@@ -4,7 +4,6 @@ module Stebs {
     export var visible = {
         devices: false,
         architecture: false,
-        ram: false,
         output: false
     };
 
@@ -17,8 +16,8 @@ module Stebs {
         topbar: '38px',
         containerBar: '38px',
         containerSize: '150px',
-        /* 1x topbar & 2x containerBar */
-        bars: '114px',
+        /* 1x topbar & 1x containerBar */
+        bars: '76px',
         runAndDebug: '100px'
     };
 
@@ -253,18 +252,8 @@ module Stebs {
          * This allows correct browser resizing without additional client code.
          */
         setCodingFrameHeight(): void {
-            var height = (visible.output ? ' - ' + heights.containerSize : '') + (visible.ram ? ' - ' + heights.containerSize : '');
+            var height = (visible.output ? ' - ' + heights.containerSize : '');
             $('#codingFrame').css('height', 'calc(100% - ' + heights.bars + ' - ' + heights.runAndDebug + height + ')');
-        },
-
-        /**
-         * Opens/Closes the ram bar.
-         */
-        toggleRAM(): void {
-            $('#codingFrame').animate({ height: (visible.ram ? '+=' : '-=') + heights.containerSize }, ui.setCodingFrameHeight);
-            visible.ram = !visible.ram;
-            if (visible.ram) { $('.ram-container').slideDown(); }
-            else { $('.ram-container').slideUp(); }
         },
 
         /**
@@ -345,7 +334,6 @@ $(document).ready(function () {
 
     $('#openDevices').click(Stebs.ui.toggleDevices);
     $('#openArchitecture').click(Stebs.ui.toggleArchitecture);
-    $('#openRam').click(Stebs.ui.toggleRAM);
     $('#openOutput').click(Stebs.ui.toggleOutput);
 
     Stebs.ramContent.init();
