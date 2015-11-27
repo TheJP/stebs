@@ -178,7 +178,16 @@ namespace ProcessorSimulation
                 case Destination.SELReferenced:
                     target = GetSELReferenced(session.Processor);
                     break;
-                //TODO: Should MDR be a special case?
+                case Destination.MDR:
+                    if (mpmEntry.ReadWrite == ReadWrite.Write)
+                    {
+                        //TODO: Implement IO
+                        if (mpmEntry.DataInput == DataInput.IO) { throw new NotImplementedException(); }
+                        var memoryAddress = (byte)session.Processor.Registers[Registers.MAR].Value;
+                        session.RamSession.Set(memoryAddress, (byte)dataBus);
+                    }
+                    target = Registers.MDR;
+                    break;
                 default:
                     target = (Registers)mpmEntry.Destination;
                     break;

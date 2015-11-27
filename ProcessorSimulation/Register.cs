@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ProcessorSimulation
 {
+    [DebuggerDisplay("{Value}")]
     public class Register : IRegister
     {
         public static RegisterFactory Factory { get; } = (type, value) => new Register(type, value);

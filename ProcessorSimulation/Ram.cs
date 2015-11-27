@@ -113,6 +113,7 @@ namespace ProcessorSimulation
                 for (int i = 0; i < RamSize; ++i)
                 {
                     dataBuilder.Add((byte)i, values[i]);
+                    Ram.NotifyRamChanged((byte)i, values[i]);
                 }
                 Ram.data = dataBuilder.ToImmutable();
             }
