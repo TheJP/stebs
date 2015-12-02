@@ -178,10 +178,6 @@ html, body, #canvas {
     margin: 0 0 0 5px;
 }
 
-#outputText {
-    font-family: Consolas,monaco,monospace;
-}
-
 /* 4. Coding View */
 
 #codingView {
@@ -241,7 +237,7 @@ html, body, #canvas {
     height: calc(100% - 38px - 38px - 100px);
 }
 
-#codingView #editableTxtArea {
+#codingView #codingTextArea {
     box-sizing: border-box;
     width: 100%;
     height: 100%;
@@ -511,5 +507,5 @@ html, body, #canvas {
 }
 
 .CodeMirror .CodeMirror-gutters {
-    height: 90% !important;
+    height: calc(100% - 30px) !important;
 }

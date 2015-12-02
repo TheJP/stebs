@@ -167,7 +167,7 @@ module Stebs {
         },
 
         fileContent(fileContent: string) {
-            Stebs.editor.getDoc().setValue(fileContent);
+            Stebs.codeEditor.getDoc().setValue(fileContent);
         },
 
         /**
@@ -276,9 +276,10 @@ module Stebs {
         },
 
         showOutput(text: string): void {
-            var output = $('#outputText');
-            output.text(text);
-            output.html(output.html().replace(/\n/g, '<br>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/\s/g, '&nbsp;'));
+            Stebs.outputView.getDoc().setValue(text);
+            //var output = $('#outputText');
+            //output.text(text);
+            //output.html(output.html().replace(/\n/g, '<br>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/\s/g, '&nbsp;'));
         }
 
     };
@@ -288,9 +289,10 @@ module Stebs {
      */
     export interface CodeMirror {
         codeMirror: any;
-    }
+    };
 
-    export var editor: CodeMirror.EditorFromTextArea;
+    export var codeEditor: CodeMirror.EditorFromTextArea;
+    export var outputView: CodeMirror.EditorFromTextArea;
 }
 
 /**
@@ -344,7 +346,7 @@ $(document).ready(function () {
     Stebs.ramContent.init();
 
     var assembleFunction = function () {
-        var newSource = Stebs.editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
+        var newSource = Stebs.codeEditor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
         $.connection.stebsHub.server.assemble(newSource);
     };
 
@@ -372,9 +374,14 @@ $(document).ready(function () {
     $('#stop').click(Stebs.controlStates.stop);
     Mousetrap.bindGlobal(['esc', 'ctrl+y'], falseDelegate(Stebs.controlStates.stop));
 
-    Stebs.editor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#editableTxtArea').get(0), {
+    Stebs.codeEditor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#codingTextArea').get(0), {
         lineNumbers: true,
         mode: 'assembler'
+    });
+    Stebs.outputView = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#outputTextArea').get(0), {
+        lineNumbers: true,
+        mode: 'assembler',
+        readOnly: true
     });
 
     Stebs.controlStates.start();
