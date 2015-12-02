@@ -166,8 +166,8 @@ module Stebs {
             }
         },
 
-        fileContent(fileId: number, fileContent: string) {
-            fileManagement.fileContentToEditor(fileId, fileContent);
+        fileContent(fileContent: string) {
+            Stebs.editor.getDoc().setValue(fileContent);
         },
 
         /**
@@ -290,6 +290,8 @@ module Stebs {
     export interface CodeMirror {
         codeMirror: any;
     }
+
+    export var editor: CodeMirror.EditorFromTextArea;
 }
 
 /**
@@ -323,6 +325,7 @@ $(document).ready(function () {
     hub.client.setFileId = Stebs.clientHub.setFileId;
     hub.client.setAvailableRegisters = Stebs.clientHub.setAvailableRegisters;
     hub.client.updateProcessor = Stebs.clientHub.updateProcessor;
+    hub.client.fileContent = Stebs.clientHub.fileContent;
 
     $.connection.hub.start().done(function () {
         //Get available assembly instructions
@@ -342,7 +345,7 @@ $(document).ready(function () {
     Stebs.ramContent.init();
 
     var assembleFunction = function () {
-        var newSource = editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
+        var newSource = Stebs.editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
         $.connection.stebsHub.server.assemble(newSource);
     };
 
@@ -370,7 +373,7 @@ $(document).ready(function () {
     $('#stop').click(Stebs.controlStates.stop);
     Mousetrap.bindGlobal(['esc', 'ctrl+y'], falseDelegate(Stebs.controlStates.stop));
 
-    var editor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#editableTxtArea').get(0), {
+    Stebs.editor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#editableTxtArea').get(0), {
         lineNumbers: true,
         mode: 'assembler'
     });

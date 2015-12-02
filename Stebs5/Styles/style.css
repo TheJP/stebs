@@ -118,15 +118,6 @@ html, body, #canvas {
 }
 
 /* 3. Bottom sidebar */
-/*remove .ram-container because moved to devices!!*/
-.ram-container {
-    position: relative;
-    width: 100%;
-    height: 150px;
-    display: none;
-    z-index: 4000;
-    text-align: center;
-}
 
 #ramDevice {
     border: 1px solid black;
@@ -159,16 +150,16 @@ html, body, #canvas {
     text-align: center;
 }
 
-#ramDevice .changed {
-    background-color: indianred;
+.changed {
+    background-color: yellow;
 }
 
 #ramDevice .stackPointer {
-    background-color: blue;
+    background-color: lightblue;
 }
 
 #ramDevice .instructionPointer {
-    background-color: red;
+    background-color: lightcoral;
 }
 
 .output-container {
@@ -343,6 +334,10 @@ html, body, #canvas {
 .runAndDebug #watcher-container .watcher a {
     text-decoration: none;
     color: black;
+}
+
+.runAndDebug #watcher-container .watcher a .changed {
+    background-color: yellow;
 }
 
 .runAndDebug #watcher-container .watcher a:hover {
