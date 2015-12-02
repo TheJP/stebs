@@ -140,14 +140,17 @@ html, body, #canvas {
     border-spacing: 2px;
     border-collapse: separate;
     font-size: 11pt;
-}
-
-#ramDevice #bold-elem {
-    font-weight: bold;
+    font-family: Consolas;
+    text-transform: uppercase;
+    width: 99%;
 }
 
 #ramDevice table, th {
     text-align: center;
+}
+
+#ramDevice #bold-elem {
+    font-weight: bold;
 }
 
 .changed {
@@ -322,6 +325,7 @@ html, body, #canvas {
     padding-right: 2px;
     padding-bottom: 2px;
     margin: 2px;
+    text-transform: uppercase;
 }
 
 .runAndDebug #watcher-container .watcher button {
