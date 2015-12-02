@@ -94,15 +94,17 @@
 
         updateElement(watchElement: WatchElement): void {
             $('#watch-' + watchElement.getRegister().getName() + ' .watch-element-value')
-                .text(watchElement.getValueFormated())
-                .addClass('changed');
+                .text(watchElement.getValueFormated());
+            $('#watch-' + watchElement.getRegister().getName()).addClass('changed');
+            registerControl.lastChanges.push(watchElement.getRegister().getName());
+        },
+
+        resetHighlightedElements(): void {
             for (var i = 0; i < registerControl.lastChanges.length; i++) {
                 var registerName = registerControl.lastChanges[i];
-                $('#watch-' + registerName + ' .watch-element-value')
-                    .removeClass('changed');
+                $('#watch-' + registerName).removeClass('changed');
             }
             registerControl.lastChanges = [];
-            registerControl.lastChanges.push(watchElement.getRegister().getName());
         },
 
         setToBinayORHex(watchElement: WatchElement): void {

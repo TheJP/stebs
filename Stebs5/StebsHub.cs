@@ -114,16 +114,16 @@ namespace Stebs5
                 "    MOV CL,00; Result\n"+
                 "    MOV DL,40; RAM Position\n"+
                 "\n"+
-                "    MOV[DL],AL\n"+
+                "    MOV [DL],AL\n"+
                 "    INC   DL\n"+
-                "    MOV[DL], BL\n"+
+                "    MOV [DL], BL\n"+
                 "    INC DL\n"+
                 "\n"+
                 "Loop:      ; Perform loop\n"+
                 "; SHL AL; Shift bit to the left\n" +
                 "    ADD   CL,AL\n" +
                 "    ADD   CL,BL\n" +
-                "    MOV[DL], CL\n" +
+                "    MOV [DL], CL\n" +
                 "\n"+
                 "    MOV AL, BL\n" +
                 "    MOV BL, CL\n" +

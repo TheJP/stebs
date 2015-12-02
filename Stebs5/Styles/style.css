@@ -140,14 +140,17 @@ html, body, #canvas {
     border-spacing: 2px;
     border-collapse: separate;
     font-size: 11pt;
-}
-
-#ramDevice #bold-elem {
-    font-weight: bold;
+    font-family: Consolas;
+    text-transform: uppercase;
+    width: 99%;
 }
 
 #ramDevice table, th {
     text-align: center;
+}
+
+#ramDevice #bold-elem {
+    font-weight: bold;
 }
 
 .changed {
@@ -322,13 +325,14 @@ html, body, #canvas {
     padding-right: 2px;
     padding-bottom: 2px;
     margin: 2px;
+    text-transform: uppercase;
 }
 
 .runAndDebug #watcher-container .watcher button {
     position: relative;
     float: right;
     border: 0px;
-    background-color: white;
+    background-color: transparent;
 }
 
 .runAndDebug #watcher-container .watcher a {
@@ -336,7 +340,7 @@ html, body, #canvas {
     color: black;
 }
 
-.runAndDebug #watcher-container .watcher a .changed {
+.runAndDebug #watcher-container .watcher .changed {
     background-color: yellow;
 }
 
@@ -497,4 +501,15 @@ html, body, #canvas {
 .arrowDownIcon {
     background-size: 15px 15px;
     background-image: url(/Icons/down-icon.png); 
+}
+
+/*CodeMirror external changes*/
+.CodeMirror {
+    height: 100% !important;
+    font-family: Consolas !important;
+    font-size: 11pt !important;
+}
+
+.CodeMirror .CodeMirror-gutters {
+    height: 90% !important;
 }

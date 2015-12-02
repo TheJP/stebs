@@ -183,6 +183,8 @@ module Stebs {
         updateProcessor(stepSize: SimulationStepSize, ramChanges: { [address: number]: number }, registerChanges: { [register: string]: { Type: number, Value: number } }) {
             console.log(ramChanges);
             console.log(registerChanges);
+            Stebs.ramContent.resetHighlights();
+            Stebs.watchControl.resetHighlightedElements();
             for (var address in ramChanges) {
                 ramContent.setRamAt(address, ramChanges[address]);
             }
@@ -288,11 +290,8 @@ module Stebs {
             var output = $('#outputText');
             output.text(text);
             output.html(output.html().replace(/\n/g, '<br>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/\s/g, '&nbsp;'));
-        },
-
-        loadRegisters(registerList: string[]) {
-
         }
+
     };
 
     /**
