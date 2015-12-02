@@ -193,6 +193,17 @@ module Stebs {
 
     };
 
+    export var serverHub = {
+
+        /**
+         * Sends the source to the server to be assembled.
+         */
+        assemble() {
+            var newSource = Stebs.editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
+            $.connection.stebsHub.server.assemble(newSource);
+        }
+    };
+
     export var ui = {
 
         /**
