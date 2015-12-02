@@ -59,7 +59,7 @@
             this.isHighlighted.push(elementName);
         }
 
-        private resetHighlights(): void {
+        public resetHighlights(): void {
             this.isHighlighted.forEach(element => {
                 $(element).removeClass('changed');
             });

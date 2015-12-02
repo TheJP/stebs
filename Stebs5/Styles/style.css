@@ -328,7 +328,7 @@ html, body, #canvas {
     position: relative;
     float: right;
     border: 0px;
-    background-color: white;
+    background-color: transparent;
 }
 
 .runAndDebug #watcher-container .watcher a {
@@ -336,7 +336,7 @@ html, body, #canvas {
     color: black;
 }
 
-.runAndDebug #watcher-container .watcher a .changed {
+.runAndDebug #watcher-container .watcher .changed {
     background-color: yellow;
 }
 
