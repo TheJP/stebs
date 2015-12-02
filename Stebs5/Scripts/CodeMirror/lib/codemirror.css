@@ -3,8 +3,6 @@
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
   font-family: monospace;
-  /* added to have working resize!!!*/
-  height: 100%
 }
 .CodeMirror-scroll {
   /* Set scrolling behaviour here */

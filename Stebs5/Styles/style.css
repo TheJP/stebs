@@ -502,3 +502,14 @@ html, body, #canvas {
     background-size: 15px 15px;
     background-image: url(/Icons/down-icon.png); 
 }
+
+/*CodeMirror external changes*/
+.CodeMirror {
+    height: 100% !important;
+    font-family: Consolas !important;
+    font-size: 11pt !important;
+}
+
+.CodeMirror .CodeMirror-gutters {
+    height: 90% !important;
+}
