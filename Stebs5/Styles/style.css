@@ -87,8 +87,6 @@ html, body, #canvas {
 #devices, #architecture {
     position: absolute;
     height: 100%;
-    /*for debugging
-    display: none;*/
 }
 
 .devices-container {
@@ -366,6 +364,23 @@ html, body, #canvas {
     position: relative;
     margin: 0px;
 }
+
+/* Run and debug buttons */
+#debug:disabled .enabled-icon,
+#debug:enabled .disabled-icon,
+#start:disabled .enabled-icon,
+#start:enabled .disabled-icon,
+#pause:disabled .enabled-icon,
+#pause:enabled .disabled-icon,
+#continue:disabled .enabled-icon,
+#continue:enabled .disabled-icon,
+#stop:disabled .enabled-icon,
+#stop:enabled .disabled-icon,
+#pause:disabled,
+#continue:disabled {
+    display: none;
+}
+
 
 /*Register watches*/
 #addWatches {

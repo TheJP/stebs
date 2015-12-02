@@ -29,91 +29,6 @@ module Stebs {
         }
     };
 
-    //export var controlStates = {
-    //    start(): void {
-    //        $('#debug img').attr('src', 'Icons/Debug-icon-grey.png');
-    //        $('#run img').attr('src', 'Icons/Play-icon-grey.png');
-    //        $('#pauseRun img').attr('src', 'Icons/Pause-icon-grey.png');
-    //        $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
-
-    //        $('#debug').prop('disabled', true);
-    //        $('#run').prop('disabled', true);
-    //        $('#pauseRun').prop('disabled', true);
-    //        $('#stop').prop('disabled', true);
-
-    //        $('.stepSizeRadios').hide();
-    //        $('.stepSizeButtons').show();
-    //        controlState = controlStates.start;
-    //    },
-    //    stop(): void {
-    //        $('#debug img').attr('src', 'Icons/Debug-icon.png');
-    //        $('#run img').attr('src', 'Icons/Play-icon.png');
-    //        $('#pauseRun img').attr('src', 'Icons/Play-icon.png');
-    //        $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
-
-    //        $('#debug').prop('disabled', false);
-    //        $('#run').prop('disabled', false);
-    //        $('#pauseRun').prop('disabled', false);
-    //        $('#stop').prop('disabled', true);
-
-    //        controlState = controlStates.stop;
-    //    },
-    //    assembled(): void {
-    //        $('#debug img').attr('src', 'Icons/Debug-icon.png');
-    //        $('#run img').attr('src', 'Icons/Play-icon.png');
-    //        $('#pauseRun img').attr('src', 'Icons/Play-icon.png');
-    //        $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
-
-    //        $('#debug').prop('disabled', false);
-    //        $('#run').prop('disabled', false);
-    //        $('#pauseRun').prop('disabled', false);
-    //        $('#stop').prop('disabled', true);
-
-    //        $('.stepSizeRadios').hide();
-    //        $('.stepSizeButtons').show();
-    //        controlState = controlStates.assembled;
-    //    },
-    //    debuggingAndPause(): void {
-    //        $('#debug img').attr('src', 'Icons/Debug-icon.png');
-    //        $('#run img').attr('src', 'Icons/Play-icon.png');
-    //        $('#pauseRun img').attr('src', 'Icons/Play-icon.png');
-    //        $('#stop img').attr('src', 'Icons/Stop-icon.png');
-
-    //        $('#debug').prop('disabled', false);
-    //        $('#run').prop('disabled', false);
-    //        $('#pauseRun').prop('disabled', false);
-    //        $('#stop').prop('disabled', false);
-
-    //        $('.stepSizeRadios').hide();
-    //        $('.stepSizeButtons').show();
-    //        controlState = controlStates.debuggingAndPause;
-    //    },
-    //    instructionSteps(): void {
-    //        $('#debug img').attr('src', 'Icons/Debug-icon.png');
-    //        $('#run img').attr('src', 'Icons/Play-icon.png');
-    //        $('#pauseRun img').attr('src', 'Icons/Pause-icon.png');
-    //        $('#stop img').attr('src', 'Icons/Stop-icon.png');
-
-    //        $('#debug').prop('disabled', false);
-    //        $('#run').prop('disabled', false);
-    //        $('#pauseRun').prop('disabled', false);
-    //        $('#stop').prop('disabled', false);
-
-    //        $('.stepSizeRadios').show();
-    //        $('.stepSizeButtons').hide();
-
-    //        $('#instructionStepSpeed').prop('checked', true);
-    //        controlState = controlStates.instructionSteps;
-    //    },
-    //    macroSteps(): void {
-    //        controlStates.instructionSteps();
-    //    },
-    //    microSteps(): void {
-    //        controlStates.instructionSteps();
-    //    }
-    //};
-    //export var controlState = controlStates.start;
-
     var ctx: CanvasRenderingContext2D;
     var canvas: HTMLCanvasElement;
 
@@ -369,7 +284,7 @@ $(document).ready(function () {
     Mousetrap.bindGlobal('ctrl+d', falseDelegate(() => Stebs.state.debug()));
 
     $('#start').click(() => Stebs.state.start());
-    $('#startOrPause').click(() => Stebs.state.startOrPause());
+    $('#pause, #continue').click(() => Stebs.state.startOrPause());
     Mousetrap.bind('space', falseDelegate(() => Stebs.state.startOrPause()));
     Mousetrap.bindGlobal('ctrl+g', falseDelegate(() => Stebs.state.startOrPause()));
 
