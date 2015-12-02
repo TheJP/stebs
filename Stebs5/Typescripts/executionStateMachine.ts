@@ -9,7 +9,39 @@
         singleStep(stepSize: SimulationStepSize): void;
     }
 
+    /**
+     * Current state of the state machine.
+     */
+    export var state: IState;
+    export function stateInit(): void {
+        state = new InitialState();
+    };
+
+    enum ContinuousOrSingleStep { Continuous, SingleStep }
+    var actions = {
+        assemble: 'assemble',
+        start: 'start',
+        debug: 'debug',
+        startOrPause: 'startOrPause',
+        stop: 'stop',
+        microStep: 'microStep',
+        macroStep: 'macroStep',
+        instructionStep: 'instructionStep'
+    };
+
     abstract class StateAdapter implements IState {
+        constructor(allowedActions: string[], continuousOrSingleStep: ContinuousOrSingleStep = ContinuousOrSingleStep.Continuous) {
+            for (var action in actions) {
+                $('#' + action).prop('disabled', $.inArray(action, allowedActions) < 0);
+            }
+            if (continuousOrSingleStep == ContinuousOrSingleStep.Continuous) {
+                $('.stepSizeButtons').hide();
+                $('.stepSizeRadios').show();
+            } else {
+                $('.stepSizeButtons').show();
+                $('.stepSizeRadios').hide();
+            }
+        }
         assemble() { }
         assembled() { }
         start() { }
@@ -19,12 +51,8 @@
         singleStep(stepSize: SimulationStepSize) { }
     }
 
-    /**
-     * Current state of the state machine.
-     */
-    export var state: IState
-
     class InitialState extends StateAdapter {
+        constructor() { super([actions.assemble]); }
         assemble() {
             serverHub.assemble();
         }
@@ -34,6 +62,8 @@
     }
 
     class AssembledState extends StateAdapter {
+        constructor() { super([actions.assemble, actions.start, actions.debug, actions.startOrPause]); }
+        startOrPause() { this.start(); }
         start() {
             state = new RunningState();
         }
@@ -43,23 +73,26 @@
     }
 
     class RunningState extends StateAdapter {
+        constructor() { super([actions.startOrPause, actions.stop], ContinuousOrSingleStep.Continuous); }
         startOrPause() {
             state = new PausedState();
         }
         stop() {
-            //TODO
+            state = new AssembledState();
         }
     }
 
     class PausedState extends StateAdapter {
-        startOrPause() {
+        constructor() { super([actions.start, actions.startOrPause, actions.stop, actions.microStep, actions.macroStep, actions.instructionStep], ContinuousOrSingleStep.SingleStep);}
+        start() {
             state = new RunningState();
         }
+        startOrPause() { this.start(); }
         stop() {
-            //TODO
+            state = new AssembledState();
         }
         singleStep(stepSize: SimulationStepSize) {
-            //TODO: execute
+            Stebs.serverHub.singleStep(stepSize);
         }
     }
 }

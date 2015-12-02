@@ -272,6 +272,7 @@ html, body, #canvas {
 }
 
 .runAndDebug .buttonView .stepSizeButtons {
+    display: none;
     float: left;
 }
 

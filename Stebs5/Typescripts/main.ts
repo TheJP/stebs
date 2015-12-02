@@ -29,90 +29,90 @@ module Stebs {
         }
     };
 
-    export var controlStates = {
-        start(): void {
-            $('#debug img').attr('src', 'Icons/Debug-icon-grey.png');
-            $('#run img').attr('src', 'Icons/Play-icon-grey.png');
-            $('#pauseRun img').attr('src', 'Icons/Pause-icon-grey.png');
-            $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
+    //export var controlStates = {
+    //    start(): void {
+    //        $('#debug img').attr('src', 'Icons/Debug-icon-grey.png');
+    //        $('#run img').attr('src', 'Icons/Play-icon-grey.png');
+    //        $('#pauseRun img').attr('src', 'Icons/Pause-icon-grey.png');
+    //        $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
 
-            $('#debug').prop('disabled', true);
-            $('#run').prop('disabled', true);
-            $('#pauseRun').prop('disabled', true);
-            $('#stop').prop('disabled', true);
+    //        $('#debug').prop('disabled', true);
+    //        $('#run').prop('disabled', true);
+    //        $('#pauseRun').prop('disabled', true);
+    //        $('#stop').prop('disabled', true);
 
-            $('.stepSizeRadios').hide();
-            $('.stepSizeButtons').show();
-            controlState = controlStates.start;
-        },
-        stop(): void {
-            $('#debug img').attr('src', 'Icons/Debug-icon.png');
-            $('#run img').attr('src', 'Icons/Play-icon.png');
-            $('#pauseRun img').attr('src', 'Icons/Play-icon.png');
-            $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
+    //        $('.stepSizeRadios').hide();
+    //        $('.stepSizeButtons').show();
+    //        controlState = controlStates.start;
+    //    },
+    //    stop(): void {
+    //        $('#debug img').attr('src', 'Icons/Debug-icon.png');
+    //        $('#run img').attr('src', 'Icons/Play-icon.png');
+    //        $('#pauseRun img').attr('src', 'Icons/Play-icon.png');
+    //        $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
 
-            $('#debug').prop('disabled', false);
-            $('#run').prop('disabled', false);
-            $('#pauseRun').prop('disabled', false);
-            $('#stop').prop('disabled', true);
+    //        $('#debug').prop('disabled', false);
+    //        $('#run').prop('disabled', false);
+    //        $('#pauseRun').prop('disabled', false);
+    //        $('#stop').prop('disabled', true);
 
-            controlState = controlStates.stop;
-        },
-        assembled(): void {
-            $('#debug img').attr('src', 'Icons/Debug-icon.png');
-            $('#run img').attr('src', 'Icons/Play-icon.png');
-            $('#pauseRun img').attr('src', 'Icons/Play-icon.png');
-            $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
+    //        controlState = controlStates.stop;
+    //    },
+    //    assembled(): void {
+    //        $('#debug img').attr('src', 'Icons/Debug-icon.png');
+    //        $('#run img').attr('src', 'Icons/Play-icon.png');
+    //        $('#pauseRun img').attr('src', 'Icons/Play-icon.png');
+    //        $('#stop img').attr('src', 'Icons/Stop-icon-grey.png');
 
-            $('#debug').prop('disabled', false);
-            $('#run').prop('disabled', false);
-            $('#pauseRun').prop('disabled', false);
-            $('#stop').prop('disabled', true);
+    //        $('#debug').prop('disabled', false);
+    //        $('#run').prop('disabled', false);
+    //        $('#pauseRun').prop('disabled', false);
+    //        $('#stop').prop('disabled', true);
 
-            $('.stepSizeRadios').hide();
-            $('.stepSizeButtons').show();
-            controlState = controlStates.assembled;
-        },
-        debuggingAndPause(): void {
-            $('#debug img').attr('src', 'Icons/Debug-icon.png');
-            $('#run img').attr('src', 'Icons/Play-icon.png');
-            $('#pauseRun img').attr('src', 'Icons/Play-icon.png');
-            $('#stop img').attr('src', 'Icons/Stop-icon.png');
+    //        $('.stepSizeRadios').hide();
+    //        $('.stepSizeButtons').show();
+    //        controlState = controlStates.assembled;
+    //    },
+    //    debuggingAndPause(): void {
+    //        $('#debug img').attr('src', 'Icons/Debug-icon.png');
+    //        $('#run img').attr('src', 'Icons/Play-icon.png');
+    //        $('#pauseRun img').attr('src', 'Icons/Play-icon.png');
+    //        $('#stop img').attr('src', 'Icons/Stop-icon.png');
 
-            $('#debug').prop('disabled', false);
-            $('#run').prop('disabled', false);
-            $('#pauseRun').prop('disabled', false);
-            $('#stop').prop('disabled', false);
+    //        $('#debug').prop('disabled', false);
+    //        $('#run').prop('disabled', false);
+    //        $('#pauseRun').prop('disabled', false);
+    //        $('#stop').prop('disabled', false);
 
-            $('.stepSizeRadios').hide();
-            $('.stepSizeButtons').show();
-            controlState = controlStates.debuggingAndPause;
-        },
-        instructionSteps(): void {
-            $('#debug img').attr('src', 'Icons/Debug-icon.png');
-            $('#run img').attr('src', 'Icons/Play-icon.png');
-            $('#pauseRun img').attr('src', 'Icons/Pause-icon.png');
-            $('#stop img').attr('src', 'Icons/Stop-icon.png');
+    //        $('.stepSizeRadios').hide();
+    //        $('.stepSizeButtons').show();
+    //        controlState = controlStates.debuggingAndPause;
+    //    },
+    //    instructionSteps(): void {
+    //        $('#debug img').attr('src', 'Icons/Debug-icon.png');
+    //        $('#run img').attr('src', 'Icons/Play-icon.png');
+    //        $('#pauseRun img').attr('src', 'Icons/Pause-icon.png');
+    //        $('#stop img').attr('src', 'Icons/Stop-icon.png');
 
-            $('#debug').prop('disabled', false);
-            $('#run').prop('disabled', false);
-            $('#pauseRun').prop('disabled', false);
-            $('#stop').prop('disabled', false);
+    //        $('#debug').prop('disabled', false);
+    //        $('#run').prop('disabled', false);
+    //        $('#pauseRun').prop('disabled', false);
+    //        $('#stop').prop('disabled', false);
 
-            $('.stepSizeRadios').show();
-            $('.stepSizeButtons').hide();
+    //        $('.stepSizeRadios').show();
+    //        $('.stepSizeButtons').hide();
 
-            $('#instructionStepSpeed').prop('checked', true);
-            controlState = controlStates.instructionSteps;
-        },
-        macroSteps(): void {
-            controlStates.instructionSteps();
-        },
-        microSteps(): void {
-            controlStates.instructionSteps();
-        }
-    };
-    export var controlState = controlStates.start;
+    //        $('#instructionStepSpeed').prop('checked', true);
+    //        controlState = controlStates.instructionSteps;
+    //    },
+    //    macroSteps(): void {
+    //        controlStates.instructionSteps();
+    //    },
+    //    microSteps(): void {
+    //        controlStates.instructionSteps();
+    //    }
+    //};
+    //export var controlState = controlStates.start;
 
     var ctx: CanvasRenderingContext2D;
     var canvas: HTMLCanvasElement;
@@ -144,7 +144,7 @@ module Stebs {
             ui.showOutput(result);
             ramContent.setContent(ram);
             ramContent.setRam2Line(code2Line);
-            controlStates.assembled();
+            state.assembled();
         },
 
         /**
@@ -203,6 +203,13 @@ module Stebs {
         assemble() {
             var newSource = Stebs.editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
             $.connection.stebsHub.server.assemble(newSource);
+        },
+
+        /**
+         * Sends a request for a simulation step with given step size to the server.
+         */
+        singleStep(stepSize: SimulationStepSize) {
+            $.connection.stebsHub.server.step(stepSize);
         }
     };
 
@@ -342,10 +349,6 @@ $(document).ready(function () {
         hub.server.getInstructions();
         Stebs.fileManagement.init();
         Stebs.registerControl.init();
-        //Manual steps
-        $('#instructionStep').click(function () { hub.server.step(Stebs.SimulationStepSize.Instruction); });
-        $('#macroStep').click(function () { hub.server.step(Stebs.SimulationStepSize.Macro); });
-        $('#microStep').click(function () { hub.server.step(Stebs.SimulationStepSize.Micro); });
     });
 
     $('#openDevices').click(Stebs.ui.toggleDevices);
@@ -353,41 +356,31 @@ $(document).ready(function () {
     $('#openOutput').click(Stebs.ui.toggleOutput);
 
     Stebs.ramContent.init();
-
-    var assembleFunction = function () {
-        var newSource = Stebs.editor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
-        $.connection.stebsHub.server.assemble(newSource);
-    };
-
-    var pauseAndRunFunction = function () {
-        if (Stebs.controlState == Stebs.controlStates.debuggingAndPause || Stebs.controlState == Stebs.controlStates.assembled || Stebs.controlState == Stebs.controlStates.stop) {
-            Stebs.controlStates.instructionSteps();
-        } else {
-            Stebs.controlStates.debuggingAndPause();
-        }
-    }
+    Stebs.stateInit();
 
     var falseDelegate = (delegate: () => void) => function () { delegate(); return false; };
 
-    $('#assemble').click(assembleFunction);
-    Mousetrap.bindGlobal('ctrl+b', falseDelegate(assembleFunction));
+    $('#assemble').click(() => Stebs.state.assemble());
+    Mousetrap.bindGlobal('ctrl+b', falseDelegate(() => Stebs.state.assemble()));
 
-    $('#debug').click(Stebs.controlStates.debuggingAndPause);
-    Mousetrap.bindGlobal('ctrl+d', falseDelegate(Stebs.controlStates.debuggingAndPause));
+    $('#debug').click(() => Stebs.state.debug());
+    Mousetrap.bindGlobal('ctrl+d', falseDelegate(() => Stebs.state.debug()));
 
-    $('#run').click(Stebs.controlStates.instructionSteps);
-    $('#pauseRun').click(pauseAndRunFunction);
-    Mousetrap.bind('space', falseDelegate(pauseAndRunFunction));
-    Mousetrap.bindGlobal('ctrl+g', falseDelegate(pauseAndRunFunction));
+    $('#start').click(() => Stebs.state.start());
+    $('#startOrPause').click(() => Stebs.state.startOrPause());
+    Mousetrap.bind('space', falseDelegate(() => Stebs.state.startOrPause()));
+    Mousetrap.bindGlobal('ctrl+g', falseDelegate(() => Stebs.state.startOrPause()));
 
-    $('#stop').click(Stebs.controlStates.stop);
-    Mousetrap.bindGlobal(['esc', 'ctrl+y'], falseDelegate(Stebs.controlStates.stop));
+    $('#stop').click(() => Stebs.state.stop());
+    Mousetrap.bindGlobal(['esc', 'ctrl+y'], falseDelegate(() => Stebs.state.stop()));
+
+    $('#instructionStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Instruction));
+    $('#macroStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Macro));
+    $('#microStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Micro));
 
     Stebs.editor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#editableTxtArea').get(0), {
         lineNumbers: true,
         mode: 'assembler'
     });
-
-    Stebs.controlStates.start();
 
 });
