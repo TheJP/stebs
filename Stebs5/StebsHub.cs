@@ -70,7 +70,7 @@ namespace Stebs5
                 if (assembler.execute(source, Mpm.RawInstructions))
                 {
                     RemoveProcessor();
-                    AssureProcessorExists();
+                    CreateProcessor();
                     Clients.Caller.Assembled(Common.getCodeList().toString(), Common.getRam(), assembler.getCodeToLineArr());
                     Manager.ChangeRamContent(Context.ConnectionId, Common.getRam());
                 }
