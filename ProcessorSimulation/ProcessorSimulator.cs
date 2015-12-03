@@ -207,5 +207,16 @@ namespace ProcessorSimulation
             if (!SELReference.ContainsKey(sel)) { throw new NotImplementedException(); }
             return SELReference[sel];
         }
+
+        public void SoftReset(IProcessor processor)
+        {
+            using(var session = processor.CreateSession())
+            {
+                foreach (var type in (Registers[])Enum.GetValues(typeof(Registers)))
+                {
+                    session.SetRegister(type, type == Registers.SP ? processor.InitialStackPointer : 0);
+                }
+            }
+        }
     }
 }

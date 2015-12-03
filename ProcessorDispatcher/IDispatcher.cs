@@ -22,6 +22,11 @@ namespace ProcessorDispatcher
         event Action<IDispatcherItem, SimulationStepSize, IReadOnlyDictionary<byte, byte>, IReadOnlyDictionary<Registers, IRegister>> FinishedStep;
 
         /// <summary>
+        /// Event, which is fired, when the <see cref="IDispatcher"/> finished resetting a processor.
+        /// </summary>
+        event Action<IDispatcherItem> Resetted;
+
+        /// <summary>
         /// Add a <see cref="IProcessor"/> to be managed by the <see cref="IDispatcher"/>.
         /// </summary>
         /// <param name="running">Determines if the processor is running. (Default: false)</param>
@@ -65,6 +70,13 @@ namespace ProcessorDispatcher
         /// <param name="id"></param>
         /// <param name="stepSize"></param>
         void Step(Guid id, SimulationStepSize stepSize);
+
+        /// <summary>
+        /// Execute a soft reset using the <see cref="IProcessorSimulator"/> on the <see cref="IProcessor"/> with the given id.
+        /// The reset is queued as a request and executed in the simulation loop.
+        /// </summary>
+        /// <param name="id"></param>
+        void SoftReset(Guid id);
 
         /// <summary>
         /// Start executing steps of the managed <see cref="IProcessor"/>s.

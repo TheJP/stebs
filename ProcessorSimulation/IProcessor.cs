@@ -16,6 +16,8 @@ namespace ProcessorSimulation
         IAlu Alu { get; }
         IReadOnlyRam Ram { get; }
         IDictionary<Registers, IRegister> Registers { get; }
+        /// <summary>Returns the initial value of the stack pointer.</summary>
+        uint InitialStackPointer { get; }
 
         /// <summary>Create session, with which the processor state can be modified.</summary>
         /// <returns>Session instance</returns>

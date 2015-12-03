@@ -21,6 +21,7 @@ namespace ProcessorDispatcher
         private readonly DispatcherItemFactory itemFactory;
         private readonly ConcurrentDictionary<Guid, IDispatcherItem> processors = new ConcurrentDictionary<Guid, IDispatcherItem>();
         private readonly ConcurrentDictionary<Guid, ImmutableQueue<SimulationStepSize>> stepRequests = new ConcurrentDictionary<Guid, ImmutableQueue<SimulationStepSize>>();
+        private readonly ConcurrentBag<Guid> resetRequests = new ConcurrentBag<Guid>();
 
         private readonly object executionLock = new object();
         /// <summary>Mapping of processor ids to last execution times. This should only be accessed if a lock to <see cref="executionLock"/> was acquired.</summary>
@@ -48,6 +49,19 @@ namespace ProcessorDispatcher
             }
         }
 
+        private Action<IDispatcherItem> resetted;
+        public event Action<IDispatcherItem> Resetted
+        {
+            add
+            {
+                lock (eventLock) { resetted += value; }
+            }
+            remove
+            {
+                lock (eventLock) { resetted -= value; }
+            }
+        }
+
         /// <summary>Notifies, simulation step finished.</summary>
         /// <param name="item">Processor which was simulated</param>
         /// <param name="stepSize">Simulated step size.</param>
@@ -65,6 +79,21 @@ namespace ProcessorDispatcher
                 //Call handler outside of the lock, so called handle methods will not caue a deadlock.
                 //This is safe because delegates are immutable.
                 handler(item, stepSize, ramChanges, registerChanges);
+            }
+        }
+
+        /// <summary>Notifies, when a reset request finished execution.</summary>
+        /// <param name="item">Processor, which was resetted.</param>
+        private void NotifyFinishedStep(IDispatcherItem item)
+        {
+            Action<IDispatcherItem> handler;
+            lock (eventLock)
+            {
+                handler = resetted;
+            }
+            if (handler != null)
+            {
+                handler(item);
             }
         }
         #endregion
@@ -110,6 +139,11 @@ namespace ProcessorDispatcher
             stepRequests.AddOrUpdate(id, ImmutableQueue.Create(stepSize), (key, list) => list.Enqueue(stepSize));
         }
 
+        public void SoftReset(Guid id)
+        {
+            resetRequests.Add(id);
+        }
+
         /// <summary>Collect execution stebs, which were triggered manually on the client side.</summary>
         /// <param name="executions"></param>
         private void AddStepRequests(Dictionary<Guid, SimulationStepSize> executions)
@@ -151,12 +185,20 @@ namespace ProcessorDispatcher
             }
         }
 
+        /// <summary>Executes requested resets.</summary>
+        /// <remarks>Should only be called with an aquired lock on <see cref="executionLock"/>.</remarks>
+        private void ExecuteResets()
+        {
+            //TODO:
+        }
+
         /// <summary>Execute steps for every processor, which has a pending request or which is running automatically.</summary>
         private void Execute()
         {
             lock (executionLock)
             {
                 if (cancel.IsCancellationRequested) { return; }
+                ExecuteResets();
                 var executions = new Dictionary<Guid, SimulationStepSize>();
                 AddStepRequests(executions);
                 AddRunningProcessors(executions);

@@ -27,5 +27,10 @@ namespace ProcessorSimulation
         /// </summary>
         /// <param name="processor"></param>
         void ExecuteInstructionStep(IProcessor processor);
+        /// <summary>
+        /// Resets all registers of the processor, but keeps the same RAM.
+        /// </summary>
+        /// <param name="processor"></param>
+        void SoftReset(IProcessor processor);
     }
 }

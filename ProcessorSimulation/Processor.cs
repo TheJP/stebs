@@ -8,7 +8,7 @@ namespace ProcessorSimulation
 {
     public class Processor : IProcessor
     {
-        private const uint InitialStackPointer = 0xbf;
+        public uint InitialStackPointer { get; } = 0xbf;
         private object writeLock = new object();
 
         #region Events
