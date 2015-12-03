@@ -26,14 +26,17 @@ namespace ProcessorDispatcher
         }
         public IDispatcherItem SetRunning(bool value)
         {
+            if(this.Running == value) { return this; }
             return new DispatcherItem(Guid, Processor, value, RunDelay, StepSize);
         }
         public IDispatcherItem SetRunDelay(TimeSpan runDelay)
         {
+            if(this.RunDelay == runDelay) { return this; }
             return new DispatcherItem(Guid, Processor, Running, runDelay, StepSize);
         }
         public IDispatcherItem SetStepSize(SimulationStepSize stepSize)
         {
+            if (this.StepSize == stepSize) { return this; }
             return new DispatcherItem(Guid, Processor, Running, RunDelay, stepSize);
         }
     }

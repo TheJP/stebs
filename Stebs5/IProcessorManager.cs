@@ -46,7 +46,8 @@ namespace Stebs5
         /// Set the state of the processor of the given client id to running.
         /// </summary>
         /// <param name="clientId"></param>
-        void Run(string clientId);
+        /// <param name="stepSize">Initial step size, which is used for the simulation.</param>
+        void Run(string clientId, SimulationStepSize stepSize = SimulationStepSize.Instruction);
 
         /// <summary>
         /// Set the state of the processor of the given client id to not running.
@@ -55,11 +56,17 @@ namespace Stebs5
         void Pause(string clientId);
 
         /// <summary>
+        /// Stops the processor of the given client id.
+        /// </summary>
+        /// <param name="clientId"></param>
+        void Stop(string clientId);
+
+        /// <summary>
         /// Execute a step with the given size on the processor of the given client id.
         /// </summary>
         /// <param name="clientId"></param>
         /// <param name="stepSize"></param>
-        void Step(string clientId, SimulationStepSize stepSize);
+        void Step(string clientId, SimulationStepSize stepSize = SimulationStepSize.Instruction);
 
         /// <summary>
         /// Change step size of automatic running processor of the given client id.

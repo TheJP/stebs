@@ -81,8 +81,9 @@ namespace Stebs5
             }
         }
 
-        public void Run() => Manager.Run(Context.ConnectionId);
+        public void Run(SimulationStepSize stepSize) => Manager.Run(Context.ConnectionId, stepSize);
         public void Pause() => Manager.Pause(Context.ConnectionId);
+        public void Stop() => Manager.Stop(Context.ConnectionId);
         public void Step(SimulationStepSize stepSize) => Manager.Step(Context.ConnectionId, stepSize);
         public void GetInstructions() => Clients.Caller.Instructions(Mpm.Instructions);
 

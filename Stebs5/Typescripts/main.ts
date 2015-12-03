@@ -125,6 +125,28 @@ module Stebs {
          */
         singleStep(stepSize: SimulationStepSize) {
             $.connection.stebsHub.server.step(stepSize);
+        },
+
+        /**
+         * Starts the simulation of the processor.
+         */
+        run(stepSize: SimulationStepSize) {
+            $.connection.stebsHub.server.run(stepSize);
+        },
+
+        /**
+         * Pauses the simulation of the server.
+         * Simulation can be continued with another call to run.
+         */
+        pause() {
+            $.connection.stebsHub.server.pause();
+        },
+
+        /**
+         * Stops the simulation of the processor.
+         */
+        stop() {
+            $.connection.stebsHub.server.stop();
         }
     };
 

@@ -125,7 +125,7 @@ namespace ProcessorDispatcher
             {
                 var success = processors.TryGetValue(id, out item);
                 if (!success) { item = null; }
-            } while (item != null && !processors.TryUpdate(id, item, update(item)));
+            } while (item != null && !processors.TryUpdate(id, update(item), item));
             return item != null;
         }
         public bool Remove(Guid id)
@@ -189,7 +189,18 @@ namespace ProcessorDispatcher
         /// <remarks>Should only be called with an aquired lock on <see cref="executionLock"/>.</remarks>
         private void ExecuteResets()
         {
-            //TODO:
+            if (resetRequests.IsEmpty) { return; }
+            var requests = new HashSet<Guid>();
+            Guid id;
+            while (!resetRequests.IsEmpty && resetRequests.TryTake(out id)) { requests.Add(id); }
+            foreach(var guid in requests)
+            {
+                IDispatcherItem item;
+                if(processors.TryGetValue(guid, out item))
+                {
+                    simulator.SoftReset(item.Processor);
+                }
+            }
         }
 
         /// <summary>Execute steps for every processor, which has a pending request or which is running automatically.</summary>
