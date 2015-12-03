@@ -134,19 +134,12 @@
 
             fileManagement.setAndShowActualNode(fileManagement.actualNode);
 
-            $('#open').click(function () {
-                $('#fileSystem').toggle();
-            });
+            $('#open').click(fileManagement.toggleFileManager);
 
-            $('#new').click(function () {
-                $('#fileSystem').show();
-                var newNode = new FileNode(-1, 'new File', fileManagement.actualNode, false, []);
-                fileManagement.addFileOrFolder(newNode);
-            });
+            $('#new').click(fileManagement.newFile);
 
-            $('#save').click(function () {
-                console.log("save called");
-            });
+            $('#save').click(() => console.log('save called'));
+
             $('#addFile').click(function () {
                 var newNode = new FileNode(-1, 'new File', fileManagement.actualNode, false, []);
                 fileManagement.addFileOrFolder(newNode);
@@ -155,6 +148,30 @@
                 var newNode = new FileNode(-1, 'new Folder', fileManagement.actualNode, true, []);
                 fileManagement.addFileOrFolder(newNode);
             });
+        },
+
+        /**
+         * Shows file manager view.
+         */
+        openFileManager() {
+            $('#fileSystem').show();
+        },
+
+        /**
+         * Opens the file manager, if it was closed.
+         * Closes the file manager otherwise.
+         */
+        toggleFileManager() {
+            $('#fileSystem').toggle();
+        },
+
+        /**
+         * Opens the file manager with the intention to create a new file in the current folger.
+         */
+        newFile() {
+            var newNode = new FileNode(-1, 'new File', fileManagement.actualNode, false, []);
+            fileManagement.addFileOrFolder(newNode);
+            fileManagement.openFileManager();
         },
 
         addFileOrFolder(fileNode: FileNode) {

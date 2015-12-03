@@ -376,8 +376,8 @@ html, body, #canvas {
 #continue:enabled .disabled-icon,
 #stop:disabled .enabled-icon,
 #stop:enabled .disabled-icon,
-#pause:disabled,
-#continue:disabled {
+#pause:enabled + #continue:disabled,
+#pause:disabled {
     display: none;
 }
 

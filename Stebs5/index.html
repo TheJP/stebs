@@ -44,14 +44,14 @@
     <div id="codingView">
         <div id="codingTopBar">
             <div class="simulationControl">
-                <button id="assemble" title="Assemble"><img src="Icons/Mimetypes-text-x-hex-icon.png" /></button>
-                <button id="debug" title="Debug"><img class="disabled-icon" src="Icons/Debug-icon-grey.png" /><img class="enabled-icon" src="Icons/Debug-icon.png" /></button>
-                <button id="start" title="Run"><img class="disabled-icon" src="Icons/Play-icon-grey.png" /><img class="enabled-icon" src="Icons/Play-icon.png" /></button>
+                <button id="assemble" title="Assemble (ctrl+b)"><img src="Icons/Mimetypes-text-x-hex-icon.png" /></button>
+                <button id="debug" title="Single Step (ctrl+d)"><img class="disabled-icon" src="Icons/Debug-icon-grey.png" /><img class="enabled-icon" src="Icons/Debug-icon.png" /></button>
+                <button id="start" title="Run (ctrl+g)"><img class="disabled-icon" src="Icons/Play-icon-grey.png" /><img class="enabled-icon" src="Icons/Play-icon.png" /></button>
             </div>
             <div class="fileControl">
-                <button id="open" title="Open"><img class="enabled-icon" src="Icons/open-file-icon.png" /></button>
-                <button id="save" title="Save"><img class="enabled-icon" src="Icons/Save-icon.png" /></button>
-                <button id="new" title="New"><img class="enabled-icon" src="Icons/new-file-icon.png" /></button>
+                <button id="open" title="Open (ctrl+o)"><img class="enabled-icon" src="Icons/open-file-icon.png" /></button>
+                <button id="save" title="Save (ctrl+s)"><img class="enabled-icon" src="Icons/Save-icon.png" /></button>
+                <button id="new" title="New (ctrl+n)"><img class="enabled-icon" src="Icons/new-file-icon.png" /></button>
             </div>
             <span id="filename">Filename</span>
         </div>
@@ -69,9 +69,9 @@
         <div class="runAndDebug">
             <div class="buttonView">
                 <div class="controlButtons">
-                    <button id="continue" title="Continue"><img class="disabled-icon" src="Icons/Play-icon-grey.png" /><img class="enabled-icon" src="Icons/Play-icon.png" /></button>
-                    <button id="pause" title="Pause"><img class="disabled-icon" src="Icons/Pause-icon-grey.png" /><img class="enabled-icon" src="Icons/Pause-icon.png" /></button>
-                    <button id="stop" title="Stop"><img class="disabled-icon" src="Icons/Stop-icon-grey.png" /><img class="enabled-icon" src="Icons/Stop-icon.png" /></button>
+                    <button id="pause" title="Pause (ctrl+g)"><img class="disabled-icon" src="Icons/Pause-icon-grey.png" /><img class="enabled-icon" src="Icons/Pause-icon.png" /></button>
+                    <button id="continue" title="Continue (ctrl+g)"><img class="disabled-icon" src="Icons/Play-icon-grey.png" /><img class="enabled-icon" src="Icons/Play-icon.png" /></button>
+                    <button id="stop" title="Stop (ctrl+y or esc)"><img class="disabled-icon" src="Icons/Stop-icon-grey.png" /><img class="enabled-icon" src="Icons/Stop-icon.png" /></button>
                 </div>
                 <div class="stepSizeRadios">
                     <label><input id="instructionStepSpeed" name="speedGroup" type="radio" checked="checked" /> Instruction Step</label>
