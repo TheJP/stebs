@@ -96,8 +96,6 @@ module Stebs {
          * Update ram and register with sent updates.
          */
         updateProcessor(stepSize: SimulationStepSize, ramChanges: { [address: number]: number }, registerChanges: { [register: string]: { Type: number, Value: number } }) {
-            console.log(ramChanges);
-            console.log(registerChanges);
             Stebs.ramContent.resetHighlights();
             Stebs.watchControl.resetHighlightedElements();
             for (var address in ramChanges) {
@@ -147,7 +145,15 @@ module Stebs {
          */
         stop() {
             $.connection.stebsHub.server.stop();
+        },
+
+        /**
+         * Changes the simulation speed: The speed is used as minimal delay between two simulation steps.
+         */
+        changeSpeed(speed: number) {
+            $.connection.stebsHub.server.changeRunDelay(speed);
         }
+
     };
 
     export var ui = {
@@ -330,5 +336,9 @@ $(document).ready(function () {
         mode: 'assembler',
         readOnly: true
     });
+
+    $('#speedSlider').change(
+        () => Stebs.serverHub.changeSpeed((2000 + 10) -  parseInt($('#speedSlider').val()))
+    );
 
 });

@@ -27,5 +27,9 @@ namespace Stebs5
         /// Minimal run delay, which can be set for a processor by a user.
         /// </summary>
         TimeSpan MinimalRunDelay { get; }
+        /// <summary>
+        /// Default run delay, with which a processor is initialized.
+        /// </summary>
+        TimeSpan DefaultRunDelay { get; }
     }
 }

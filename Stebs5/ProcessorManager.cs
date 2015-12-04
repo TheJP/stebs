@@ -14,10 +14,12 @@ namespace Stebs5
     {
         private IHubConnectionContext<dynamic> Clients { get; }
         private IDispatcher Dispatcher { get; }
+        private IConstants Constants { get; }
         private readonly ConcurrentDictionary<string, IDispatcherItem> processors = new ConcurrentDictionary<string, IDispatcherItem>();
 
-        public ProcessorManager(IDispatcher dispatcher)
+        public ProcessorManager(IDispatcher dispatcher, IConstants constants)
         {
+            this.Constants = constants;
             this.Clients = GlobalHost.ConnectionManager.GetHubContext<StebsHub>().Clients;
             this.Dispatcher = dispatcher;
             this.Dispatcher.FinishedStep += FinishedStep;
@@ -45,7 +47,7 @@ namespace Stebs5
 
         public Guid AssureProcessorExists(string clientId) =>
             //Create new processor if none exists; Use existing otherwise
-            processors.AddOrUpdate(clientId, id => Dispatcher.CreateProcessor(), (id, processor) => processor).Guid;
+            processors.AddOrUpdate(clientId, id => Dispatcher.CreateProcessor(runDelay: Constants.DefaultRunDelay), (id, processor) => processor).Guid;
 
         public Guid? RemoveProcessor(string clientId)
         {
