@@ -122,7 +122,7 @@ module Stebs {
          * Sends the source to the server to be assembled.
          */
         assemble() {
-            var newSource = Stebs.codeEditor.getDoc().getValue().replace(/\r?\n/g, '\r\n');
+            var newSource = Stebs.codeEditor.getDoc().getValue().replace(/\r?\n/g, '\r\n').replace(/\t/g, '    ');
             $.connection.stebsHub.server.assemble(newSource);
         },
 
@@ -332,7 +332,7 @@ $(document).ready(function () {
         Mousetrap.bindGlobal('ctrl+b', falseDelegate(() => Stebs.state.assemble()));
 
         $('#debug').click(() => Stebs.state.debug());
-        Mousetrap.bindGlobal('+g', falseDelegate(() => Stebs.state.debug()));
+        Mousetrap.bindGlobal('ctrl+j', falseDelegate(() => Stebs.state.debug()));
 
         $('#start').click(() => Stebs.state.start());
         $('#pause, #continue').click(() => Stebs.state.startOrPause());
