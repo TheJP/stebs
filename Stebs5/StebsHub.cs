@@ -69,8 +69,7 @@ namespace Stebs5
                 Assembler assembler = new Assembler(string.Empty);
                 if (assembler.execute(source, Mpm.RawInstructions))
                 {
-                    RemoveProcessor();
-                    CreateProcessor();
+                    Manager.Stop(Context.ConnectionId);
                     Clients.Caller.Assembled(Common.getCodeList().toString(), Common.getRam(), assembler.getCodeToLineArr());
                     Manager.ChangeRamContent(Context.ConnectionId, Common.getRam());
                 }
@@ -105,6 +104,7 @@ namespace Stebs5
             Manager.ChangeRunDelay(Context.ConnectionId, value);
         }
         public void GetInstructions() => Clients.Caller.Instructions(Mpm.Instructions);
+        public void GetRegisters() => Clients.Caller.Registers(RegistersExtensions.GetValues().Select(type => type.ToString()));
 
         public void AddFile(int parentId, string fileName)
         {
@@ -154,12 +154,6 @@ namespace Stebs5
                 "\n"+
                 "    END\n" +
                 " ; -------------------------------------------------------------------------");
-        }
-
-        public void LoadRegisters()
-        {
-            Clients.Caller.SetAvailableRegisters(((Registers[])Enum.GetValues(typeof(Registers)))
-                .Select(type => type.ToString()));
         }
     }
 }

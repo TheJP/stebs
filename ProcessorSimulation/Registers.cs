@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace ProcessorSimulation
 {
+    /// <summary>Extension methods for the registers enum.</summary>
+    public static class RegistersExtensions
+    {
+        public static Registers[] GetValues() => (Registers[])Enum.GetValues(typeof(Registers));
+    }
+
     public enum Registers
     {
         /// <summary>

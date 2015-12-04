@@ -88,7 +88,7 @@ module Stebs {
         /**
         * Add all available registers.
         */
-        setAvailableRegisters(registers: string[]) {
+        registers(registers: string[]) {
             registerControl.addAll(registers);
         },
 
@@ -104,6 +104,13 @@ module Stebs {
             for (var register in registerChanges) {
                 registerControl.updateRegister(register, registerChanges[register].Value);
             }
+        },
+
+        /**
+         * Called, when the processor was soft resetted.
+         * (All registers cleared, but memory unchanged.)
+         */
+        reset() {
         }
 
     };
@@ -244,10 +251,7 @@ module Stebs {
         },
 
         showOutput(text: string): void {
-            Stebs.outputView.getDoc().setValue(text);
-            //var output = $('#outputText');
-            //output.text(text);
-            //output.html(output.html().replace(/\n/g, '<br>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/\s/g, '&nbsp;'));
+            outputView.getDoc().setValue(text);
         },
 
         /**
@@ -296,6 +300,7 @@ declare var assemblerInstruction: any;
 $(document).ready(function () {
 
     var falseDelegate = (delegate: () => void) => function () { delegate(); return false; };
+
     Stebs.ui.setupCanvas();
     Stebs.ramContent.init();
 
@@ -304,15 +309,17 @@ $(document).ready(function () {
     hub.client.assembled = Stebs.clientHub.assembled;
     hub.client.assembleError = Stebs.clientHub.assembleError;
     hub.client.setFileId = Stebs.clientHub.setFileId;
-    hub.client.setAvailableRegisters = Stebs.clientHub.setAvailableRegisters;
+    hub.client.registers = Stebs.clientHub.registers;
     hub.client.updateProcessor = Stebs.clientHub.updateProcessor;
     hub.client.fileContent = Stebs.clientHub.fileContent;
 
     $.connection.hub.start().done(function () {
-        //Get available assembly instructions
-        hub.server.getInstructions();
         Stebs.fileManagement.init();
         Stebs.registerControl.init();
+
+        //Get available assembly instructions
+        hub.server.getInstructions();
+        hub.server.getRegisters();
 
         $('#speedSlider').change(() => {
             Stebs.serverHub.changeSpeed((2000 + 10) - parseInt($('#speedSlider').val()))

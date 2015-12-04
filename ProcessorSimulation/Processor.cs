@@ -93,9 +93,9 @@ namespace ProcessorSimulation
             this.ram = ram;
             this.registerFactory = registerFactory;
             //Initialize the registers dictionary with all existing registers
-            registers = registers.AddRange(
-                ((Registers[])Enum.GetValues(typeof(Registers)))
-                .Select(type => new KeyValuePair<Registers, IRegister>(type, registerFactory(type, 0))));
+            registers = registers.AddRange(RegistersExtensions.GetValues()
+                .Select(type => registerFactory(type, 0))
+                .ToDictionary(register => register.Type));
             registers = registers.SetItem(ProcessorSimulation.Registers.SP, registerFactory(ProcessorSimulation.Registers.SP, InitialStackPointer));
         }
 

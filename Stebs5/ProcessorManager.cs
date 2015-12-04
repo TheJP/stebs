@@ -22,8 +22,13 @@ namespace Stebs5
             this.Constants = constants;
             this.Clients = GlobalHost.ConnectionManager.GetHubContext<StebsHub>().Clients;
             this.Dispatcher = dispatcher;
+            this.Dispatcher.Resetted += Resetted;
             this.Dispatcher.FinishedStep += FinishedStep;
         }
+
+        /// <summary>Called, when a reset was processed</summary>
+        /// <param name="item">Processor, which was resetted.</param>
+        private void Resetted(IDispatcherItem item) => Clients.Group(item.Guid.ToString()).Reset();
 
         /// <summary>Called, when a simulation step was processed.</summary>
         /// <param name="item">Processor which was simulated</param>
