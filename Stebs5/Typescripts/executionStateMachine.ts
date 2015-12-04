@@ -97,7 +97,7 @@
         startOrPause() { this.start(); }
         start() {
             state = new RunningState();
-            serverHub.run(SimulationStepSize.Instruction);
+            serverHub.run(Stebs.ui.getStepSize());
         }
         debug() {
             state = new PausedState();
@@ -112,7 +112,7 @@
         constructor() { super([actions.pause, actions.stop], ContinuousOrSingleStep.Continuous); }
         startOrPause() {
             state = new PausedState();
-            serverHub.pause(); //TODO: individual step size
+            serverHub.pause();
         }
         stop() {
             state = new AssembledState();
@@ -127,7 +127,7 @@
         constructor() { super([actions.start, actions.continue, actions.stop, actions.microStep, actions.macroStep, actions.instructionStep], ContinuousOrSingleStep.SingleStep);}
         start() {
             state = new RunningState();
-            serverHub.run(SimulationStepSize.Instruction); //TODO: individual step size
+            serverHub.run(Stebs.ui.getStepSize());
         }
         startOrPause() { this.start(); }
         stop() {

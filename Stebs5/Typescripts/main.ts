@@ -152,6 +152,13 @@ module Stebs {
          */
         changeSpeed(speed: number) {
             $.connection.stebsHub.server.changeRunDelay(speed);
+        },
+
+        /**
+         * Changes the simulation step size. (Rsolution of the running animation.)
+         */
+        changeStepSize(stepSize: SimulationStepSize) {
+            $.connection.stebsHub.server.changeStepSize(stepSize);
         }
 
     };
@@ -241,6 +248,15 @@ module Stebs {
             //var output = $('#outputText');
             //output.text(text);
             //output.html(output.html().replace(/\n/g, '<br>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/\s/g, '&nbsp;'));
+        },
+
+        /**
+         * Reads the selected step size from the radio buttons.
+         */
+        getStepSize(): SimulationStepSize {
+            if ($('#instructionStepSpeed').prop('checked')) { return SimulationStepSize.Instruction; }
+            else if ($('#macroStepSpeed').prop('checked')) { return SimulationStepSize.Macro; }
+            else { return SimulationStepSize.Micro; }
         }
 
     };
@@ -278,7 +294,10 @@ interface MousetrapStatic {
 declare var assemblerInstruction: any;
 
 $(document).ready(function () {
+
+    var falseDelegate = (delegate: () => void) => function () { delegate(); return false; };
     Stebs.ui.setupCanvas();
+    Stebs.ramContent.init();
 
     var hub = $.connection.stebsHub;
     hub.client.instructions = Stebs.clientHub.instructions;
@@ -294,38 +313,39 @@ $(document).ready(function () {
         hub.server.getInstructions();
         Stebs.fileManagement.init();
         Stebs.registerControl.init();
+
+        $('#speedSlider').change(() => {
+            Stebs.serverHub.changeSpeed((2000 + 10) - parseInt($('#speedSlider').val()))
+        });
+        $('.stepSizeRadios input').change(() => Stebs.serverHub.changeStepSize(Stebs.ui.getStepSize()));
+        Stebs.stateInit();
+
+        Mousetrap.bindGlobal('ctrl+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
+        Mousetrap.bindGlobal('ctrl+n', falseDelegate(Stebs.fileManagement.newFile));
+        Mousetrap.bindGlobal('ctrl+s', () => console.log('save called')); //TODO: implement
+
+        $('#assemble').click(() => Stebs.state.assemble());
+        Mousetrap.bindGlobal('ctrl+b', falseDelegate(() => Stebs.state.assemble()));
+
+        $('#debug').click(() => Stebs.state.debug());
+        Mousetrap.bindGlobal('ctrl+d', falseDelegate(() => Stebs.state.debug()));
+
+        $('#start').click(() => Stebs.state.start());
+        $('#pause, #continue').click(() => Stebs.state.startOrPause());
+        Mousetrap.bind('space', falseDelegate(() => Stebs.state.startOrPause()));
+        Mousetrap.bindGlobal('ctrl+g', falseDelegate(() => Stebs.state.startOrPause()));
+
+        $('#stop').click(() => Stebs.state.stop());
+        Mousetrap.bindGlobal(['esc', 'ctrl+y'], falseDelegate(() => Stebs.state.stop()));
+
+        $('#instructionStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Instruction));
+        $('#macroStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Macro));
+        $('#microStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Micro));
     });
 
     $('#openDevices').click(Stebs.ui.toggleDevices);
     $('#openArchitecture').click(Stebs.ui.toggleArchitecture);
     $('#openOutput').click(Stebs.ui.toggleOutput);
-
-    Stebs.ramContent.init();
-    Stebs.stateInit();
-
-    var falseDelegate = (delegate: () => void) => function () { delegate(); return false; };
-
-    Mousetrap.bindGlobal('ctrl+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
-    Mousetrap.bindGlobal('ctrl+n', falseDelegate(Stebs.fileManagement.newFile));
-    Mousetrap.bindGlobal('ctrl+s', () => console.log('save called')); //TODO: implement
-
-    $('#assemble').click(() => Stebs.state.assemble());
-    Mousetrap.bindGlobal('ctrl+b', falseDelegate(() => Stebs.state.assemble()));
-
-    $('#debug').click(() => Stebs.state.debug());
-    Mousetrap.bindGlobal('ctrl+d', falseDelegate(() => Stebs.state.debug()));
-
-    $('#start').click(() => Stebs.state.start());
-    $('#pause, #continue').click(() => Stebs.state.startOrPause());
-    Mousetrap.bind('space', falseDelegate(() => Stebs.state.startOrPause()));
-    Mousetrap.bindGlobal('ctrl+g', falseDelegate(() => Stebs.state.startOrPause()));
-
-    $('#stop').click(() => Stebs.state.stop());
-    Mousetrap.bindGlobal(['esc', 'ctrl+y'], falseDelegate(() => Stebs.state.stop()));
-
-    $('#instructionStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Instruction));
-    $('#macroStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Macro));
-    $('#microStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Micro));
 
     Stebs.codeEditor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#codingTextArea').get(0), {
         lineNumbers: true,
@@ -336,9 +356,5 @@ $(document).ready(function () {
         mode: 'assembler',
         readOnly: true
     });
-
-    $('#speedSlider').change(
-        () => Stebs.serverHub.changeSpeed((2000 + 10) -  parseInt($('#speedSlider').val()))
-    );
 
 });
