@@ -67,9 +67,9 @@
          */
         registersWithoutWatches(): string[] {
             var registerNames: string[] = [];
-            for (var name in registerControl.registers) {
-                var register = registerControl.registers[name];
-                if (!register.hasWatchElemet()) { registerNames.push(name); }
+            for (var type in registerControl.registers) {
+                var register = registerControl.registers[type];
+                if (!register.hasWatchElemet()) { registerNames.push(register.getDisplayName()); }
             }
             return registerNames;
         }
@@ -86,17 +86,22 @@
 
     export class Register {
 
-        private name: string;
+        private static typeToName: { [type: string]: string } = {
+            ['Interrupt']: 'IRF', //IRF = Interrupt Flag
+            ['Status']: 'SR' //SR = Status Register
+        };
+
+        private type: string;
         private value: number;
         private watchElement: WatchElement;
 
         constructor(name: string) {
-            this.name = name;
+            this.type = name;
             this.value = 0;
         }
 
-        public getName(): string {
-            return this.name;
+        public getType(): string {
+            return this.type;
         }
 
         public getValue(): number {
@@ -122,6 +127,11 @@
         public removeWatchElement() {
             this.watchElement = null;
         }
+
+        /** Returns the name, which should be displayed for this watch element. */
+        getDisplayName(): string {
+            return this.getType() in Register.typeToName ? Register.typeToName[this.getType()] : this.getType()
+        }
     };
 
     export class WatchElement {
@@ -138,7 +148,7 @@
         }
 
         getType(): string {
-            return this.getRegister().getName();
+            return this.getRegister().getType();
         }
 
         /** Adds a new watch of this register type to the watcher elements. */
@@ -181,7 +191,7 @@
 
         /** Creates the html structure for this watch. */
         asJQuery(): JQuery {
-            var name = $('<p>').text(this.getType());
+            var name = $('<p>').text(this.getRegister().getDisplayName());
             var link = $('<a>')
                 .prop('href', '#')
                 .addClass('watch-element-value')
