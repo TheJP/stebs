@@ -21,5 +21,6 @@ namespace Stebs5
         public string InstructionsAbsolutePath => FromServerPath(InstructionsPath);
         public string Rom1AbsolutePath => FromServerPath(Rom1Path);
         public string Rom2AbsolutePath => FromServerPath(Rom2Path);
+        public TimeSpan MinimalRunDelay { get; } = TimeSpan.FromMilliseconds(10);
     }
 }

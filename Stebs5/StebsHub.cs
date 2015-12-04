@@ -81,10 +81,29 @@ namespace Stebs5
             }
         }
 
-        public void Run(SimulationStepSize stepSize) => Manager.Run(Context.ConnectionId, stepSize);
+        /// <summary>
+        /// Executes given delegate only, if a valid step size is passed.
+        /// </summary>
+        /// <param name="stepSize">Step size to check and pass.</param>
+        /// <param name="action">Action which is called with valid step size.</param>
+        private void DoWithCheckedStepSize(SimulationStepSize stepSize, Action<SimulationStepSize> action)
+        {
+            if(Enum.IsDefined(typeof(SimulationStepSize), stepSize)) { action(stepSize); }
+        }
+
+        public void Run(SimulationStepSize stepSize) => DoWithCheckedStepSize(stepSize, s => Manager.Run(Context.ConnectionId, s));
+        public void ChangeStepSize(SimulationStepSize stepSize) => DoWithCheckedStepSize(stepSize, s => Manager.ChangeSetpSize(Context.ConnectionId, s));
         public void Pause() => Manager.Pause(Context.ConnectionId);
         public void Stop() => Manager.Stop(Context.ConnectionId);
-        public void Step(SimulationStepSize stepSize) => Manager.Step(Context.ConnectionId, stepSize);
+        public void Step(SimulationStepSize stepSize) => DoWithCheckedStepSize(stepSize, s => Manager.Step(Context.ConnectionId, s));
+        /// <summary>Sets the run delay in milliseconds. The absolute minimum is defined</summary>
+        /// <param name="delay"></param>
+        public void ChangeRunDelay(uint delay)
+        {
+            var value = TimeSpan.FromMilliseconds(delay);
+            value = value < Constants.MinimalRunDelay ? Constants.MinimalRunDelay : value;
+            Manager.ChangeRunDelay(Context.ConnectionId, value);
+        }
         public void GetInstructions() => Clients.Caller.Instructions(Mpm.Instructions);
 
         public void AddFile(int parentId, string fileName)

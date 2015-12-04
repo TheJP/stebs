@@ -23,5 +23,9 @@ namespace Stebs5
         /// Absolute path to the rom2 data file. This file is used for the processor simulation.
         /// </summary>
         string Rom2AbsolutePath { get; }
+        /// <summary>
+        /// Minimal run delay, which can be set for a processor by a user.
+        /// </summary>
+        TimeSpan MinimalRunDelay { get; }
     }
 }
