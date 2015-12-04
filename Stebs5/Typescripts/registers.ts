@@ -15,17 +15,17 @@
          * Opens a dialog to select a new watch.
          */
         showWatchSelection() {
-            var registerNames = registerControl.registersWithoutWatches();
+            var registers = registerControl.registersWithoutWatches();
             $('#elementList').empty();
-            for (var i = 0; i < registerNames.length; i++) {
+            for (var i = 0; i < registers.length; i++) {
                 var link = function () {
-                    var name = registerNames[i];
+                    var register = registers[i];
                     return $('<a>')
                         .prop('href', '#')
                         .addClass('registerLink')
-                        .text(name)
+                        .text(register.getDisplayName())
                         .click(function () {
-                            registerControl.addWatch(name);
+                            registerControl.addWatch(register.getType());
                             $('#addWatches').hide();
                         });
                 } ();
@@ -39,37 +39,52 @@
         /**
          * Called when available registers are received from the server.
          */
-        addAll(registersByNames: string[]) {
-            for (var i = 0; i < registersByNames.length; i++) {
-                var newRegister = new Register(registersByNames[i]);
-                this.registers[registersByNames[i]] = newRegister;
-                if (registerControl.defaultRegisters.indexOf(registersByNames[i]) != -1) {
+        addAll(registersByTypes: string[]) {
+            for (var i = 0; i < registersByTypes.length; i++) {
+                var newRegister = new Register(registersByTypes[i]);
+                this.registers[registersByTypes[i]] = newRegister;
+                if (registerControl.defaultRegisters.indexOf(registersByTypes[i]) != -1) {
                     newRegister.addWatchElement();
+                }
+            }
+            registerControl.resetRegisters();
+        },
+
+        updateRegister(type: string, value: number) {
+            if (type in registerControl.registers) {
+                registerControl.registers[type].updateValue(value);
+                if (type == 'IP') {
+                    ramContent.setInstructionPointer(value);
+                } else if (type == 'SP') {
+                    ramContent.setStackPointer(value);
                 }
             }
         },
 
-        updateRegister(name: string, value: number) {
-            registerControl.registers[name].updateValue(value);
-            if (name == 'IP') {
-                ramContent.setInstructionPointer(value);
-            } else if (name == 'SP') {
-                ramContent.setStackPointer(value);
+        /** 
+         * Resets all registers to their initial value.
+         */
+        resetRegisters() {
+            for (var type in registerControl.registers) {
+                registerControl.registers[type].reset();
             }
+            watchControl.resetHighlighting();
         },
 
-        addWatch(name: string) {
-            registerControl.registers[name].addWatchElement();
+        addWatch(type: string) {
+            if (type in registerControl.registers) {
+                registerControl.registers[type].addWatchElement();
+            }
         },
 
         /**
          * Returns an array, which contains all register types that don't have a watch yet.
          */
-        registersWithoutWatches(): string[] {
-            var registerNames: string[] = [];
+        registersWithoutWatches(): Register[] {
+            var registerNames: Register[] = [];
             for (var type in registerControl.registers) {
                 var register = registerControl.registers[type];
-                if (!register.hasWatchElemet()) { registerNames.push(register.getDisplayName()); }
+                if (!register.hasWatchElemet()) { registerNames.push(register); }
             }
             return registerNames;
         }
@@ -78,7 +93,7 @@
     
     export var watchControl = {
 
-        resetHighlightedElements(): void {
+        resetHighlighting(): void {
             $('.watcher').removeClass('changed');
         }
 
@@ -90,6 +105,9 @@
             ['Interrupt']: 'IRF', //IRF = Interrupt Flag
             ['Status']: 'SR' //SR = Status Register
         };
+        private static watchFactories: { [type: string]: (register: Register) => WatchElement } = {
+            ['Status']: (register) => new StatusWatchElement(register)
+        }
 
         private type: string;
         private value: number;
@@ -115,12 +133,19 @@
         public updateValue(newValue: number) {
             this.value = newValue;
             if (this.watchElement != null) {
-                this.watchElement.update();
+                this.watchElement.changed();
             }
         }
 
+        /** Resets the value of this register to the initial state. */
+        public reset() {
+            if (this.getType() == 'SP') { this.updateValue(0xbf); }
+            else { this.updateValue(0); }
+        }
+
         public addWatchElement() {
-            this.watchElement = new WatchElement(this);
+            if (this.getType() in Register.watchFactories) { this.watchElement = Register.watchFactories[this.getType()](this); }
+            else { this.watchElement = new WatchElement(this); }
             this.watchElement.show();
         }
 
@@ -151,9 +176,22 @@
             return this.getRegister().getType();
         }
 
+        isShowBinary(): boolean {
+            return this.showBinary;
+        }
+
+        setShowBinary(value: boolean) {
+            this.showBinary = value;
+            this.update();
+        }
+
+        /** Toggles element between binary and hex representation. */
+        toggleRepresentation(): void { this.setShowBinary(!this.isShowBinary()); }
+
         /** Adds a new watch of this register type to the watcher elements. */
         show(): void {
             $('#watcher-elements').append(this.asJQuery());
+            this.update();
         }
 
         /** Removes this watch from the watcher elements. */
@@ -165,13 +203,11 @@
         /** Updates the view of this watcher element. */
         update(): void {
             $('#watch-' + this.getType() + ' .watch-element-value').text(this.getValueFormated());
-            $('#watch-' + this.getType()).addClass('changed');
         }
 
-        /** Toggles element between binary and hex representation. */
-        toggleBinaryOrHex(): void {
-            this.showBinary = !this.showBinary;
-            $('#watch-' + this.getType() + ' .watch-element-value').text(this.getValueFormated())
+        changed(): void {
+            $('#watch-' + this.getType()).addClass('changed');
+            this.update();
         }
 
         /**
@@ -196,19 +232,42 @@
                 .prop('href', '#')
                 .addClass('watch-element-value')
                 .text(this.getValueFormated())
-                .click(() => this.toggleBinaryOrHex());
+                .click(() => this.toggleRepresentation());
             var closeButton = $('<button>')
                 .text('x')
                 .click(() => this.remove());
-            var element = $('<div>')
+            return $('<div>')
                 .prop('id', 'watch-' + this.getType())
                 .addClass('watcher')
                 .append(closeButton)
                 .append(name)
                 .append(link);
-            return element;
         }
 
+    }
+
+    enum StatusWatchStates { Custom, Hex, Bin };
+
+    class StatusWatchElement extends WatchElement {
+
+        private state = StatusWatchStates.Custom
+
+        /** Toggles between the three possible states. */
+        toggleRepresentation() {
+            if (this.state == StatusWatchStates.Custom) { this.state = StatusWatchStates.Bin; this.setShowBinary(true); }
+            else if (this.state == StatusWatchStates.Bin) { this.state = StatusWatchStates.Hex; this.setShowBinary(false); }
+            else { this.state = StatusWatchStates.Custom; this.setShowBinary(false); }
+        }
+
+        update() {
+            if (this.state != StatusWatchStates.Custom) { super.update(); return; }
+            var value = this.getRegister().getValue();
+            var interrupt = (value & 16) > 0 ? 1 : 0;
+            var signed = (value & 8) > 0 ? 1 : 0;
+            var overflow = (value & 4) > 0 ? 1 : 0;
+            var zero = (value & 2) > 0 ? 1 : 0;
+            $('#watch-' + this.getType() + ' .watch-element-value').text('I:' + interrupt + ' S:' + signed + ' O:' + overflow + ' Z:' + zero);
+        }
     }
     
 }

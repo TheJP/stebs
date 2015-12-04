@@ -307,14 +307,14 @@ html, body, #canvas {
 .runAndDebug #watcher-container #watcher-elements {
     height: 100%;
     float: left;
-    max-width: calc(100% - 100px);
+    max-width: calc(100% - 68px);
 }
 
 .runAndDebug #watcher-container .watcher {
     float: left;
     position: relative;
     border: 1px solid black;
-    min-width: 88px;
+    min-width: 56px;
     height: 40px;
     padding-left: 2px;
     padding-right: 2px;
@@ -356,7 +356,7 @@ html, body, #canvas {
 .runAndDebug #watcher-container #addWatchElement button {
     position: relative;
     display: block;
-    width: 88px;
+    width: 56px;
     height: 40px;
 }
 

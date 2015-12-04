@@ -84,7 +84,7 @@ namespace ProcessorDispatcher
 
         /// <summary>Notifies, when a reset request finished execution.</summary>
         /// <param name="item">Processor, which was resetted.</param>
-        private void NotifyFinishedStep(IDispatcherItem item)
+        private void NotifyResetted(IDispatcherItem item)
         {
             Action<IDispatcherItem> handler;
             lock (eventLock)
@@ -199,6 +199,7 @@ namespace ProcessorDispatcher
                 if(processors.TryGetValue(guid, out item))
                 {
                     simulator.SoftReset(item.Processor);
+                    NotifyResetted(item);
                 }
             }
         }

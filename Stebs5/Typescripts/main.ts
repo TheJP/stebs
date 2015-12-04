@@ -97,7 +97,7 @@ module Stebs {
          */
         updateProcessor(stepSize: SimulationStepSize, ramChanges: { [address: number]: number }, registerChanges: { [register: string]: { Type: number, Value: number } }) {
             Stebs.ramContent.resetHighlights();
-            Stebs.watchControl.resetHighlightedElements();
+            Stebs.watchControl.resetHighlighting();
             for (var address in ramChanges) {
                 ramContent.setRamAt(address, ramChanges[address]);
             }
@@ -111,6 +111,7 @@ module Stebs {
          * (All registers cleared, but memory unchanged.)
          */
         reset() {
+            registerControl.resetRegisters();
         }
 
     };
@@ -303,6 +304,7 @@ $(document).ready(function () {
 
     Stebs.ui.setupCanvas();
     Stebs.ramContent.init();
+    Stebs.stateInit();
 
     var hub = $.connection.stebsHub;
     hub.client.instructions = Stebs.clientHub.instructions;
@@ -312,6 +314,7 @@ $(document).ready(function () {
     hub.client.registers = Stebs.clientHub.registers;
     hub.client.updateProcessor = Stebs.clientHub.updateProcessor;
     hub.client.fileContent = Stebs.clientHub.fileContent;
+    hub.client.reset = Stebs.clientHub.reset;
 
     $.connection.hub.start().done(function () {
         Stebs.fileManagement.init();
@@ -325,7 +328,6 @@ $(document).ready(function () {
             Stebs.serverHub.changeSpeed((2000 + 10) - parseInt($('#speedSlider').val()))
         });
         $('.stepSizeRadios input').change(() => Stebs.serverHub.changeStepSize(Stebs.ui.getStepSize()));
-        Stebs.stateInit();
 
         Mousetrap.bindGlobal('ctrl+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
         Mousetrap.bindGlobal('ctrl+n', falseDelegate(Stebs.fileManagement.newFile));
