@@ -324,11 +324,6 @@ $(document).ready(function () {
         hub.server.getInstructions();
         hub.server.getRegisters();
 
-        $('#speedSlider').change(() => {
-            Stebs.serverHub.changeSpeed((2000 + 10) - parseInt($('#speedSlider').val()))
-        });
-        $('.stepSizeRadios input').change(() => Stebs.serverHub.changeStepSize(Stebs.ui.getStepSize()));
-
         Mousetrap.bindGlobal('ctrl+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
         Mousetrap.bindGlobal('ctrl+n', falseDelegate(Stebs.fileManagement.newFile));
         Mousetrap.bindGlobal('ctrl+s', () => console.log('save called')); //TODO: implement
@@ -337,7 +332,7 @@ $(document).ready(function () {
         Mousetrap.bindGlobal('ctrl+b', falseDelegate(() => Stebs.state.assemble()));
 
         $('#debug').click(() => Stebs.state.debug());
-        Mousetrap.bindGlobal('ctrl+d', falseDelegate(() => Stebs.state.debug()));
+        Mousetrap.bindGlobal('+g', falseDelegate(() => Stebs.state.debug()));
 
         $('#start').click(() => Stebs.state.start());
         $('#pause, #continue').click(() => Stebs.state.startOrPause());
@@ -345,11 +340,16 @@ $(document).ready(function () {
         Mousetrap.bindGlobal('ctrl+g', falseDelegate(() => Stebs.state.startOrPause()));
 
         $('#stop').click(() => Stebs.state.stop());
-        Mousetrap.bindGlobal(['esc', 'ctrl+y'], falseDelegate(() => Stebs.state.stop()));
+        Mousetrap.bindGlobal(['esc', 'ctrl+h'], falseDelegate(() => Stebs.state.stop()));
 
         $('#instructionStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Instruction));
         $('#macroStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Macro));
         $('#microStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Micro));
+
+        $('#speedSlider').change(() => {
+            Stebs.serverHub.changeSpeed((2000 + 10) - parseInt($('#speedSlider').val()))
+        });
+        $('.stepSizeRadios input').change(() => Stebs.serverHub.changeStepSize(Stebs.ui.getStepSize()));
     });
 
     $('#openDevices').click(Stebs.ui.toggleDevices);
@@ -363,7 +363,8 @@ $(document).ready(function () {
     Stebs.outputView = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#outputTextArea').get(0), {
         lineNumbers: true,
         mode: 'assembler',
-        readOnly: true
+        readOnly: true,
+        cursorBlinkRate: -1
     });
 
 });

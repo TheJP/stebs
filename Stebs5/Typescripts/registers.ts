@@ -2,6 +2,8 @@
 
     export var registerControl = {
 
+        InitialStackPointer: 0xbf,
+
         registers: <{ [register: string]: Register }>{},
         defaultRegisters: ['AL', 'BL', 'CL', 'DL', 'IP', 'SP'],
         propagateToRam: ['IP', 'SP'],
@@ -69,6 +71,8 @@
                 registerControl.registers[type].reset();
             }
             watchControl.resetHighlighting();
+            ramContent.setInstructionPointer(0);
+            ramContent.setStackPointer(registerControl.InitialStackPointer);
         },
 
         addWatch(type: string) {
@@ -139,7 +143,7 @@
 
         /** Resets the value of this register to the initial state. */
         public reset() {
-            if (this.getType() == 'SP') { this.updateValue(0xbf); }
+            if (this.getType() == 'SP') { this.updateValue(registerControl.InitialStackPointer); }
             else { this.updateValue(0); }
         }
 
