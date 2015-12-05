@@ -5,7 +5,7 @@
         InitialStackPointer: 0xbf,
 
         registers: <{ [register: string]: Register }>{},
-        defaultRegisters: ['AL', 'BL', 'CL', 'DL', 'IP', 'SP'],
+        defaultRegisters: ['AL', 'BL', 'CL', 'DL', 'IP', 'SP', 'Status'],
         propagateToRam: ['IP', 'SP'],
 
         init(): void {
