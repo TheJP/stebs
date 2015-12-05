@@ -326,7 +326,7 @@ $(document).ready(function () {
 
         Mousetrap.bindGlobal('ctrl+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
         Mousetrap.bindGlobal('ctrl+n', falseDelegate(Stebs.fileManagement.newFile));
-        Mousetrap.bindGlobal('ctrl+s', () => console.log('save called')); //TODO: implement
+        Mousetrap.bindGlobal('ctrl+s', falseDelegate(() => console.log('save called'))); //TODO: implement
 
         $('#assemble').click(() => Stebs.state.assemble());
         Mousetrap.bindGlobal('ctrl+b', falseDelegate(() => Stebs.state.assemble()));
