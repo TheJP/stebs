@@ -109,7 +109,12 @@
      * Running simulation state.
      */
     class RunningState extends StateAdapter {
-        constructor() { super([actions.pause, actions.stop], ContinuousOrSingleStep.Continuous); }
+        constructor() { super([actions.pause, actions.stop, actions.assemble], ContinuousOrSingleStep.Continuous); }
+        assemble() {
+            state = new InitialState();
+            serverHub.stop();
+            state.assemble();
+        }
         startOrPause() {
             state = new PausedState();
             serverHub.pause();
@@ -124,7 +129,12 @@
      * Paused / Single step simulation state.
      */
     class PausedState extends StateAdapter {
-        constructor() { super([actions.start, actions.continue, actions.stop, actions.microStep, actions.macroStep, actions.instructionStep], ContinuousOrSingleStep.SingleStep);}
+        constructor() { super([actions.start, actions.continue, actions.stop, actions.assemble, actions.microStep, actions.macroStep, actions.instructionStep], ContinuousOrSingleStep.SingleStep); }
+        assemble() {
+            state = new InitialState();
+            serverHub.stop();
+            state.assemble();
+        }
         start() {
             state = new RunningState();
             serverHub.run(Stebs.ui.getStepSize());
