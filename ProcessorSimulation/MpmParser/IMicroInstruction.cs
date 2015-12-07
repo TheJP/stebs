@@ -23,8 +23,8 @@ namespace ProcessorSimulation.MpmParser
         JumpCriterion JumpCriterion { get; }
         /// <summary>Clear interrupt flag</summary>
         bool ClearInterrupt { get; }
-        /// <summary>Affected Flag</summary>
-        bool Affected { get; }
+        /// <summary>Determines, if the ALU instruction (if not <see cref="AluCmd.NOP"/>) affects the status flags</summary>
+        bool AffectFlags { get; }
         /// <summary>Defines which alu command to use in alu micro instructions</summary>
         AluCmd AluCommand { get; }
         /// <summary>Source where the data is read from with this micro instruction</summary>

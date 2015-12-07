@@ -92,7 +92,7 @@ namespace ProcessorSimulation
                 var status = new StatusRegister(processor.Registers[Registers.Status]);
                 var result = processor.Alu.Execute(mpmEntry.AluCommand, (byte)processor.Registers[Registers.X].Value, (byte)processor.Registers[Registers.Y].Value, ref status);
                 session.SetRegister(Registers.RES, result);
-                session.SetRegister(status.Register);
+                if (mpmEntry.AffectFlags) { session.SetRegister(status.Register); }
             }
             //TODO: Implement halt
             processor.NotifySimulationStateChanged(SimulationState.Stopped, SimulationStepSize.Micro);

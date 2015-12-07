@@ -19,7 +19,7 @@ namespace ProcessorSimulation.MpmParser
         public int Value { get; }
         public JumpCriterion JumpCriterion { get; }
         public bool ClearInterrupt { get; }
-        public bool Affected { get; }
+        public bool AffectFlags { get; }
         public AluCmd AluCommand { get; }
         public Source Source { get; }
         public Destination Destination { get; }
@@ -37,7 +37,7 @@ namespace ProcessorSimulation.MpmParser
             this.Value = value;
             this.JumpCriterion = jumpCriterion;
             this.ClearInterrupt = clearInterrupt;
-            this.Affected = affected;
+            this.AffectFlags = affected;
             this.AluCommand = aluCommand;
             this.Source = source;
             this.Destination = destination;
