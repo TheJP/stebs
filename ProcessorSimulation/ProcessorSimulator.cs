@@ -43,12 +43,10 @@ namespace ProcessorSimulation
         {
             using (var session = processor.CreateSession())
             {
-                processor.NotifySimulationStateChanged(SimulationState.Started, SimulationStepSize.Instruction);
                 do
                 {
                     ExecuteMicroStep(processor, session);
                 } while (processor.Registers[Registers.MIP].Value != 0);
-                processor.NotifySimulationStateChanged(SimulationState.Stopped, SimulationStepSize.Instruction);
             }
         }
 
@@ -56,12 +54,10 @@ namespace ProcessorSimulation
         {
             using (var session = processor.CreateSession())
             {
-                processor.NotifySimulationStateChanged(SimulationState.Started, SimulationStepSize.Macro);
                 do
                 {
                     ExecuteMicroStep(processor, session);
                 } while (processor.Registers[Registers.MIP].Value % 8 != 0);
-                processor.NotifySimulationStateChanged(SimulationState.Stopped, SimulationStepSize.Macro);
             }
         }
 
@@ -75,7 +71,6 @@ namespace ProcessorSimulation
 
         private void ExecuteMicroStep(IProcessor processor, IProcessorSession session)
         {
-            processor.NotifySimulationStateChanged(SimulationState.Started, SimulationStepSize.Micro);
             var mpmEntry = mpm.MicroInstructions[(int)processor.Registers[Registers.MIP].Value];
             //Transfer data from source to target
             session.SetRegister(Registers.MIP, NextMip(processor, mpmEntry));
@@ -95,7 +90,7 @@ namespace ProcessorSimulation
                 if (mpmEntry.AffectFlags) { session.SetRegister(status.Register); }
             }
             //TODO: Implement halt
-            processor.NotifySimulationStateChanged(SimulationState.Stopped, SimulationStepSize.Micro);
+            //TODO: notify halt
         }
 
         /// <summary>

@@ -10,8 +10,8 @@ namespace ProcessorSimulation
     {
         /// <summary>Event that is fired, when a register changed.</summary>
         event Action<IProcessor, IRegister> RegisterChanged;
-        /// <summary>Event, that is fired, when a step is started/stopped by the simulator.</summary>
-        event Action<IProcessor, SimulationState, SimulationStepSize> SimulationStateChanged;
+        /// <summary>Event, that is fired, when the halt instruction was simulated.</summary>
+        event Action<IProcessor> Halted;
 
         IAlu Alu { get; }
         IReadOnlyRam Ram { get; }
@@ -24,9 +24,7 @@ namespace ProcessorSimulation
         /// <remarks>This method can block, because only one session should exist and it should be used by one thread only.</remarks>
         IProcessorSession CreateSession();
 
-        /// <summary>Notifies, that the simulator started/stopped a simulation step.</summary>
-        /// <param name="state">State in which the current simulation is.</param>
-        /// <param name="stepSize">Step size which is beeing simulated.</param>
-        void NotifySimulationStateChanged(SimulationState state, SimulationStepSize stepSize);
+        /// <summary>Notifies, that the simulaton is stopped by a halt instruction.</summary>
+        void NotifyHalt();
     }
 }
