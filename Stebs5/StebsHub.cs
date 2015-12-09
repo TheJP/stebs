@@ -144,9 +144,9 @@ Init:
     MOV CL, 00 ; Result
     MOV DL, 40 ; RAM Position
 
-    MOV[DL], AL
+    MOV [DL], AL
     INC DL
-    MOV[DL], BL
+    MOV [DL], BL
 
 Loop:
 
@@ -156,7 +156,7 @@ Loop:
     ADD CL, AL
     ADD CL, BL
     INC DL
-    MOV[DL], CL
+    MOV [DL], CL
 
     ; Prepare AL and BL for the next step
     MOV AL, BL

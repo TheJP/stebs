@@ -57,6 +57,8 @@ namespace ProcessorSimulation
             get { return registers; }
         }
 
+        public bool IsHalted { get; private set; }
+
         /// <summary>Processor constructor with needed dependencies.</summary>
         /// <param name="alu">Alu, which is used for calculations in this processor.</param>
         /// <param name="ram">Ram, which is used as memory for this processor.</param>
@@ -98,7 +100,8 @@ namespace ProcessorSimulation
             }
         }
 
-        public void NotifyHalt()
+        /// <summary>Notifies, that the simulaton is stopped by a halt instruction.</summary>
+        private void NotifyHalt()
         {
             Action<IProcessor> handler;
             lock (eventLock)
@@ -182,6 +185,12 @@ namespace ProcessorSimulation
             {
                 Processor.registers = Processor.registers.SetItem(register.Type, register);
                 Processor.NotifyRegisterChanged(register);
+            }
+
+            public void SetHalted(bool value)
+            {
+                Processor.IsHalted = value;
+                if (value) { Processor.NotifyHalt(); }
             }
         }
     }

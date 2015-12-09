@@ -16,6 +16,10 @@ namespace ProcessorSimulation
         IAlu Alu { get; }
         IReadOnlyRam Ram { get; }
         IDictionary<Registers, IRegister> Registers { get; }
+
+        /// <summary>Determines, if the processor stopped execution by executing a HALT instruction.</summary>
+        bool IsHalted { get; }
+
         /// <summary>Returns the initial value of the stack pointer.</summary>
         uint InitialStackPointer { get; }
 
@@ -23,8 +27,5 @@ namespace ProcessorSimulation
         /// <returns>Session instance</returns>
         /// <remarks>This method can block, because only one session should exist and it should be used by one thread only.</remarks>
         IProcessorSession CreateSession();
-
-        /// <summary>Notifies, that the simulaton is stopped by a halt instruction.</summary>
-        void NotifyHalt();
     }
 }

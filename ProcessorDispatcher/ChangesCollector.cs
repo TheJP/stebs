@@ -14,6 +14,7 @@ namespace ProcessorDispatcher
         public IReadOnlyDictionary<byte, byte> RamChanges => new ReadOnlyDictionary<byte, byte>(ramChanges);
         private Dictionary<Registers, IRegister> registerChanges = new Dictionary<Registers, IRegister>();
         public IReadOnlyDictionary<Registers, IRegister> RegisterChanges => new ReadOnlyDictionary<Registers, IRegister>(registerChanges);
+        public bool IsHalted { get; private set; }
 
         private IProcessor processor = null;
 
@@ -23,14 +24,17 @@ namespace ProcessorDispatcher
             this.processor = processor;
             processor.RegisterChanged += RegisterChanged;
             processor.Ram.RamChanged += RamChanged;
+            processor.Halted += Halted;
             ramChanges.Clear();
             registerChanges.Clear();
+            IsHalted = false;
         }
 
         public void Unbind()
         {
             processor.RegisterChanged -= RegisterChanged;
             processor.Ram.RamChanged -= RamChanged;
+            processor.Halted -= Halted;
         }
 
         private void RegisterChanged(IProcessor processor, IRegister register)
@@ -41,6 +45,11 @@ namespace ProcessorDispatcher
         private void RamChanged(byte address, byte value)
         {
             ramChanges[address] = value;
+        }
+
+        private void Halted(IProcessor processor)
+        {
+            IsHalted = true;
         }
     }
 }

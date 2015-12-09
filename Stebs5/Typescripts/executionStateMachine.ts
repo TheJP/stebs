@@ -11,6 +11,7 @@
         debug(): void;
         startOrPause(): void;
         stop(): void;
+        halted(): void;
         singleStep(stepSize: SimulationStepSize): void;
     }
 
@@ -69,6 +70,7 @@
         debug() { }
         startOrPause() { }
         stop() { }
+        halted() { }
         singleStep(stepSize: SimulationStepSize) { }
     }
 
@@ -123,6 +125,9 @@
             state = new AssembledState();
             serverHub.stop();
         }
+        halted() {
+            state = new InitialState();
+        }
     }
 
     /**
@@ -146,6 +151,9 @@
         }
         singleStep(stepSize: SimulationStepSize) {
             serverHub.singleStep(stepSize);
+        }
+        halted() {
+            state = new InitialState();
         }
     }
 }

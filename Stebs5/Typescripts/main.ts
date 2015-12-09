@@ -112,6 +112,21 @@ module Stebs {
          */
         reset() {
             registerControl.resetRegisters();
+        },
+
+        /**
+         * Called, when the processor was halted.
+         */
+        halt() {
+            state.halted();
+        },
+
+        /**
+         * Called, when the processor was hard resetted.
+         * (All registers and complete memory cleared.)
+         */
+        hardReset() {
+            //TODO: Implement
         }
 
     };
@@ -315,6 +330,8 @@ $(document).ready(function () {
     hub.client.updateProcessor = Stebs.clientHub.updateProcessor;
     hub.client.fileContent = Stebs.clientHub.fileContent;
     hub.client.reset = Stebs.clientHub.reset;
+    hub.client.halt = Stebs.clientHub.halt;
+    hub.client.hardReset = Stebs.clientHub.hardReset;
 
     $.connection.hub.start().done(function () {
         Stebs.fileManagement.init();

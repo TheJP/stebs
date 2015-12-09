@@ -18,6 +18,13 @@ namespace ProcessorSimulation
         void SetRegister(IRegister register);
 
         /// <summary>
+        /// Sets the IsHalted flag on the processor to the given value
+        /// and notifies about the change with the Halted event.
+        /// </summary>
+        /// <param name="value"></param>
+        void SetHalted(bool value);
+
+        /// <summary>
         /// Session instance, that allows write access to the ram, used by the accessed processor.
         /// </summary>
         IRamSession RamSession { get; }

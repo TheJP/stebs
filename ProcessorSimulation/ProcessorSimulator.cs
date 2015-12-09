@@ -46,7 +46,7 @@ namespace ProcessorSimulation
                 do
                 {
                     ExecuteMicroStep(processor, session);
-                } while (processor.Registers[Registers.MIP].Value != 0);
+                } while (processor.Registers[Registers.MIP].Value != 0 && !processor.IsHalted);
             }
         }
 
@@ -57,7 +57,7 @@ namespace ProcessorSimulation
                 do
                 {
                     ExecuteMicroStep(processor, session);
-                } while (processor.Registers[Registers.MIP].Value % 8 != 0);
+                } while (processor.Registers[Registers.MIP].Value % 8 != 0 && !processor.IsHalted);
             }
         }
 
@@ -72,6 +72,9 @@ namespace ProcessorSimulation
         private void ExecuteMicroStep(IProcessor processor, IProcessorSession session)
         {
             var mpmEntry = mpm.MicroInstructions[(int)processor.Registers[Registers.MIP].Value];
+            //Halt processor, if halt instruction was reached
+            if (IsHalt(mpmEntry, processor)) { session.SetHalted(true); }
+            if (processor.IsHalted) { return; }
             //Transfer data from source to target
             session.SetRegister(Registers.MIP, NextMip(processor, mpmEntry));
             var dataBus = mpmEntry.EnableValue ? (uint)mpmEntry.Value : GetDataBusValue(processor, mpmEntry);
@@ -92,6 +95,14 @@ namespace ProcessorSimulation
             //TODO: Implement halt
             //TODO: notify halt
         }
+
+        /// <summary>
+        /// Checks if the processor reched a state in which it should be halted.
+        /// </summary>
+        /// <param name="mpmEntry"></param>
+        /// <param name="processor"></param>
+        /// <returns></returns>
+        private bool IsHalt(IMicroInstruction mpmEntry, IProcessor processor) => mpmEntry.NextAddress == NextAddress.Decode && processor.Registers[Registers.IR].Value == 0;
 
         /// <summary>
         /// Calculates the next micro instruction pointer (MIP).
@@ -211,6 +222,7 @@ namespace ProcessorSimulation
                 {
                     session.SetRegister(type, type == Registers.SP ? processor.InitialStackPointer : 0);
                 }
+                session.SetHalted(false);
             }
         }
     }
