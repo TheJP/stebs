@@ -55,6 +55,7 @@ module Stebs {
          * Server finished assembling the sent source.
          */
         assembled(result: string, ram: number[], code2Line: number[]): void {
+            Stebs.outputView.setOption('mode', 'assembler');
             ui.openOutput();
             ui.showOutput(result);
             ramContent.setContent(ram);
@@ -66,6 +67,7 @@ module Stebs {
          * The sent source contains syntax errors. The assembling failed.
          */
         assembleError(error: string): void {
+            Stebs.outputView.setOption('mode', 'none');
             ui.openOutput();
             ui.showOutput(error);
         },
