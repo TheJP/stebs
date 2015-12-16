@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessorSimulation", "Proc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessorDispatcher", "ProcessorDispatcher\ProcessorDispatcher.csproj", "{ED8B7E99-EA6B-4F79-9507-D83B985C4621}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stebs5Model", "Stebs5Model\Stebs5Model.csproj", "{1B148617-99CF-4E49-BD86-491C9498D8C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{ED8B7E99-EA6B-4F79-9507-D83B985C4621}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED8B7E99-EA6B-4F79-9507-D83B985C4621}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED8B7E99-EA6B-4F79-9507-D83B985C4621}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B148617-99CF-4E49-BD86-491C9498D8C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B148617-99CF-4E49-BD86-491C9498D8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B148617-99CF-4E49-BD86-491C9498D8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B148617-99CF-4E49-BD86-491C9498D8C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
