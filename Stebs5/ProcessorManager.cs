@@ -22,13 +22,28 @@ namespace Stebs5
             this.Constants = constants;
             this.Clients = GlobalHost.ConnectionManager.GetHubContext<StebsHub>().Clients;
             this.Dispatcher = dispatcher;
-            this.Dispatcher.Resetted += Resetted;
+            this.Dispatcher.StateChanged += StateChanged;
             this.Dispatcher.FinishedStep += FinishedStep;
         }
 
-        /// <summary>Called, when a reset was processed</summary>
-        /// <param name="item">Processor, which was resetted.</param>
-        private void Resetted(IDispatcherItem item) => Clients.Group(item.Guid.ToString()).Reset();
+        /// <summary>Called, when a reset or halt was processed.</summary>
+        /// <param name="item">Processor, which was resetted/halted.</param>
+        private void StateChanged(IDispatcherItem item, StateChange stateChange)
+        {
+            var group = Clients.Group(item.Guid.ToString());
+            switch (stateChange)
+            {
+                case StateChange.SoftReset:
+                    group.Reset();
+                    break;
+                case StateChange.Halt:
+                    group.Halt();
+                    break;
+                case StateChange.HardReset:
+                    group.HardReset();
+                    break;
+            }
+        }
 
         /// <summary>Called, when a simulation step was processed.</summary>
         /// <param name="item">Processor which was simulated</param>

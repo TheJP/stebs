@@ -32,5 +32,10 @@ namespace ProcessorDispatcher
         /// Changes that happened to the registers during the subscribed phase.
         /// </summary>
         IReadOnlyDictionary<Registers, IRegister> RegisterChanges { get; }
+
+        /// <summary>
+        /// Determines, if the processor halted in the current step.
+        /// </summary>
+        bool IsHalted { get; }
     }
 }

@@ -49,16 +49,16 @@ namespace ProcessorDispatcher
             }
         }
 
-        private Action<IDispatcherItem> resetted;
-        public event Action<IDispatcherItem> Resetted
+        private Action<IDispatcherItem, StateChange> stateChanged;
+        public event Action<IDispatcherItem, StateChange> StateChanged
         {
             add
             {
-                lock (eventLock) { resetted += value; }
+                lock (eventLock) { stateChanged += value; }
             }
             remove
             {
-                lock (eventLock) { resetted -= value; }
+                lock (eventLock) { stateChanged -= value; }
             }
         }
 
@@ -82,18 +82,18 @@ namespace ProcessorDispatcher
             }
         }
 
-        /// <summary>Notifies, when a reset request finished execution.</summary>
-        /// <param name="item">Processor, which was resetted.</param>
-        private void NotifyResetted(IDispatcherItem item)
+        /// <summary>Notifies, when a reset or halt request finished execution.</summary>
+        /// <param name="item">Processor, which changed.</param>
+        private void NotifyStateChanged(IDispatcherItem item, StateChange stateChange)
         {
-            Action<IDispatcherItem> handler;
+            Action<IDispatcherItem, StateChange> handler;
             lock (eventLock)
             {
-                handler = resetted;
+                handler = stateChanged;
             }
             if (handler != null)
             {
-                handler(item);
+                handler(item, stateChange);
             }
         }
         #endregion
@@ -199,7 +199,7 @@ namespace ProcessorDispatcher
                 if(processors.TryGetValue(guid, out item))
                 {
                     simulator.SoftReset(item.Processor);
-                    NotifyResetted(item);
+                    NotifyStateChanged(item, StateChange.SoftReset);
                 }
             }
         }
@@ -241,6 +241,11 @@ namespace ProcessorDispatcher
                     }
                     collector.Unbind();
                     NotifyFinishedStep(item, execution.Value, collector.RamChanges, collector.RegisterChanges);
+                    if (collector.IsHalted)
+                    {
+                        Update(item.Guid, i => i.SetRunning(false));
+                        NotifyStateChanged(item, StateChange.Halt);
+                    }
                     lastExecutions[item.Guid] = DateTime.Now;
                 }
             }

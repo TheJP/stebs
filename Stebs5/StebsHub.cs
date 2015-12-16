@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace Stebs5
 {
+    /// <summary>
+    /// Cnentral communication interface between client and server.
+    /// </summary>
     public class StebsHub : Hub
     {
         private IConstants Constants { get; }
@@ -62,8 +65,15 @@ namespace Stebs5
             return base.OnDisconnected(stopCalled);
         }
 
+        /// <summary>
+        /// Assemble the given source from the client.
+        /// The assembly file does not have to be saved: That's why the source is submitted as string,
+        /// so an unfinished program can be assembled and tested before saving it.
+        /// </summary>
+        /// <param name="source">Source code in assembly.</param>
         public void Assemble(string source)
         {
+            //The assembling is globaly locked, because of the way the assembler is implemented
             lock (typeof(Common))
             {
                 Assembler assembler = new Assembler(string.Empty);
@@ -134,9 +144,9 @@ Init:
     MOV CL, 00 ; Result
     MOV DL, 40 ; RAM Position
 
-    MOV[DL], AL
+    MOV [DL], AL
     INC DL
-    MOV[DL], BL
+    MOV [DL], BL
 
 Loop:
 
@@ -146,7 +156,7 @@ Loop:
     ADD CL, AL
     ADD CL, BL
     INC DL
-    MOV[DL], CL
+    MOV [DL], CL
 
     ; Prepare AL and BL for the next step
     MOV AL, BL

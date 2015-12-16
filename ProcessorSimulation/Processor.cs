@@ -29,42 +29,16 @@ namespace ProcessorSimulation
             }
         }
 
-        private Action<IProcessor, SimulationState, SimulationStepSize> simulationStateChanged;
-        public event Action<IProcessor, SimulationState, SimulationStepSize> SimulationStateChanged
+        private Action<IProcessor> halted;
+        public event Action<IProcessor> Halted
         {
             add
             {
-                lock (eventLock) { simulationStateChanged += value; }
+                lock (eventLock) { halted += value; }
             }
             remove
             {
-                lock (eventLock) { simulationStateChanged -= value; }
-            }
-        }
-
-        private Action<IProcessor> macroStepStarted;
-        public event Action<IProcessor> MacroStepStarted
-        {
-            add
-            {
-                lock (eventLock) { macroStepStarted += value; }
-            }
-            remove
-            {
-                lock (eventLock) { macroStepStarted -= value; }
-            }
-        }
-
-        private Action<IProcessor> instructionStepStarted;
-        public event Action<IProcessor> InstructionStepStarted
-        {
-            add
-            {
-                lock (eventLock) { instructionStepStarted += value; }
-            }
-            remove
-            {
-                lock (eventLock) { instructionStepStarted -= value; }
+                lock (eventLock) { halted -= value; }
             }
         }
         #endregion
@@ -82,6 +56,8 @@ namespace ProcessorSimulation
         {
             get { return registers; }
         }
+
+        public bool IsHalted { get; private set; }
 
         /// <summary>Processor constructor with needed dependencies.</summary>
         /// <param name="alu">Alu, which is used for calculations in this processor.</param>
@@ -124,19 +100,17 @@ namespace ProcessorSimulation
             }
         }
 
-        /// <summary>Notifies, that the simulator started/stopped a simulation step.</summary>
-        /// <param name="state">State in which the current simulation is.</param>
-        /// <param name="stepSize">Step size which is beeing simulated.</param>
-        public void NotifySimulationStateChanged(SimulationState state, SimulationStepSize stepSize)
+        /// <summary>Notifies, that the simulaton is stopped by a halt instruction.</summary>
+        private void NotifyHalt()
         {
-            Action<IProcessor, SimulationState, SimulationStepSize> handler;
+            Action<IProcessor> handler;
             lock (eventLock)
             {
-                handler = simulationStateChanged;
+                handler = halted;
             }
             if (handler != null)
             {
-                handler(this, state, stepSize);
+                handler(this);
             }
         }
 
@@ -211,6 +185,12 @@ namespace ProcessorSimulation
             {
                 Processor.registers = Processor.registers.SetItem(register.Type, register);
                 Processor.NotifyRegisterChanged(register);
+            }
+
+            public void SetHalted(bool value)
+            {
+                Processor.IsHalted = value;
+                if (value) { Processor.NotifyHalt(); }
             }
         }
     }

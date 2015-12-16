@@ -22,9 +22,9 @@ namespace ProcessorDispatcher
         event Action<IDispatcherItem, SimulationStepSize, IReadOnlyDictionary<byte, byte>, IReadOnlyDictionary<Registers, IRegister>> FinishedStep;
 
         /// <summary>
-        /// Event, which is fired, when the <see cref="IDispatcher"/> finished resetting a processor.
+        /// Event, which is fired, when the <see cref="IDispatcher"/> finished resetting or halting a processor.
         /// </summary>
-        event Action<IDispatcherItem> Resetted;
+        event Action<IDispatcherItem, StateChange> StateChanged;
 
         /// <summary>
         /// Add a <see cref="IProcessor"/> to be managed by the <see cref="IDispatcher"/>.
