@@ -77,9 +77,11 @@
             if (enable) {
                 Stebs.codeEditor.setOption('readOnly', false);
                 Stebs.codeEditor.setOption('cursorBlinkRate', 530);
+                $('#codingFrame').removeClass('running');
             } else {
-                Stebs.codeEditor.setOption('readOnly', true);
+                Stebs.codeEditor.setOption('readOnly', 'nocursor');
                 Stebs.codeEditor.setOption('cursorBlinkRate', -1);
+                $('#codingFrame').addClass('running');
             }
         }
     }

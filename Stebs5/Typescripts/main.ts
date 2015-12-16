@@ -106,6 +106,7 @@ module Stebs {
             for (var register in registerChanges) {
                 registerControl.updateRegister(register, registerChanges[register].Value);
             }
+            Stebs.ui.highlightLine(registerControl.registers['IP'].getValue());
         },
 
         /**
@@ -279,6 +280,14 @@ module Stebs {
             if ($('#instructionStepSpeed').prop('checked')) { return SimulationStepSize.Instruction; }
             else if ($('#macroStepSpeed').prop('checked')) { return SimulationStepSize.Macro; }
             else { return SimulationStepSize.Micro; }
+        },
+
+        /**
+        * 
+        */
+        highlightLine(ipNr: number): void {
+            var linenr = Stebs.ramContent.getLineNr(ipNr);
+            Stebs.codeEditor.getDoc().setCursor({ ch: 0, line:linenr });
         }
 
     };
@@ -308,7 +317,6 @@ module CodeMirror {
         styleActiveLine?: boolean;
     }
 }
-
 
 /**
  * Import of the javascript global variable from mode.assembler.js
