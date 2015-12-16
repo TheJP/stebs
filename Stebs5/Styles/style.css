@@ -523,5 +523,5 @@ html, body, #canvas {
 }
 
 .CodeMirror .CodeMirror-gutters {
-    height: calc(100% - 30px) !important;
+    height: calc(100% - 10px) !important;
 }
