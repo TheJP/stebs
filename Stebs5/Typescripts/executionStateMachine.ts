@@ -72,13 +72,26 @@
         stop() { }
         halted() { }
         singleStep(stepSize: SimulationStepSize) { }
+
+        protected editMode(enable: boolean) {
+            if (enable) {
+                Stebs.codeEditor.setOption('readOnly', false);
+                Stebs.codeEditor.setOption('cursorBlinkRate', 530);
+            } else {
+                Stebs.codeEditor.setOption('readOnly', true);
+                Stebs.codeEditor.setOption('cursorBlinkRate', -1);
+            }
+        }
     }
 
     /**
      * Starting state of the application.
      */
     class InitialState extends StateAdapter {
-        constructor() { super([actions.assemble]); }
+        constructor() {
+            super([actions.assemble]);
+            //super.editMode(true);
+        }
         assemble() {
             serverHub.assemble();
         }
@@ -91,7 +104,10 @@
      * State after assembling, before execution of the simulation.
      */
     class AssembledState extends StateAdapter {
-        constructor() { super([actions.assemble, actions.start, actions.debug, actions.continue]); }
+        constructor() {
+            super([actions.assemble, actions.start, actions.debug, actions.continue]);
+            super.editMode(true);
+        }
         assemble() {
             state = new InitialState();
             state.assemble();
@@ -111,7 +127,10 @@
      * Running simulation state.
      */
     class RunningState extends StateAdapter {
-        constructor() { super([actions.pause, actions.stop, actions.assemble], ContinuousOrSingleStep.Continuous); }
+        constructor() {
+            super([actions.pause, actions.stop, actions.assemble], ContinuousOrSingleStep.Continuous);
+            super.editMode(false);
+        }
         assemble() {
             state = new InitialState();
             serverHub.stop();
@@ -134,7 +153,10 @@
      * Paused / Single step simulation state.
      */
     class PausedState extends StateAdapter {
-        constructor() { super([actions.start, actions.continue, actions.stop, actions.assemble, actions.microStep, actions.macroStep, actions.instructionStep], ContinuousOrSingleStep.SingleStep); }
+        constructor() {
+            super([actions.start, actions.continue, actions.stop, actions.assemble, actions.microStep, actions.macroStep, actions.instructionStep], ContinuousOrSingleStep.SingleStep);
+            super.editMode(false);
+        }
         assemble() {
             state = new InitialState();
             serverHub.stop();
