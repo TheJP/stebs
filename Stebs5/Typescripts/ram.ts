@@ -87,6 +87,10 @@
             return true;
         }
 
+        public getLineNr(ipNr: number): number {
+            return this.ram2Line[ipNr];
+        }
+
         public getAsString(lineBreak: number): string {
             var asString: string = '';
             for (var i: number = 0; i < this.ramContent.length; i++) {

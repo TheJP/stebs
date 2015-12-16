@@ -525,3 +525,8 @@ html, body, #canvas {
 .CodeMirror .CodeMirror-gutters {
     height: calc(100% - 10px) !important;
 }
+
+#codingFrame.running .CodeMirror-activeline-background {
+    background-color: greenyellow !important;
+}
+
