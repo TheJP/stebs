@@ -55,6 +55,7 @@ module Stebs {
          * Server finished assembling the sent source.
          */
         assembled(result: string, ram: number[], code2Line: number[]): void {
+            Stebs.outputView.setOption('mode', 'assembler');
             ui.openOutput();
             ui.showOutput(result);
             ramContent.setContent(ram);
@@ -66,6 +67,7 @@ module Stebs {
          * The sent source contains syntax errors. The assembling failed.
          */
         assembleError(error: string): void {
+            Stebs.outputView.setOption('mode', 'none');
             ui.openOutput();
             ui.showOutput(error);
         },
@@ -281,13 +283,6 @@ module Stebs {
 
     };
 
-    /**
-     * This interface allows the usage of the CodeMirror library.
-     */
-    export interface CodeMirror {
-        codeMirror: any;
-    };
-
     export var codeEditor: CodeMirror.EditorFromTextArea;
     export var outputView: CodeMirror.EditorFromTextArea;
 }
@@ -307,6 +302,13 @@ interface MousetrapStatic {
     bindGlobal(keys: string, callback: (e: ExtendedKeyboardEvent, combo: string) => any, action?: string): void;
     bindGlobal(keyArray: string[], callback: (e: ExtendedKeyboardEvent, combo: string) => any, action?: string): void;
 }
+
+module CodeMirror {
+    export interface EditorConfiguration {
+        styleActiveLine?: boolean;
+    }
+}
+
 
 /**
  * Import of the javascript global variable from mode.assembler.js
@@ -374,12 +376,13 @@ $(document).ready(function () {
     $('#openOutput').click(Stebs.ui.toggleOutput);
 
     Stebs.codeEditor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#codingTextArea').get(0), {
+        mode: 'assembler',
         lineNumbers: true,
-        mode: 'assembler'
+        styleActiveLine: true
     });
     Stebs.outputView = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#outputTextArea').get(0), {
-        lineNumbers: true,
         mode: 'assembler',
+        lineNumbers: true,
         readOnly: true,
         cursorBlinkRate: -1
     });
