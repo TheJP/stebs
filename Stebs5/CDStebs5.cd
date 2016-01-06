@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Stebs5.Constants" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAACAAgAAAAEAAAAAkAAAAAQCAAAAEAAAAAAAAQAAA=</HashCode>
+      <FileName>Constants.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Stebs5.ProcessorManager" BaseTypeListCollapsed="true">
+    <Position X="4" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYgAAAAAAAAQAAAAKAEQgAAAACAAAgAIAAEAAAAAGI=</HashCode>
+      <FileName>ProcessorManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Stebs5.Startup">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Startup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Stebs5.StebsHub">
+    <Position X="5.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAIAAAAAQAICAAAAAAAAAQAABBoAKQEEAAAAAmI=</HashCode>
+      <FileName>StebsHub.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Stebs5.UnityConfiguration">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UnityConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Stebs5.IConstants">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAACAAgAAAAAAAAAAAAAAAAACAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>IConstants.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Stebs5.IProcessorManager">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAAAAAAAQAAAAAAEQAAAAAAAAAAAIAAEAAAAAEI=</HashCode>
+      <FileName>IProcessorManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

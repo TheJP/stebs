@@ -70,8 +70,95 @@
             return nodes;
         }
 
-        public setNewName(newName: string) {
+        public setFilenameEditable(): void {
+            var me = this;
+            var editableText = $('<input>')
+                .prop('type', 'text')
+                .val($('#file-' + this.id + ' a.openLink').text());
+            $('#file-' + this.id + ' a.openLink').replaceWith(editableText);
+            var okLink = $('<a>')
+
+            $('#file-' + this.id + ' a.editIcon')
+                .removeClass('editIcon')
+                .addClass('okIcon')
+                .prop('href', '#')
+                .click(function () {
+                    var newName = $('#file-' + me.id + ' input').val();
+                    me.setName(newName);
+                });
+
+            $('#file-' + this.id + ' a.removeIcon')
+                .removeClass('removeIcon')
+                .addClass('cancelIcon')
+                .prop('href', '#')
+                .click(function () {
+                    me.cancelEditMode();
+                });
+            editableText.focus().select();
+        }
+
+        public setName(newName: string): void {
+            var me = this;
             this.nodeName = newName;
+            if (this.id == -1) {
+                //sendToServer
+                serverHub.addNode(this.getParent().getId(), newName, this.isFolder());
+            }
+
+            var textSpan = $('<span/>')
+                .addClass('text')
+                .text(newName);
+            var openLink = $('<a>')
+                .prop('href', '#')
+                .addClass('openLink')
+                .append(textSpan)
+                .click(function () {
+                    fileManagement.setAndShowActualNode(me);
+                });
+            $('#file-' + this.getId() + ' input').replaceWith(openLink);
+
+            $('#file-' + this.getId() + ' a.okIcon')
+                .removeClass('okIcon')
+                .addClass('editIcon')
+                .prop('href', '#')
+                .click(function () {
+                    me.setFilenameEditable();
+                });
+
+            $('#file-' + this.getId() + ' a.cancelIcon')
+                .removeClass('cancelIcon')
+                .addClass('removeIcon')
+                .prop('href', '#')
+                .click(function () {
+                    me.deleteFile();
+                });
+            fileManagement.addMode = false;
+        }
+
+        public cancelEditMode(): void {
+            var me = this;
+            this.setName(this.getNodename());
+
+            $('#file-' + this.getId() + ' a.cancelIcon')
+                .removeClass('cancelIcon')
+                .addClass('removeIcon')
+                .prop('href', '#')
+                .click(function () {
+                    me.deleteFile();
+                });
+        }
+
+        public deleteFile(): void {
+            var parent = this.getParent();
+            var index = parent.getChilds().indexOf(this);
+            if (index != -1) {
+                parent.getChilds().splice(index, 1);
+            }
+            if (parent == null) {
+                parent = fileManagement.rootNode;
+            }
+            fileManagement.setAndShowActualNode(parent);
+            fileManagement.exitAddMode();
         }
 
         public asHTML(): JQuery {
@@ -103,7 +190,7 @@
                 .addClass('editIcon')
                 .prop('href', '#')
                 .click(function () {
-                    Stebs.fileManagement.setFileEditable(me);
+                    me.setFilenameEditable();
                 });
             nodeJQuery.append(editJQuery);
             var deleteJQuery = $('<a>')
@@ -111,7 +198,7 @@
                 .addClass('removeIcon')
                 .prop('href', '#')
                 .click(function () {
-                    Stebs.fileManagement.deleteFile(me);
+                    me.deleteFile();
                 });
             nodeJQuery.append(deleteJQuery);
             return nodeJQuery;
@@ -180,7 +267,7 @@
                 actualNode.appendChild(fileNode);
                 fileManagement.setAndShowActualNode(actualNode);
                 fileManagement.addMode = true;
-                fileManagement.setFileEditable(fileNode);
+                fileNode.setFilenameEditable();
             }
         },
         setAndShowActualNode(fileNode: FileNode) {
@@ -191,9 +278,11 @@
             } else {
                 //TODO send to load file
                 console.log("loadFile");
-                $.connection.stebsHub.server.fileContent(fileNode.getId());
-                $('#filename').text(fileNode.getNodename());
-                $('#fileSystem').toggle();
+                serverHub.getFileContent(fileNode.getId()).then(function (fileContent: string) {
+                    $('#filename').text(fileNode.getNodename());
+                    $('#fileSystem').toggle();
+                    Stebs.codeEditor.getDoc().setValue(fileContent);
+                });
             }
         },
         showFileManagement(fileNode: FileNode) {
@@ -236,106 +325,12 @@
             }
         },
 
-        setFileEditable(file: FileNode): void {
-            var editableText = $('<input>')
-                .prop('type', 'text')
-                .val($('#file-' + file.getId() + ' a.openLink').text());
-            $('#file-' + file.getId() + ' a.openLink').replaceWith(editableText);
-            var okLink = $('<a>')
-
-            $('#file-' + file.getId() + ' a.editIcon')
-                .removeClass('editIcon')
-                .addClass('okIcon')
-                .prop('href', '#')
-                .click(function () {
-                    var newName = $('#file-' + file.getId() + ' input').val();
-                    fileManagement.setName(newName, file);
-                });
-
-            $('#file-' + file.getId() + ' a.removeIcon')
-                .removeClass('removeIcon')
-                .addClass('cancelIcon')
-                .prop('href', '#')
-                .click(function () {
-                    fileManagement.cancelEditMode(file);
-                });
-            editableText.focus().select();
-        },
-
-        setName(newName: string, file: FileNode) {
-            file.setNewName(newName);
-            //sendToServer
-            if (file.getId() == -1) {
-                if (file.isFolder()) {
-                    $.connection.stebsHub.server.addFolder(file.getParent().getId(), newName);
-                } else {
-                    $.connection.stebsHub.server.addFile(file.getParent().getId(), newName);
-                }
-            } else {
-
-            }
-
-            var textSpan = $('<span/>')
-                .addClass('text')
-                .text(newName);
-            var openLink = $('<a>')
-                .prop('href', '#')
-                .addClass('openLink')
-                .append(textSpan)
-                .click(function () {
-                    fileManagement.setAndShowActualNode(file);
-                });
-            $('#file-' + file.getId() + ' input').replaceWith(openLink);
-
-            $('#file-' + file.getId() + ' a.okIcon')
-                .removeClass('okIcon')
-                .addClass('editIcon')
-                .prop('href', '#')
-                .click(function () {
-                    fileManagement.setFileEditable(file);
-                });
-
-            $('#file-' + file.getId() + ' a.cancelIcon')
-                .removeClass('cancelIcon')
-                .addClass('removeIcon')
-                .prop('href', '#')
-                .click(function () {
-                    fileManagement.deleteFile(file);
-                });
-            fileManagement.addMode = false;
-        },
-
-        cancelEditMode(file: FileNode): void {
-            fileManagement.setName(file.getNodename(), file);
-
-            $('#file-' + file.getId() + ' a.cancelIcon')
-                .removeClass('cancelIcon')
-                .addClass('removeIcon')
-                .prop('href', '#')
-                .click(function () {
-                    fileManagement.deleteFile(file);
-                });
-        },
-
-        deleteFile(file: FileNode): void {
-            var parent = file.getParent();
-            var index = parent.getChilds().indexOf(file);
-            if (index != -1) {
-                parent.getChilds().splice(index, 1);
-            }
-            if (parent == null) {
-                parent = fileManagement.rootNode;
-            }
-            fileManagement.setAndShowActualNode(parent);
-            fileManagement.exitAddMode();
-        },
-
         exitAddMode() {
             if (fileManagement.addMode) {
                 var toDelete = fileManagement.actualNode.getById(-1);
                 console.log(toDelete);
                 if (toDelete != null) {
-                    fileManagement.deleteFile(toDelete);
+                    toDelete.deleteFile();
                 }
                 fileManagement.addMode = false;
             }

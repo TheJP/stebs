@@ -116,25 +116,30 @@ namespace Stebs5
         public void GetInstructions() => Clients.Caller.Instructions(Mpm.Instructions);
         public void GetRegisters() => Clients.Caller.Registers(RegistersExtensions.GetValues().Select(type => type.ToString()));
 
-        public void AddFile(int parentId, string fileName)
+        public void AddNode(int parentId, string fileName, bool isFolder)
         {
             //List<Tuple<int, int, string>>
-            Clients.Caller.SetFileId(parentId + 10);
+            //.done() used to reload data
         }
 
-        public void AddFolder(int parentId, string fileName)
+        public void ChangeNodeName(int nodeId, string newNodeName, bool isFolder)
         {
-            Clients.Caller.SetFileId(parentId + 10);
+            //.done() used to reload data
         }
 
-        public void DeleteFile(int parentId, int myId)
+        public void DeleteNode(int nodeId, bool isFolder)
         {
-            Clients.Caller.SetFileId(parentId + 10);
+            //.done() used to reload data
         }
 
-        public void FileContent(int fileId)
+        public void GetFileSystem()
         {
-            Clients.Caller.FileContent(@"; -------------------------------------------------------------------------
+            //return Filesystem
+        }
+
+        public string FileContent(int fileId)
+        {
+            return (@"; -------------------------------------------------------------------------
 ; Fibonacci
 ; -------------------------------------------------------------------------
 Main:

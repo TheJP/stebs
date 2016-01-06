@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ProcessorDispatcher.ChangesCollector" BaseTypeListCollapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAwAAAUAAAAAAAAAACAAAAAgAAAAAAAAAQAEACAAAAA=</HashCode>
+      <FileName>ChangesCollector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProcessorDispatcher.Dispatcher" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hERAIECIACACwAQADIgABgQAAAgQAAIAIEAAAAgAgCA=</HashCode>
+      <FileName>Dispatcher.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProcessorDispatcher.DispatcherItem" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAIAAAIAAAAACIAAAAAAAAAAABAAIAAAAAABEAAA=</HashCode>
+      <FileName>DispatcherItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="ProcessorDispatcher.IChangesCollector">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAUAAAAAAAAAAAAAAAAgAAAAAAAAAAAEACAAAAA=</HashCode>
+      <FileName>IChangesCollector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorDispatcher.IDispatcher">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAAAAACAAQAAACIAABAQAAAAAAAAAIAAAAAAAACA=</HashCode>
+      <FileName>IDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorDispatcher.IDispatcherItem">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAIAAAIAAAAACAAAAAAAAAAAABAAIAAAAAABEAAA=</HashCode>
+      <FileName>IDispatcherItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="ProcessorDispatcher.StateChange">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAQAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>StateChange.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="ProcessorDispatcher.DispatcherItemFactory">
+    <Position X="5.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAABAAAAEAAAAAAAAAEAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>IDispatcherItem.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
