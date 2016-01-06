@@ -137,7 +137,7 @@ namespace Stebs5
             //return Filesystem
         }
 
-        public string FileContent(int fileId)
+        public string GetFileContent(int fileId)
         {
             return (@"; -------------------------------------------------------------------------
 ; Fibonacci

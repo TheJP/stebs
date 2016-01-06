@@ -370,6 +370,8 @@ $(document).ready(function () {
         //Get available assembly instructions
         hub.server.getInstructions();
         hub.server.getRegisters();
+        //Get Filesystem
+        hub.server.getFileSystem();
 
         Mousetrap.bindGlobal('ctrl+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
         Mousetrap.bindGlobal('ctrl+n', falseDelegate(Stebs.fileManagement.newFile));

@@ -278,7 +278,7 @@
             } else {
                 //TODO send to load file
                 console.log("loadFile");
-                serverHub.getFileContent(fileNode.getId()).then(function (fileContent: string) {
+                var fileContent = serverHub.getFileContent(fileNode.getId()).then(function (fileContent: string) {
                     $('#filename').text(fileNode.getNodename());
                     $('#fileSystem').toggle();
                     Stebs.codeEditor.getDoc().setValue(fileContent);
