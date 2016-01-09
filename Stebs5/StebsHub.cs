@@ -97,7 +97,7 @@ namespace Stebs5
         /// <param name="action">Action which is called with valid step size.</param>
         private void DoWithCheckedStepSize(SimulationStepSize stepSize, Action<SimulationStepSize> action)
         {
-            if(Enum.IsDefined(typeof(SimulationStepSize), stepSize)) { action(stepSize); }
+            if (Enum.IsDefined(typeof(SimulationStepSize), stepSize)) { action(stepSize); }
         }
 
         public void Run(SimulationStepSize stepSize) => DoWithCheckedStepSize(stepSize, s => Manager.Run(Context.ConnectionId, s));
@@ -116,29 +116,67 @@ namespace Stebs5
         public void GetInstructions() => Clients.Caller.Instructions(Mpm.Instructions);
         public void GetRegisters() => Clients.Caller.Registers(RegistersExtensions.GetValues().Select(type => type.ToString()));
 
-        public void AddNode(int parentId, string fileName, bool isFolder)
+        public Stebs5Model.FileSystem AddNode(int parentId, string fileName, bool isFolder)
         {
-            //List<Tuple<int, int, string>>
-            //.done() used to reload data
+            //TODO implement
+            return getTestFS();
         }
 
-        public void ChangeNodeName(int nodeId, string newNodeName, bool isFolder)
+        public Stebs5Model.FileSystem ChangeNodeName(int nodeId, string newNodeName, bool isFolder)
         {
-            //.done() used to reload data
+            //TODO implement
+            return getTestFS();
         }
 
-        public void DeleteNode(int nodeId, bool isFolder)
+        public Stebs5Model.FileSystem DeleteNode(int nodeId, bool isFolder)
         {
-            //.done() used to reload data
+            //TODO implement
+            return getTestFS();
         }
 
-        public void GetFileSystem()
+        public Stebs5Model.FileSystem GetFileSystem()
         {
-            //return Filesystem
+            //TODO implement
+            return getTestFS();
         }
+
+        private Stebs5Model.FileSystem getTestFS()
+        {
+            var fs = new Stebs5Model.FileSystem();
+            fs.Id = 0;
+            fs.Nodes = new List<Stebs5Model.IFileSystemNode>();
+
+            var root = new Stebs5Model.Folder();
+            root.Id = 0;
+            root.Name = "root";
+            root.Children = new List<Stebs5Model.IFileSystemNode>();
+            fs.Root = root;
+            fs.Nodes.Add(root);
+
+            var folder1 = new Stebs5Model.Folder();
+            folder1.Id = 1;
+            folder1.Name = "folder1";
+            folder1.Children = new List<Stebs5Model.IFileSystemNode>();
+            root.Children.Add(folder1);
+            fs.Nodes.Add(folder1);
+
+            for (int i = 0; i < 5; i++)
+            {
+                var file = new Stebs5Model.File();
+                file.Id = i;
+                file.Name = "file" + i;
+                file.Content = "fileContent" + i;
+                fs.Nodes.Add(file);
+                folder1.Children.Add(file);
+            }
+
+            return fs;
+        }
+
 
         public string GetFileContent(int fileId)
         {
+            //TODO implement
             return (@"; -------------------------------------------------------------------------
 ; Fibonacci
 ; -------------------------------------------------------------------------
@@ -171,6 +209,11 @@ Loop:
 
     END
 ; -------------------------------------------------------------------------");
+        }
+
+        public void saveFileContent(int fileId, string fileContent)
+        {
+            //TODO implement
         }
     }
 }

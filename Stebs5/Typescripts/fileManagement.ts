@@ -1,240 +1,90 @@
 ﻿module Stebs {
 
-    export class FileNode {
-        private id: number;
-        private nodeName: string = '';
-        private parent: FileNode;
-        private fileIsFolder: boolean;
-        private childs: FileNode[] = [];
+    export class FileSystem {
+        public Id: number;
+        public Root: Node;
+        public Nodes: Node[] = [];
+    }
 
-        constructor(id: number, nodeName: string, parent: FileNode, isFolder: boolean, childs: FileNode[]) {
-            this.id = id;
-            this.nodeName = nodeName;
-            this.parent = parent;
-            this.fileIsFolder = isFolder;
-            this.childs = childs;
-            if (childs.length > 0) {
-                this.fileIsFolder = true;
-            }
+    export class Node {
+        public Id: number;
+        public Name: string = '';
+
+        constructor(Id: number, Name: string) {
+            this.Id = Id;
+            this.Name = Name;
         }
+    }
 
-        public getId(): number {
-            return this.id;
+    export class File extends Node {
+        public Content: string;
+
+        constructor(Id: number, Name: string, Content: string) {
+            super(Id, Name);
+            this.Content = Content;
         }
+    }
 
-        public setId(id: number): void {
-            $('#file-' + this.id).prop('id', id);
-            this.id = id;
-        }
+    export class Folder extends Node {
+        public Children: Node[];
 
-        public getNodename(): string {
-            return this.nodeName;
-        }
-
-        public getChilds(): FileNode[] {
-            return this.childs;
-        }
-
-        public getById(id: number): FileNode {
-            if (this.id == id) {
-                return this;
-            } else {
-                for (var i = 0; i < this.childs.length; i++) {
-                    var child = this.childs[i].getById(id);
-                    if (child != null) {
-                        return child;
-                    }
-                }
-                return null;
-            }
-        }
-
-        public getParent(): FileNode {
-            return this.parent;
-        }
-
-        public isFolder(): boolean {
-            return this.fileIsFolder;
-        }
-
-        public appendChild(newChild: FileNode): void {
-            this.childs.push(newChild);
-        }
-
-        public asFolderHTML(): JQuery[] {
-            var nodes: JQuery[] = [];
-
-            for (var i = 0; i < this.childs.length; i++) {
-                nodes.push(this.childs[i].asHTML());
-            }
-            return nodes;
-        }
-
-        public setFilenameEditable(): void {
-            var me = this;
-            var editableText = $('<input>')
-                .prop('type', 'text')
-                .val($('#file-' + this.id + ' a.openLink').text());
-            $('#file-' + this.id + ' a.openLink').replaceWith(editableText);
-            var okLink = $('<a>')
-
-            $('#file-' + this.id + ' a.editIcon')
-                .removeClass('editIcon')
-                .addClass('okIcon')
-                .prop('href', '#')
-                .click(function () {
-                    var newName = $('#file-' + me.id + ' input').val();
-                    me.setName(newName);
-                });
-
-            $('#file-' + this.id + ' a.removeIcon')
-                .removeClass('removeIcon')
-                .addClass('cancelIcon')
-                .prop('href', '#')
-                .click(function () {
-                    me.cancelEditMode();
-                });
-            editableText.focus().select();
-        }
-
-        public setName(newName: string): void {
-            var me = this;
-            this.nodeName = newName;
-            if (this.id == -1) {
-                //sendToServer
-                serverHub.addNode(this.getParent().getId(), newName, this.isFolder());
-            }
-
-            var textSpan = $('<span/>')
-                .addClass('text')
-                .text(newName);
-            var openLink = $('<a>')
-                .prop('href', '#')
-                .addClass('openLink')
-                .append(textSpan)
-                .click(function () {
-                    fileManagement.setAndShowActualNode(me);
-                });
-            $('#file-' + this.getId() + ' input').replaceWith(openLink);
-
-            $('#file-' + this.getId() + ' a.okIcon')
-                .removeClass('okIcon')
-                .addClass('editIcon')
-                .prop('href', '#')
-                .click(function () {
-                    me.setFilenameEditable();
-                });
-
-            $('#file-' + this.getId() + ' a.cancelIcon')
-                .removeClass('cancelIcon')
-                .addClass('removeIcon')
-                .prop('href', '#')
-                .click(function () {
-                    me.deleteFile();
-                });
-            fileManagement.addMode = false;
-        }
-
-        public cancelEditMode(): void {
-            var me = this;
-            this.setName(this.getNodename());
-
-            $('#file-' + this.getId() + ' a.cancelIcon')
-                .removeClass('cancelIcon')
-                .addClass('removeIcon')
-                .prop('href', '#')
-                .click(function () {
-                    me.deleteFile();
-                });
-        }
-
-        public deleteFile(): void {
-            var parent = this.getParent();
-            var index = parent.getChilds().indexOf(this);
-            if (index != -1) {
-                parent.getChilds().splice(index, 1);
-            }
-            if (parent == null) {
-                parent = fileManagement.rootNode;
-            }
-            fileManagement.setAndShowActualNode(parent);
-            fileManagement.exitAddMode();
-        }
-
-        public asHTML(): JQuery {
-            var me = this;
-            var nodeJQuery = $('<div>')
-                .addClass('file-node')
-                .prop('id', 'file-' + this.id);
-            var imgSpan = $('<span/>')
-                .addClass('icon')
-                .addClass('fileIcon');
-            if (this.isFolder()) {
-                imgSpan.addClass('folderIcon');
-            }
-            nodeJQuery.append(imgSpan);
-
-            var textSpan = $('<span/>')
-                .addClass('text')
-                .text(this.nodeName);
-            var openLink = $('<a>')
-                .addClass('openLink')
-                .prop('href', '#')
-                .append(textSpan)
-                .click(function () {
-                    Stebs.fileManagement.setAndShowActualNode(me);
-                });
-            nodeJQuery.append(openLink);
-            var editJQuery = $('<a>')
-                .addClass('icon')
-                .addClass('editIcon')
-                .prop('href', '#')
-                .click(function () {
-                    me.setFilenameEditable();
-                });
-            nodeJQuery.append(editJQuery);
-            var deleteJQuery = $('<a>')
-                .addClass('icon')
-                .addClass('removeIcon')
-                .prop('href', '#')
-                .click(function () {
-                    me.deleteFile();
-                });
-            nodeJQuery.append(deleteJQuery);
-            return nodeJQuery;
+        constructor(Id: number, Name: string, Children: Node[]) {
+            super(Id, Name);
+            this.Children = <Node[]>Children;
         }
     };
 
     export var fileManagement = {
-        rootNode: new FileNode(0, 'root', null, true, []),
-        actualNode: <FileNode>null,
+        fileSystem: <FileSystem>null,
+        rootNode: new Folder(0, 'root', [new File(1, 'child12', '')]),
+        actualFolder: <Folder>null,
+        openedFile: <File>null,
         addMode: false,
 
         init() {
-            fileManagement.actualNode = fileManagement.rootNode;
+            //Get Filesystem
+            serverHub.getFileSystem().then(function (fileSystem: FileSystem) {
+                fileManagement.fileSystem = fileSystem;
+                fileManagement.rootNode = <Folder>fileSystem.Root;
 
-            /*for Testing */
-            var inner = new FileNode(1, 'inner', fileManagement.rootNode, true, []);
-            fileManagement.rootNode.appendChild(inner);
-            var inner2 = new FileNode(2, 'inner2', inner, false, []);
-            inner.appendChild(inner2);
-
-            fileManagement.setAndShowActualNode(fileManagement.actualNode);
+                fileManagement.actualFolder = fileManagement.rootNode;
+                fileManagement.setAndShowActualNode(fileManagement.actualFolder);
+            });
 
             $('#open').click(fileManagement.toggleFileManager);
 
             $('#new').click(fileManagement.newFile);
 
-            $('#save').click(() => console.log('save called'));
+            $('#save').click(fileManagement.saveFile);
 
             $('#addFile').click(function () {
-                var newNode = new FileNode(-1, 'new File', fileManagement.actualNode, false, []);
+                var newNode = new File(-1, 'new File', '');
                 fileManagement.addFileOrFolder(newNode);
             });
             $('#addFolder').click(function () {
-                var newNode = new FileNode(-1, 'new Folder', fileManagement.actualNode, true, []);
+                var newNode = new Folder(-1, 'new Folder', []);
                 fileManagement.addFileOrFolder(newNode);
             });
+        },
+
+        /**
+         * Save the FileContent to the server
+         */
+        saveFile() {
+            if (fileManagement.openedFile != null) {
+                console.log('save called');
+                var newSource = Stebs.codeEditor.getDoc().getValue().replace(/\r?\n/g, '\r\n').replace(/\t/g, '    ');
+                serverHub.saveFileContent(fileManagement.openedFile.Id, newSource);
+            }
+        },
+
+        /**
+         * Create new file and Open FileManagement
+         */
+        newFile() {
+            var newNode = new File(-1, 'new File', '');
+            fileManagement.addFileOrFolder(newNode);
+            fileManagement.openFileManager();
         },
 
         /**
@@ -252,90 +102,202 @@
             $('#fileSystem').toggle();
         },
 
-        /**
-         * Opens the file manager with the intention to create a new file in the current folger.
-         */
-        newFile() {
-            var newNode = new FileNode(-1, 'new File', fileManagement.actualNode, false, []);
-            fileManagement.addFileOrFolder(newNode);
-            fileManagement.openFileManager();
+        /** 
+        * BindFunction to reload File Management
+        */
+        reloadFileManagement(fileSystem: FileSystem) {
+            fileManagement.fileSystem = fileSystem;
+
+            fileSystem.Nodes.forEach(function (n) {
+                if (fileManagement.nodeIsFolder(n)) {
+                    if (n.Id == fileManagement.actualFolder.Id) {
+                        fileManagement.actualFolder = <Folder>n;
+                    }
+                    if (n.Id == fileManagement.rootNode.Id) {
+                        fileManagement.rootNode = <Folder>n;
+                    }
+                }
+            });
+            fileManagement.setAndShowActualNode(fileManagement.actualFolder);
         },
 
-        addFileOrFolder(fileNode: FileNode) {
+        addFileOrFolder(node: Node) {
             if (!fileManagement.addMode) {
-                var actualNode = fileManagement.actualNode;
-                actualNode.appendChild(fileNode);
-                fileManagement.setAndShowActualNode(actualNode);
                 fileManagement.addMode = true;
-                fileNode.setFilenameEditable();
+                var actualNode = fileManagement.actualFolder;
+                actualNode.Children.push(node);
+                fileManagement.showFileManagement(actualNode);
+                fileManagement.setFilenameEditable(node);
             }
         },
-        setAndShowActualNode(fileNode: FileNode) {
-            if (fileNode.isFolder()) {
-                fileManagement.actualNode = fileNode;
-                fileManagement.showFileManagement(fileNode);
+        setAndShowActualNode(node: Node) {
+            if (fileManagement.nodeIsFolder(node)) {
+                fileManagement.actualFolder = <Folder>node;
+                fileManagement.showFileManagement(<Folder>node);
                 fileManagement.showActualPath();
             } else {
-                //TODO send to load file
-                console.log("loadFile");
-                var fileContent = serverHub.getFileContent(fileNode.getId()).then(function (fileContent: string) {
-                    $('#filename').text(fileNode.getNodename());
+                var fileContent = serverHub.getFileContent(node.Id).then(function (fileContent: string) {
+                    $('#filename').text(node.Name);
                     $('#fileSystem').toggle();
-                    Stebs.codeEditor.getDoc().setValue(fileContent);
+                    codeEditor.getDoc().setValue(fileContent);
+                    fileManagement.openedFile = <File>node;
                 });
             }
         },
-        showFileManagement(fileNode: FileNode) {
+        showFileManagement(node: Node) {
             $('#files').empty();
-            var childrenAsJQuery: JQuery[] = fileNode.asFolderHTML();
-            for (var i = 0; i < childrenAsJQuery.length; i++) {
-                $('#files').append(childrenAsJQuery[i]);
+            if (fileManagement.nodeIsFolder(node)) {
+                var children = (<Folder>node).Children;
+                for (var i = 0; i < children.length; i++) {
+                    var nodeAsHtml = fileManagement.nodeToHtml(children[i]);
+                    $('#files').append(nodeAsHtml);
+                }
             }
         },
+        getParentFolder(startFolder: Folder, folder: Folder): Folder {
+            if (!fileManagement.nodeIsFolder(startFolder)) {
+                console.log('startFolder has no childs');
+                return null;
+            }
+            if (!fileManagement.nodeIsFolder(folder)) {
+                console.log('folder to search has no childs');
+                return null;
+            }
+            for (var i = 0; i < startFolder.Children.length; i++) {
+                if (fileManagement.nodeIsFolder(startFolder.Children[i])) {
+                    if (startFolder.Children[i].Id === folder.Id) {
+                        return startFolder;
+                    } else {
+                        var found = fileManagement.getParentFolder(<Folder>startFolder.Children[i], folder);
+                        if (found != null) {
+                            return found;
+                        }
+                    }
+                }
+            }
+            return null;
+        },
+ 
         showActualPath() {
             var links: JQuery[] = [];
-            $('#folderPath').empty()
-            var actualNode = fileManagement.actualNode;
-            var parentNode = actualNode.getParent();
-            while (parentNode != null) {
-                var node = actualNode;
-                var link = $('<a>')
-                    .prop('href', '#')
-                    .text(node.getNodename())
-                    .click(function () {
-                        Stebs.fileManagement.setAndShowActualNode(node);
-                    });
-                links.push(link);
-                actualNode = parentNode;
-                parentNode = parentNode.getParent();
+            var travelFolderNode: Folder = fileManagement.actualFolder;
+            while (travelFolderNode.Id !== fileManagement.rootNode.Id && travelFolderNode != null) {
+                if (travelFolderNode != null) {
+                    var toTravel = travelFolderNode;
+                    var link = $('<a>')
+                        .prop('href', '#')
+                        .text(travelFolderNode.Name)
+                        .click(function () {
+                            fileManagement.setAndShowActualNode(toTravel);
+                        });
+                    links.push(link);
+                    travelFolderNode = fileManagement.getParentFolder(fileManagement.rootNode, travelFolderNode);
+                }
             }
-            $('#folderPath').append('/');
-            var rootNode = fileManagement.rootNode;
-            var rootLink = $('<a>')
-                .prop('href', '#')
-                .text(rootNode.getNodename())
-                .click(function () {
-                    Stebs.fileManagement.setAndShowActualNode(rootNode);
-                });
-            $('#folderPath').append(rootLink);
-            $('#folderPath').append('/');
-            for (var i = links.length - 1; i >= 0; i--) {
-                $('#folderPath').append(links[i]);
+            if (travelFolderNode != null) {
+                $('#folderPath').empty();
                 $('#folderPath').append('/');
+                var rootLink = $('<a>')
+                    .prop('href', '#')
+                    .text(travelFolderNode.Name)
+                    .click(function () {
+                        fileManagement.setAndShowActualNode(travelFolderNode);
+                    });
+                $('#folderPath').append(rootLink);
+                $('#folderPath').append('/');
+                for (var i = links.length - 1; i >= 0; i--) {
+                    $('#folderPath').append(links[i]);
+                    $('#folderPath').append('/');
+                }
             }
         },
 
-        exitAddMode() {
-            if (fileManagement.addMode) {
-                var toDelete = fileManagement.actualNode.getById(-1);
-                console.log(toDelete);
-                if (toDelete != null) {
-                    toDelete.deleteFile();
-                }
-                fileManagement.addMode = false;
+        nodeToHtml(node: Node): JQuery {
+            var nodeJQuery = $('<div>')
+                .addClass('file-node')
+                .prop('id', 'file-' + node.Id);
+            var imgSpan = $('<span/>')
+                .addClass('icon')
+                .addClass('fileIcon');
+            if (fileManagement.nodeIsFolder(node)) {
+                imgSpan.addClass('folderIcon');
             }
+            nodeJQuery.append(imgSpan);
+
+            var textSpan = $('<span/>')
+                .addClass('text')
+                .text(node.Name);
+            var openLink = $('<a>')
+                .addClass('openLink')
+                .prop('href', '#')
+                .append(textSpan)
+                .click(function () {
+                    fileManagement.setAndShowActualNode(node);
+                });
+            nodeJQuery.append(openLink);
+            var editJQuery = $('<a>')
+                .addClass('icon')
+                .addClass('editIcon')
+                .prop('href', '#')
+                .click(function () {
+                    fileManagement.setFilenameEditable(node);
+                });
+            nodeJQuery.append(editJQuery);
+            var deleteJQuery = $('<a>')
+                .addClass('icon')
+                .addClass('removeIcon')
+                .prop('href', '#')
+                .click(function () {
+                    if (node.Id != -1) {
+                        console.log('delete file in backend clicked');
+                        serverHub.deleteNode(node.Id, fileManagement.nodeIsFolder(node)).then(fileManagement.reloadFileManagement);
+                    }
+                });
+            nodeJQuery.append(deleteJQuery);
+
+            return nodeJQuery;
+        },
+
+        setFilenameEditable(node: Node) {
+            var editableText = $('<input>')
+                .prop('type', 'text')
+                .val($('#file-' + node.Id + ' a.openLink').text());
+            $('#file-' + node.Id + ' a.openLink').replaceWith(editableText);
+            var okLink = $('<a>')
+
+            $('#file-' + node.Id + ' a.editIcon')
+                .removeClass('editIcon')
+                .addClass('okIcon')
+                .prop('href', '#')
+                .click(function () {
+                    var newName = $('#file-' + node.Id + ' input').val();
+                    if (node.Id == -1) {
+                        console.log('add new File on server clicked');
+                        serverHub.addNode(fileManagement.actualFolder.Id, newName, fileManagement.nodeIsFolder(node))
+                            .then(fileManagement.reloadFileManagement);
+                    } else {
+                        console.log('change filename on server clicked');
+                        serverHub.changeNodeName(node.Id, newName, fileManagement.nodeIsFolder(node))
+                            .then(fileManagement.reloadFileManagement);
+                    }
+                    fileManagement.addMode = false;
+                });
+
+            $('#file-' + node.Id + ' a.removeIcon')
+                .removeClass('removeIcon')
+                .addClass('cancelIcon')
+                .prop('href', '#')
+                .unbind()
+                .click(function () {
+                    console.log('reload without change clicked');
+                    serverHub.getFileSystem().then(fileManagement.reloadFileManagement);
+                    fileManagement.addMode = false;
+                });
+            editableText.focus().select();
+        },
+
+        nodeIsFolder(node: Node): boolean {
+            return typeof (<Folder>node).Children !== 'undefined';
         }
-
     }
-
 }

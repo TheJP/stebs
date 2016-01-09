@@ -175,31 +175,29 @@ module Stebs {
         /*
         * Add a Node to the Filesystem
         */
-        addNode(parentId: number, nodeName: string, isFolder: boolean) {
-            $.connection.stebsHub.server.addNode(parentId, nodeName, isFolder);
+        addNode(parentId: number, nodeName: string, isFolder: boolean): Promise<FileSystem> {
+            return $.connection.stebsHub.server.addNode(parentId, nodeName, isFolder);
         },
 
         /*
         * Change Node name
         */
-        changeNodeName(nodeId: number, newNodeName: string, isFolder: boolean) {
-            $.connection.stebsHub.server.changeNodeName(nodeId, newNodeName, isFolder);
+        changeNodeName(nodeId: number, newNodeName: string, isFolder: boolean): Promise<FileSystem> {
+            return $.connection.stebsHub.server.changeNodeName(nodeId, newNodeName, isFolder);
         },
 
         /*
         * Delete Node 
         */
-        deleteNode(nodeId: number, isFolder: boolean) {
-            $.connection.stebsHub.server.deleteNode(nodeId, isFolder);
+        deleteNode(nodeId: number, isFolder: boolean): Promise<FileSystem> {
+            return $.connection.stebsHub.server.deleteNode(nodeId, isFolder);
         },
 
         /*
         * Get Filesystem 
         */
-        getFileSystem() {
-            $.connection.stebsHub.server.getFileSystem().done(function () {
-                //returnvalue
-            });
+        getFileSystem(): Promise<FileSystem> {
+            return $.connection.stebsHub.server.getFileSystem();
         },
 
         /*
@@ -207,7 +205,14 @@ module Stebs {
         */
         getFileContent(nodeId: number): Promise<string> {
             return $.connection.stebsHub.server.getFileContent(nodeId);
-        }
+        },
+
+        /*
+        * Save File content
+        */
+        saveFileContent(nodeId: number, fileContent: string): void {
+            $.connection.stebsHub.server.saveFileContent(nodeId, fileContent);
+        },
 
     };
 
@@ -370,12 +375,10 @@ $(document).ready(function () {
         //Get available assembly instructions
         hub.server.getInstructions();
         hub.server.getRegisters();
-        //Get Filesystem
-        hub.server.getFileSystem();
 
         Mousetrap.bindGlobal('ctrl+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
         Mousetrap.bindGlobal('ctrl+n', falseDelegate(Stebs.fileManagement.newFile));
-        Mousetrap.bindGlobal('ctrl+s', falseDelegate(() => console.log('save called'))); //TODO: implement
+        Mousetrap.bindGlobal('ctrl+s', falseDelegate(Stebs.fileManagement.saveFile)); 
 
         $('#assemble').click(() => Stebs.state.assemble());
         Mousetrap.bindGlobal('ctrl+b', falseDelegate(() => Stebs.state.assemble()));
