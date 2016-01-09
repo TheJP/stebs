@@ -9,22 +9,37 @@ namespace Stebs5
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                    "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+                    "~/Scripts/jquery.validate*"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+                    "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                    "~/Scripts/bootstrap.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/stebs").Include(
+                    "~/Scripts/jquery-2.1.4.min.js",
+                    "~/Scripts/jquery.signalR-2.2.0.min.js",
+                    "~/Scripts/codemirror-5.9.min.js",
+                    "~/Scripts/mode.assembler.js",
+                    "~/Scripts/mousetrap-1.5.3.min.js",
+                    "~/Scripts/mousetrap-global-bind.min.j",
+                    "~/signalr/hubs",
+                    "~/Scripts/main.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                    "~/Content/bootstrap.css",
+                    "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/stebscss").Include(
+                    "~/Content/normalize.css",
+                    "~/Content/stebs.css",
+                    "~/Content/codemirror.css"));
         }
     }
 }
