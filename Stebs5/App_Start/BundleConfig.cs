@@ -23,13 +23,12 @@ namespace Stebs5
                     "~/Scripts/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/stebs").Include(
-                    "~/Scripts/jquery-2.1.4.min.js",
+                    "~/Scripts/jquery-{version}.js",
                     "~/Scripts/jquery.signalR-2.2.0.min.js",
                     "~/Scripts/codemirror-5.9.min.js",
                     "~/Scripts/mode.assembler.js",
                     "~/Scripts/mousetrap-1.5.3.min.js",
-                    "~/Scripts/mousetrap-global-bind.min.j",
-                    "~/signalr/hubs",
+                    "~/Scripts/mousetrap-global-bind.min.js",
                     "~/Scripts/main.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

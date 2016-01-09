@@ -16,6 +16,7 @@ namespace Stebs5
     /// <summary>
     /// Cnentral communication interface between client and server.
     /// </summary>
+    [Authorize]
     public class StebsHub : Hub
     {
         private IConstants Constants { get; }

@@ -235,7 +235,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Icons\Debug-icon-grey.png" />
@@ -258,12 +258,11 @@
     <Content Include="Icons\Stop-icon.png" />
     <Content Include="Icons\trash-icon.png" />
     <Content Include="Icons\up-icon.png" />
-    <Content Include="index.html" />
     <Content Include="packages.config" />
-    <Content Include="CDStebs5.cd" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="CDStebs5.cd" />
     <None Include="Properties\PublishProfiles\Stebs.JP.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -276,6 +275,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\main.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -297,6 +297,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_StebsLayout.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -312,8 +313,8 @@
     <TypeScriptCompile Include="Scripts\typings\codemirror\codemirror-matchbrackets.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\codemirror\codemirror-showhint.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\codemirror\codemirror.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\es6-promise\es6-promise.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\codemirror\searchcursor.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\es6-promise\es6-promise.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\mousetrap\mousetrap.d.ts" />
     <TypeScriptCompile Include="Typescripts\executionStateMachine.ts" />
@@ -323,7 +324,7 @@
     <Content Include="Scripts\mousetrap-global-bind.min.js" />
     <Content Include="Content\codemirror.css" />
     <Content Include="Content\normalize.css" />
-    <Content Include="Content\style.css" />
+    <Content Include="Content\stebs.css" />
     <Content Include="Web.config" />
     <TypeScriptCompile Include="Typescripts\ram.ts" />
     <TypeScriptCompile Include="Typescripts\registers.ts" />
@@ -392,6 +393,12 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptOutDir />
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <ProjectExtensions>
     <VisualStudio>
