@@ -59,7 +59,7 @@ module Stebs {
             ui.openOutput();
             ui.showOutput(result);
             ramContent.setContent(ram);
-            ramContent.setRam2Line(code2Line);
+            ramContent.setRamToLine(code2Line);
             state.assembled();
         },
 
@@ -70,21 +70,6 @@ module Stebs {
             Stebs.outputView.setOption('mode', 'none');
             ui.openOutput();
             ui.showOutput(error);
-        },
-
-        /**
-        * Save the created file ID.
-        */
-        setFileId(id: number): void {
-            var node = fileManagement.actualNode.getById(-1);
-            console.log("node is " + node);
-            if (node != null) {
-                node.setId(id);
-            }
-        },
-
-        fileContent(fileContent: string) {
-            Stebs.codeEditor.getDoc().setValue(fileContent);
         },
 
         /**
@@ -185,7 +170,49 @@ module Stebs {
          */
         changeStepSize(stepSize: SimulationStepSize) {
             $.connection.stebsHub.server.changeStepSize(stepSize);
-        }
+        },
+
+        /*
+        * Add a Node to the Filesystem
+        */
+        addNode(parentId: number, nodeName: string, isFolder: boolean): Promise<FileSystem> {
+            return $.connection.stebsHub.server.addNode(parentId, nodeName, isFolder);
+        },
+
+        /*
+        * Change Node name
+        */
+        changeNodeName(nodeId: number, newNodeName: string, isFolder: boolean): Promise<FileSystem> {
+            return $.connection.stebsHub.server.changeNodeName(nodeId, newNodeName, isFolder);
+        },
+
+        /*
+        * Delete Node 
+        */
+        deleteNode(nodeId: number, isFolder: boolean): Promise<FileSystem> {
+            return $.connection.stebsHub.server.deleteNode(nodeId, isFolder);
+        },
+
+        /*
+        * Get Filesystem 
+        */
+        getFileSystem(): Promise<FileSystem> {
+            return $.connection.stebsHub.server.getFileSystem();
+        },
+
+        /*
+        * Get File content
+        */
+        getFileContent(nodeId: number): Promise<string> {
+            return $.connection.stebsHub.server.getFileContent(nodeId);
+        },
+
+        /*
+        * Save File content
+        */
+        saveFileContent(nodeId: number, fileContent: string): void {
+            $.connection.stebsHub.server.saveFileContent(nodeId, fileContent);
+        },
 
     };
 
@@ -283,11 +310,11 @@ module Stebs {
         },
 
         /**
-        * 
+        * Highlight the given line
         */
         highlightLine(ipNr: number): void {
             var linenr = Stebs.ramContent.getLineNr(ipNr);
-            Stebs.codeEditor.getDoc().setCursor({ ch: 0, line:linenr });
+            Stebs.codeEditor.getDoc().setCursor({ ch: 0, line: linenr });
         }
 
     };
@@ -335,10 +362,8 @@ $(document).ready(function () {
     hub.client.instructions = Stebs.clientHub.instructions;
     hub.client.assembled = Stebs.clientHub.assembled;
     hub.client.assembleError = Stebs.clientHub.assembleError;
-    hub.client.setFileId = Stebs.clientHub.setFileId;
     hub.client.registers = Stebs.clientHub.registers;
     hub.client.updateProcessor = Stebs.clientHub.updateProcessor;
-    hub.client.fileContent = Stebs.clientHub.fileContent;
     hub.client.reset = Stebs.clientHub.reset;
     hub.client.halt = Stebs.clientHub.halt;
     hub.client.hardReset = Stebs.clientHub.hardReset;
@@ -353,7 +378,7 @@ $(document).ready(function () {
 
         Mousetrap.bindGlobal('ctrl+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
         Mousetrap.bindGlobal('ctrl+n', falseDelegate(Stebs.fileManagement.newFile));
-        Mousetrap.bindGlobal('ctrl+s', falseDelegate(() => console.log('save called'))); //TODO: implement
+        Mousetrap.bindGlobal('ctrl+s', falseDelegate(Stebs.fileManagement.saveFile)); 
 
         $('#assemble').click(() => Stebs.state.assemble());
         Mousetrap.bindGlobal('ctrl+b', falseDelegate(() => Stebs.state.assemble()));

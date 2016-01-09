@@ -260,6 +260,7 @@
     <Content Include="Icons\up-icon.png" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
+    <Content Include="CDStebs5.cd" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
@@ -311,6 +312,7 @@
     <TypeScriptCompile Include="Scripts\typings\codemirror\codemirror-matchbrackets.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\codemirror\codemirror-showhint.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\codemirror\codemirror.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\es6-promise\es6-promise.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\codemirror\searchcursor.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\mousetrap\mousetrap.d.ts" />

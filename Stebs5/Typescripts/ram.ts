@@ -1,7 +1,7 @@
 ﻿module Stebs {
     export class Ram {
         private ramContent: number[];
-        private ram2Line: number[];
+        private ramToLine: number[];
         private isHighlighted: string[] = [];
         private isHidden: boolean = false;
         private stackPointerPos: number = 0;
@@ -38,8 +38,8 @@
             this.isHidden = !this.isHidden;
         }
 
-        public setRam2Line(ram2Line: number[]): void {
-            this.ram2Line = ram2Line;
+        public setRamToLine(ram2Line: number[]): void {
+            this.ramToLine = ram2Line;
         }
 
         public setContent(ram: number[]): boolean {
@@ -88,7 +88,7 @@
         }
 
         public getLineNr(ipNr: number): number {
-            return this.ram2Line[ipNr];
+            return this.ramToLine[ipNr];
         }
 
         public getAsString(lineBreak: number): string {

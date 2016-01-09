@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ProcessorSimulation.Alu" BaseTypeListCollapsed="true">
+    <Position X="4" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAQAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Alu.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProcessorSimulation.Processor" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="11" Width="1.5" />
+    <NestedTypes>
+      <Class Name="ProcessorSimulation.Processor.ReadOnlyRam" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Processor.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="ProcessorSimulation.Processor.ProcessorSession" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Processor.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>BIAAAAQIAAACCBAAACAAAAAgAAAhAAAAAYAAQEQAAAA=</HashCode>
+      <FileName>Processor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProcessorSimulation.ProcessorSimulator" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAACABAAAAABQoEAABgAAAAgACAAAAAQA=</HashCode>
+      <FileName>ProcessorSimulator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProcessorSimulation.Ram" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="19.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="ProcessorSimulation.Ram.RamSession" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Ram.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAgAAAAIAAAAABAAAAAAAAgAAAAACBAAAAAQQAAAAAA=</HashCode>
+      <FileName>Ram.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProcessorSimulation.Register" BaseTypeListCollapsed="true">
+    <Position X="4" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAoAAAAAAAAAAAAIAAAQAgAAAAAAA=</HashCode>
+      <FileName>Register.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProcessorSimulation.RegistersExtensions">
+    <Position X="9.25" Y="21.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Registers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProcessorSimulation.StatusRegister">
+    <Position X="7.5" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAACAAAAAAAIAAQABCBACwQAgQAACBAg=</HashCode>
+      <FileName>StatusRegister.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProcessorSimulation.MpmParser.Instruction" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAQAAAAAIAAAAACACAAAAQ=</HashCode>
+      <FileName>MpmParser\Instruction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProcessorSimulation.MpmParser.MicroInstruction" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAgAAAAAAAAABAAAAAAAAAgEHAAAgACABAAA=</HashCode>
+      <FileName>MpmParser\MicroInstruction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProcessorSimulation.MpmParser.Mpm" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAgAAAAAAAAAAAAAAAAQAIAIAAAAAAAAAAIAA=</HashCode>
+      <FileName>MpmParser\Mpm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProcessorSimulation.MpmParser.MpmFileParser" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAASAAAAgAAEAAAAQAAAAAAAAAAAIAAAAAAAACAAAA=</HashCode>
+      <FileName>MpmParser\MpmFileParser.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProcessorSimulation.MpmParser.MpmParsingException">
+    <Position X="9.25" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MpmParser\MpmParsingException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProcessorSimulation.MpmParser.OperandType">
+    <Position X="5.75" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAAAAAAAAAAAAEAAgAAAAAAABBAACAAAAECEAgAA=</HashCode>
+      <FileName>MpmParser\OperandType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ProcessorSimulation.IAlu">
+    <Position X="4" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IAlu.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorSimulation.IProcessor">
+    <Position X="2.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAQAAAAACBAAAAAAAAAgAAABAAAAAIAAAEAAAAA=</HashCode>
+      <FileName>IProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorSimulation.IProcessorSession">
+    <Position X="7.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAABAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>IProcessorSession.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorSimulation.IProcessorSimulator">
+    <Position X="5.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAQIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IProcessorSimulator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorSimulation.IRam">
+    <Position X="2.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAABAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>IRam.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorSimulation.IRamSession">
+    <Position X="9.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IRamSession.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorSimulation.IReadOnlyRam">
+    <Position X="5.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>IReadOnlyRam.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorSimulation.IRegister">
+    <Position X="4" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAgAAAAAAA=</HashCode>
+      <FileName>IRegister.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorSimulation.MpmParser.IInstruction">
+    <Position X="9.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAACACAAAAQ=</HashCode>
+      <FileName>MpmParser\IInstruction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorSimulation.MpmParser.IMicroInstruction">
+    <Position X="7.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAgAAAAAAAAABAAAAAAAAAgEHAAAgACABAAA=</HashCode>
+      <FileName>MpmParser\IMicroInstruction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorSimulation.MpmParser.IMpm">
+    <Position X="0.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAgAAAAAAAAAAAAAAAAQAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MpmParser\IMpm.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorSimulation.MpmParser.IMpmFileParser">
+    <Position X="0.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MpmParser\IMpmFileParser.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProcessorSimulation.MpmParser.IMpmParser">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MpmParser\IMpmParser.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="ProcessorSimulation.AluCmd">
+    <Position X="9.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAACQCgoAAAACAAAAAAAlIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AluCmd.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ProcessorSimulation.Registers">
+    <Position X="7.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABC0BAAAAMgAAAAAAAAAIIACAAAAAAAAAAACYBA=</HashCode>
+      <FileName>Registers.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ProcessorSimulation.SimulationState">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SimulationState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ProcessorSimulation.SimulationStepSize">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAggAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SimulationStepSize.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ProcessorSimulation.MpmParser.DataInput">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>MpmParser\DataInput.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ProcessorSimulation.MpmParser.Destination">
+    <Position X="5.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAEAAAAAMgAAAIAAAAAIgACAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>MpmParser\Destination.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ProcessorSimulation.MpmParser.JumpCriterion">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAACAAgAAAAAAAIAAAIAAQAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>MpmParser\JumpCriteria.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ProcessorSimulation.MpmParser.NextAddress">
+    <Position X="2.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>MpmParser\NextAddress.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ProcessorSimulation.MpmParser.ReadWrite">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>MpmParser\ReadWrite.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ProcessorSimulation.MpmParser.Source">
+    <Position X="4" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAEAAAAAIgAAAIAAAAAIgAAABAAAAAAAAAAIAA=</HashCode>
+      <FileName>MpmParser\Source.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="ProcessorSimulation.RegisterFactory">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IRegister.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

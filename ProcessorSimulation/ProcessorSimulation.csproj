@@ -91,6 +91,7 @@
     <Compile Include="StatusRegister.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="CDProcessorSimulator.cd" />
     <None Include="Resources\DECODER.data">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
