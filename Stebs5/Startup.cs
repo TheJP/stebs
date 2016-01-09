@@ -8,13 +8,13 @@ using ProcessorSimulation.MpmParser;
 using ProcessorDispatcher;
 
 [assembly: OwinStartup(typeof(Stebs5.Startup))]
-
 namespace Stebs5
 {
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
         {
+            ConfigureAuth(app);
             //Setup dependency injection
             var container = UnityConfiguration.Container;
             //Execute micro programm memory parser
