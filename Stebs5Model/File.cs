@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Stebs5Model
 {
-    public class File : IFileSystemNode
+    public class File : FileSystemNode
     {
         [Key]
-        public virtual long Id { get; set; }
-        public virtual string Name { get; set; }
+        public override long Id { get; set; }
+        public override string Name { get; set; }
         public virtual string Content { get; set; }
     }
 }

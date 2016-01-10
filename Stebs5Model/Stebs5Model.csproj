@@ -93,10 +93,14 @@
     <Compile Include="File.cs" />
     <Compile Include="FileSystem.cs" />
     <Compile Include="Folder.cs" />
-    <Compile Include="IFileSystemNode.cs" />
+    <Compile Include="FileSystemNode.cs" />
     <Compile Include="Migrations\201512161701574_InitialModel.cs" />
     <Compile Include="Migrations\201512161701574_InitialModel.Designer.cs">
       <DependentUpon>201512161701574_InitialModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601100007361_AddedMissingFields.cs" />
+    <Compile Include="Migrations\201601100007361_AddedMissingFields.Designer.cs">
+      <DependentUpon>201601100007361_AddedMissingFields.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,9 +115,13 @@
     <EmbeddedResource Include="Migrations\201512161701574_InitialModel.resx">
       <DependentUpon>201512161701574_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601100007361_AddedMissingFields.resx">
+      <DependentUpon>201601100007361_AddedMissingFields.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Migrations\201512161701574_InitialModel.sql" />
+    <Content Include="Migrations\201601100007361_AddedMissingFields.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

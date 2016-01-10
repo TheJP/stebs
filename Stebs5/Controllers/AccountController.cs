@@ -156,6 +156,16 @@ namespace Stebs5.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
+                    //Add filesystem to new user
+                    var context = HttpContext.GetOwinContext().Get<StebsDbContext>();
+                    var folder = new Folder() { Name = "Root" };
+                    context.Folders.Add(folder);
+                    context.SaveChanges();
+                    var fileSystem = new FileSystem() { Root = folder };
+                    folder.FileSystem = fileSystem;
+                    user.FileSystem = fileSystem;
+                    context.SaveChanges();
+
                     //For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     //Send an email with this link
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

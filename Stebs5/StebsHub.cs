@@ -145,19 +145,19 @@ namespace Stebs5
         {
             var fs = new Stebs5Model.FileSystem();
             fs.Id = 0;
-            fs.Nodes = new List<Stebs5Model.IFileSystemNode>();
+            fs.Nodes = new List<Stebs5Model.FileSystemNode>();
 
             var root = new Stebs5Model.Folder();
             root.Id = 0;
             root.Name = "root";
-            root.Children = new List<Stebs5Model.IFileSystemNode>();
+            root.Children = new List<Stebs5Model.FileSystemNode>();
             fs.Root = root;
             fs.Nodes.Add(root);
 
             var folder1 = new Stebs5Model.Folder();
             folder1.Id = 1;
             folder1.Name = "folder1";
-            folder1.Children = new List<Stebs5Model.IFileSystemNode>();
+            folder1.Children = new List<Stebs5Model.FileSystemNode>();
             root.Children.Add(folder1);
             fs.Nodes.Add(folder1);
 
