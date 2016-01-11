@@ -54,6 +54,11 @@
             registerControl.resetRegisters();
         },
 
+        /**
+         * Update the register (type) to the given value.
+         * @param type the register to change.
+         * @param value the new calue.
+         */
         updateRegister(type: string, value: number) {
             if (type in registerControl.registers) {
                 registerControl.registers[type].updateValue(value);
@@ -76,7 +81,10 @@
             ramContent.setInstructionPointer(0);
             ramContent.setStackPointer(registerControl.InitialStackPointer);
         },
-
+        /**
+         * Add a watch element to the register (type).
+         * @param type the register to add a watch.
+         */
         addWatch(type: string) {
             if (type in registerControl.registers) {
                 registerControl.registers[type].addWatchElement();
@@ -106,11 +114,17 @@
     };
 
     export class Register {
-
+        /**
+        * Convert a type to a replacement name.
+        */
         private static typeToName: { [type: string]: string } = {
             ['Interrupt']: 'IRF', //IRF = Interrupt Flag
             ['Status']: 'SR' //SR = Status Register
         };
+
+        /**
+        * Create a StatusWatchElement form a register.
+        */
         private static watchFactories: { [type: string]: (register: Register) => WatchElement } = {
             ['Status']: (register) => new StatusWatchElement(register)
         }
@@ -136,6 +150,10 @@
             return this.watchElement != null;
         }
 
+        /**
+         * Update the register to the newValue.
+         * @param newValue the newValue.
+         */
         public updateValue(newValue: number) {
             this.value = newValue;
             if (this.watchElement != null) {
@@ -143,30 +161,39 @@
             }
         }
 
-        /** Resets the value of this register to the initial state. */
+        /** 
+        * Resets the value of this register to the initial state. 
+        */
         public reset() {
             if (this.getType() == 'SP') { this.updateValue(registerControl.InitialStackPointer); }
             else { this.updateValue(0); }
         }
 
+        /**
+         * Add a watchelement.
+         */
         public addWatchElement() {
             if (this.getType() in Register.watchFactories) { this.watchElement = Register.watchFactories[this.getType()](this); }
             else { this.watchElement = new WatchElement(this); }
             this.watchElement.show();
         }
 
+        /**
+         * Remove the watchElement
+         */
         public removeWatchElement() {
             this.watchElement = null;
         }
 
-        /** Returns the name, which should be displayed for this watch element. */
+        /**
+        * Returns the name, which should be displayed for this watch element.
+        */
         getDisplayName(): string {
             return this.getType() in Register.typeToName ? Register.typeToName[this.getType()] : this.getType()
         }
     };
 
     export class WatchElement {
-
         private register: Register;
         private showBinary: boolean = false;
 
