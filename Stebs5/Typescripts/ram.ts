@@ -14,6 +14,9 @@
             }
         }
 
+        /**
+         * Initialice the ram.
+         */
         public init() {
             var me = this;
             $('#ramTable').empty();
@@ -27,6 +30,9 @@
             });
         }
 
+        /**
+         * Hide and show the ram
+         */
         private transactionHideShowRam() {
             if (this.isHidden) {
                 $('#hideShowRam').removeClass('arrowDownIcon')
@@ -38,10 +44,26 @@
             this.isHidden = !this.isHidden;
         }
 
-        public setRamToLine(ram2Line: number[]): void {
-            this.ramToLine = ram2Line;
+        /**
+         * Set the array containing with ram position points to witch line in the editor.
+         * @param ram2Line The array containing the positions.
+         */
+        public setRamToLine(ramToLine: number[]): void {
+            this.ramToLine = ramToLine;
         }
 
+        /**
+         * Get the linenumber of the instructionpointer
+         * @param ipNr the instructionpointer
+         */
+        public getLineNr(ipNr: number): number {
+            return this.ramToLine[ipNr];
+        }
+
+        /**
+         * Set the ram content.
+         * @param ram The array containing the new ram Data.
+         */
         public setContent(ram: number[]): boolean {
             if (ram == null && ram.length != this.ramContent.length) {
                 return false;
@@ -53,30 +75,51 @@
             }
         }
 
+        /**
+         * Highlight the changed ram pos
+         * @param elementName The elementname to highlight.
+         */
         private highlight(elementName: string): void {
             this.resetHighlights();
             $(elementName).prop('class', 'changed');
             this.isHighlighted.push(elementName);
         }
 
+        /**
+         * Reset all highlighted lines.
+         */
         public resetHighlights(): void {
             this.isHighlighted.forEach(element => {
                 $(element).removeClass('changed');
             });
         }
 
+        /**
+         * Set the stackpointer to te given position.
+         * @param position The new position of the stackpointer
+         */
         public setStackPointer(position: number) {
             $('#cell-' + this.stackPointerPos).removeClass('stackPointer');
             $('#cell-' + position).addClass('stackPointer');
             this.stackPointerPos = position;
         }
 
+
+        /**
+         * Set the intructionpointer to the given position.
+         * @param position The new position of the instructionpointer.
+         */
         public setInstructionPointer(position: number) {
             $('#cell-' + this.instructionPointerPos).removeClass('instructionPointer');
             $('#cell-' + position).addClass('instructionPointer');
             this.instructionPointerPos = position;
         }
 
+        /**
+         * Change the ram at the given position to the new value.
+         * @param pos The position to change the value;
+         * @param value The new value witch will be set.
+         */
         public setRamAt(pos: number, value: number): boolean {
             if (pos < 0 || pos >= this.ramContent.length || value < 0 || value > 255) {
                 return false;
@@ -87,10 +130,10 @@
             return true;
         }
 
-        public getLineNr(ipNr: number): number {
-            return this.ramToLine[ipNr];
-        }
-
+        /**
+         * Get the ramcontent as string (was used for testing).
+         * @param lineBreak 
+         */
         public getAsString(lineBreak: number): string {
             var asString: string = '';
             for (var i: number = 0; i < this.ramContent.length; i++) {
@@ -105,6 +148,10 @@
             return asString;
         }
 
+        /**
+         * Load the ram as Table.
+         * @param lineLengh the length of a row
+         */
         public getAsTable(lineLengh: number): HTMLTableElement {
             var table: HTMLTableElement;
             var thead: HTMLTableElement;
@@ -141,5 +188,10 @@
             return table;
         }
     };
+
+    /**
+     * Create the ram class and set it to ramContent 
+     * (Call ramContent if you want to interact with this class)
+     */
     export var ramContent = new Stebs.Ram(256);
 }

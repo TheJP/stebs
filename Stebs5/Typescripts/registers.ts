@@ -1,13 +1,15 @@
 ﻿module Stebs {
 
     export var registerControl = {
-
         InitialStackPointer: 0xbf,
 
         registers: <{ [register: string]: Register }>{},
         defaultRegisters: ['AL', 'BL', 'CL', 'DL', 'IP', 'SP', 'Status'],
         propagateToRam: ['IP', 'SP'],
 
+        /**
+         * Initialize the registerControl
+         */
         init(): void {
             $('#newWatchesButton').click(registerControl.showWatchSelection);
             $('#closeWatches').click(() => $('#addWatches').hide());
