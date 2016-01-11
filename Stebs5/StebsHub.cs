@@ -117,24 +117,48 @@ namespace Stebs5
         public void GetInstructions() => Clients.Caller.Instructions(Mpm.Instructions);
         public void GetRegisters() => Clients.Caller.Registers(RegistersExtensions.GetValues().Select(type => type.ToString()));
 
+        /// <summary>
+        /// Add a node to the users filesystem
+        /// </summary>
+        /// <param name="parentId">Parent Id</param>
+        /// <param name="fileName">name of the file to create</param>
+        /// <param name="isFolder">true if node is a folder</param>
+        /// <returns>The actualized filesystem will be returned</returns>
         public Stebs5Model.FileSystem AddNode(int parentId, string fileName, bool isFolder)
         {
             //TODO implement
             return getTestFS();
         }
 
+        /// <summary>
+        /// Change a node (folder/File) name by id
+        /// </summary>
+        /// <param name="nodeId">node id</param>
+        /// <param name="newNodeName">the new name</param>
+        /// <param name="isFolder">true if node is a folder</param>
+        /// <returns>The actualized filesystem will be returned</returns>
         public Stebs5Model.FileSystem ChangeNodeName(int nodeId, string newNodeName, bool isFolder)
         {
             //TODO implement
             return getTestFS();
         }
 
+        /// <summary>
+        /// Delete a node (file/folder) by id
+        /// </summary>
+        /// <param name="nodeId">node id</param>
+        /// <param name="isFolder">true if node is a folder</param>
+        /// <returns>The actualized filesystem will be returned</returns>
         public Stebs5Model.FileSystem DeleteNode(int nodeId, bool isFolder)
         {
             //TODO implement
             return getTestFS();
         }
 
+        /// <summary>
+        /// Load the filesystme from the db
+        /// </summary>
+        /// <returns>filesystem of this user</returns>
         public Stebs5Model.FileSystem GetFileSystem()
         {
             //TODO implement
@@ -174,7 +198,11 @@ namespace Stebs5
             return fs;
         }
 
-
+        /// <summary>
+        /// Load a fileContent (node) form the DB
+        /// </summary>
+        /// <param name="fileId">the id of the node</param>
+        /// <returns>string containing the fileContent</returns>
         public string GetFileContent(int fileId)
         {
             //TODO implement
@@ -212,6 +240,11 @@ Loop:
 ; -------------------------------------------------------------------------");
         }
 
+        /// <summary>
+        /// Save the fileContent to the DB
+        /// </summary>
+        /// <param name="fileId">node ID</param>
+        /// <param name="fileContent">the new Content of this file</param>
         public void saveFileContent(int fileId, string fileContent)
         {
             //TODO implement
