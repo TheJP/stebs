@@ -10,6 +10,7 @@ using Microsoft.Practices.Unity;
 using ProcessorSimulation.MpmParser;
 using ProcessorSimulation;
 using System.Threading.Tasks;
+using Stebs5.Models;
 
 namespace Stebs5
 {
@@ -22,12 +23,14 @@ namespace Stebs5
         private IConstants Constants { get; }
         private IMpm Mpm { get; }
         private IProcessorManager Manager { get; }
+        private IFileManager FileManager { get; }
 
-        public StebsHub(IConstants constants, IMpm mpm, IProcessorManager manager)
+        public StebsHub(IConstants constants, IMpm mpm, IProcessorManager manager, IFileManager fileManager)
         {
             this.Constants = constants;
             this.Mpm = mpm;
             this.Manager = manager;
+            this.FileManager = fileManager;
         }
 
         private void RemoveProcessor()
@@ -117,104 +120,82 @@ namespace Stebs5
         public void GetInstructions() => Clients.Caller.Instructions(Mpm.Instructions);
         public void GetRegisters() => Clients.Caller.Registers(RegistersExtensions.GetValues().Select(type => type.ToString()));
 
-        public Stebs5Model.FileSystem AddNode(int parentId, string fileName, bool isFolder)
-        {
-            //TODO implement
-            return getTestFS();
-        }
+        public FileSystemViewModel AddNode(long parentId, string fileName, bool isFolder) => FileManager.AddNode(parentId, fileName, isFolder);
 
-        public Stebs5Model.FileSystem ChangeNodeName(int nodeId, string newNodeName, bool isFolder)
-        {
-            //TODO implement
-            return getTestFS();
-        }
+        public FileSystemViewModel ChangeNodeName(long nodeId, string newNodeName, bool isFolder) => FileManager.ChangeNodeName(nodeId, newNodeName, isFolder);
 
-        public Stebs5Model.FileSystem DeleteNode(int nodeId, bool isFolder)
-        {
-            //TODO implement
-            return getTestFS();
-        }
+        public FileSystemViewModel DeleteNode(long nodeId, bool isFolder) => FileManager.DeleteNode(nodeId, isFolder);
 
-        public Stebs5Model.FileSystem GetFileSystem()
-        {
-            //TODO implement
-            return getTestFS();
-        }
+        public FileSystemViewModel GetFileSystem() => FileManager.GetFileSystem();
 
-        private Stebs5Model.FileSystem getTestFS()
-        {
-            var fs = new Stebs5Model.FileSystem();
-            fs.Id = 0;
-            fs.Nodes = new List<Stebs5Model.FileSystemNode>();
+        //private Stebs5Model.FileSystem getTestFS()
+        //{
+        //    var fs = new Stebs5Model.FileSystem();
+        //    fs.Id = 0;
+        //    fs.Nodes = new List<Stebs5Model.FileSystemNode>();
 
-            var root = new Stebs5Model.Folder();
-            root.Id = 0;
-            root.Name = "root";
-            root.Children = new List<Stebs5Model.FileSystemNode>();
-            fs.Root = root;
-            fs.Nodes.Add(root);
+        //    var root = new Stebs5Model.Folder();
+        //    root.Id = 0;
+        //    root.Name = "root";
+        //    root.Children = new List<Stebs5Model.FileSystemNode>();
+        //    fs.Root = root;
+        //    fs.Nodes.Add(root);
 
-            var folder1 = new Stebs5Model.Folder();
-            folder1.Id = 1;
-            folder1.Name = "folder1";
-            folder1.Children = new List<Stebs5Model.FileSystemNode>();
-            root.Children.Add(folder1);
-            fs.Nodes.Add(folder1);
+        //    var folder1 = new Stebs5Model.Folder();
+        //    folder1.Id = 1;
+        //    folder1.Name = "folder1";
+        //    folder1.Children = new List<Stebs5Model.FileSystemNode>();
+        //    root.Children.Add(folder1);
+        //    fs.Nodes.Add(folder1);
 
-            for (int i = 0; i < 5; i++)
-            {
-                var file = new Stebs5Model.File();
-                file.Id = i;
-                file.Name = "file" + i;
-                file.Content = "fileContent" + i;
-                fs.Nodes.Add(file);
-                folder1.Children.Add(file);
-            }
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        var file = new Stebs5Model.File();
+        //        file.Id = i;
+        //        file.Name = "file" + i;
+        //        file.Content = "fileContent" + i;
+        //        fs.Nodes.Add(file);
+        //        folder1.Children.Add(file);
+        //    }
 
-            return fs;
-        }
+        //    return fs;
+        //}
 
 
-        public string GetFileContent(int fileId)
-        {
-            //TODO implement
-            return (@"; -------------------------------------------------------------------------
-; Fibonacci
-; -------------------------------------------------------------------------
-Main:
-Init:
-    MOV AL, 00 ; Initial value fib(0)
-    MOV BL, 01 ; Initial value fib(1)
-    MOV CL, 00 ; Result
-    MOV DL, 40 ; RAM Position
+        public string GetFileContent(long fileId) => FileManager.GetFileContent(fileId);
+        //            return (@"; -------------------------------------------------------------------------
+        //; Fibonacci
+        //; -------------------------------------------------------------------------
+        //Main:
+        //Init:
+        //    MOV AL, 00 ; Initial value fib(0)
+        //    MOV BL, 01 ; Initial value fib(1)
+        //    MOV CL, 00 ; Result
+        //    MOV DL, 40 ; RAM Position
 
-    MOV [DL], AL
-    INC DL
-    MOV [DL], BL
+        //    MOV [DL], AL
+        //    INC DL
+        //    MOV [DL], BL
 
-Loop:
+        //Loop:
 
-    MOV CL, 00
+        //    MOV CL, 00
 
-    ; Fibonacci step: CL = AL + BL => fib(n) = fib(n - 2) + fib(n - 1)
-    ADD CL, AL
-    ADD CL, BL
-    INC DL
-    MOV [DL], CL
+        //    ; Fibonacci step: CL = AL + BL => fib(n) = fib(n - 2) + fib(n - 1)
+        //    ADD CL, AL
+        //    ADD CL, BL
+        //    INC DL
+        //    MOV [DL], CL
 
-    ; Prepare AL and BL for the next step
-    MOV AL, BL
-    MOV BL, CL
+        //    ; Prepare AL and BL for the next step
+        //    MOV AL, BL
+        //    MOV BL, CL
 
-    JMP Loop  ; Next loop iteration
+        //    JMP Loop  ; Next loop iteration
 
-    END
-; -------------------------------------------------------------------------");
-        }
+        //    END
+        //; -------------------------------------------------------------------------");
 
-        public void saveFileContent(int fileId, string fileContent)
-        {
-            //TODO implement
-        }
+        public void SaveFileContent(long fileId, string fileContent) => FileManager.SaveFileContent(fileId, fileContent);
     }
 }

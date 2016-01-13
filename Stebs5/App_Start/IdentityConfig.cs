@@ -34,13 +34,13 @@ namespace Stebs5
     //}
 
     //Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
-    public class ApplicationUserManager : UserManager<StebsUser>
+    public class StebsUserManager : UserManager<StebsUser>
     {
-        public ApplicationUserManager(IUserStore<StebsUser> store) : base(store) { }
+        public StebsUserManager(IUserStore<StebsUser> store) : base(store) { }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
+        public static StebsUserManager Create(IdentityFactoryOptions<StebsUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<StebsUser>(context.Get<StebsDbContext>()));
+            var manager = new StebsUserManager(new UserStore<StebsUser>(context.Get<StebsDbContext>()));
             //Configure validation logic for usernames
             manager.UserValidator = new UserValidator<StebsUser>(manager)
             {
@@ -88,16 +88,16 @@ namespace Stebs5
     //Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<StebsUser, string>
     {
-        public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager) : base(userManager, authenticationManager) { }
+        public ApplicationSignInManager(StebsUserManager userManager, IAuthenticationManager authenticationManager) : base(userManager, authenticationManager) { }
 
         public override Task<ClaimsIdentity> CreateUserIdentityAsync(StebsUser user)
         {
-            return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
+            return user.GenerateUserIdentityAsync((StebsUserManager)UserManager);
         }
 
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
-            return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+            return new ApplicationSignInManager(context.GetUserManager<StebsUserManager>(), context.Authentication);
         }
     }
 }

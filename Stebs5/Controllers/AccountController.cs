@@ -17,11 +17,11 @@ namespace Stebs5.Controllers
     public class AccountController : Controller
     {
         private ApplicationSignInManager signInManager;
-        private ApplicationUserManager userManager;
+        private StebsUserManager userManager;
 
         public AccountController() { }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public AccountController(StebsUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -39,11 +39,11 @@ namespace Stebs5.Controllers
             }
         }
 
-        public ApplicationUserManager UserManager
+        public StebsUserManager UserManager
         {
             get
             {
-                return userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return userManager ?? HttpContext.GetOwinContext().GetUserManager<StebsUserManager>();
             }
             private set
             {
