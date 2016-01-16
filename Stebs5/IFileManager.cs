@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stebs5.Models;
+using Stebs5Model;
+using System.Security.Principal;
 
 namespace Stebs5
 {
@@ -12,11 +14,11 @@ namespace Stebs5
     /// </summary>
     public interface IFileManager
     {
-        FileSystemViewModel AddNode(long parentId, string nodeName, bool isFolder);
-        FileSystemViewModel ChangeNodeName(long nodeId, string newNodeName, bool isFolder);
-        FileSystemViewModel DeleteNode(long nodeId, bool isFolder);
-        FileSystemViewModel GetFileSystem();
-        string GetFileContent(long fileId);
-        void SaveFileContent(long fileId, string fileContent);
+        FileSystemViewModel AddNode(IPrincipal user, long parentId, string nodeName, bool isFolder);
+        FileSystemViewModel ChangeNodeName(IPrincipal user, long nodeId, string newNodeName, bool isFolder);
+        FileSystemViewModel DeleteNode(IPrincipal user, long nodeId, bool isFolder);
+        FileSystemViewModel GetFileSystem(IPrincipal user);
+        string GetFileContent(IPrincipal user, long fileId);
+        void SaveFileContent(IPrincipal user, long fileId, string fileContent);
     }
 }

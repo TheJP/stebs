@@ -11,6 +11,7 @@ using ProcessorSimulation.MpmParser;
 using ProcessorSimulation;
 using System.Threading.Tasks;
 using Stebs5.Models;
+using Stebs5Model;
 
 namespace Stebs5
 {
@@ -120,13 +121,13 @@ namespace Stebs5
         public void GetInstructions() => Clients.Caller.Instructions(Mpm.Instructions);
         public void GetRegisters() => Clients.Caller.Registers(RegistersExtensions.GetValues().Select(type => type.ToString()));
 
-        public FileSystemViewModel AddNode(long parentId, string fileName, bool isFolder) => FileManager.AddNode(parentId, fileName, isFolder);
+        public FileSystemViewModel AddNode(long parentId, string fileName, bool isFolder) => FileManager.AddNode(Context.User, parentId, fileName, isFolder);
 
-        public FileSystemViewModel ChangeNodeName(long nodeId, string newNodeName, bool isFolder) => FileManager.ChangeNodeName(nodeId, newNodeName, isFolder);
+        public FileSystemViewModel ChangeNodeName(long nodeId, string newNodeName, bool isFolder) => FileManager.ChangeNodeName(Context.User, nodeId, newNodeName, isFolder);
 
-        public FileSystemViewModel DeleteNode(long nodeId, bool isFolder) => FileManager.DeleteNode(nodeId, isFolder);
+        public FileSystemViewModel DeleteNode(long nodeId, bool isFolder) => FileManager.DeleteNode(Context.User, nodeId, isFolder);
 
-        public FileSystemViewModel GetFileSystem() => FileManager.GetFileSystem();
+        public FileSystemViewModel GetFileSystem() => FileManager.GetFileSystem(Context.User);
 
         //private Stebs5Model.FileSystem getTestFS()
         //{
@@ -162,7 +163,7 @@ namespace Stebs5
         //}
 
 
-        public string GetFileContent(long fileId) => FileManager.GetFileContent(fileId);
+        public string GetFileContent(long fileId) => FileManager.GetFileContent(Context.User, fileId);
         //            return (@"; -------------------------------------------------------------------------
         //; Fibonacci
         //; -------------------------------------------------------------------------
@@ -196,6 +197,6 @@ namespace Stebs5
         //    END
         //; -------------------------------------------------------------------------");
 
-        public void SaveFileContent(long fileId, string fileContent) => FileManager.SaveFileContent(fileId, fileContent);
+        public void SaveFileContent(long fileId, string fileContent) => FileManager.SaveFileContent(Context.User, fileId, fileContent);
     }
 }
