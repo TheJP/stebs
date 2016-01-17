@@ -14,11 +14,11 @@ namespace Stebs5
     /// </summary>
     public interface IFileManager
     {
+        string GetFileContent(IPrincipal user, long fileId);
         FileSystemViewModel AddNode(IPrincipal user, long parentId, string nodeName, bool isFolder);
         FileSystemViewModel ChangeNodeName(IPrincipal user, long nodeId, string newNodeName, bool isFolder);
         FileSystemViewModel DeleteNode(IPrincipal user, long nodeId, bool isFolder);
         FileSystemViewModel GetFileSystem(IPrincipal user);
-        string GetFileContent(IPrincipal user, long fileId);
         void SaveFileContent(IPrincipal user, long fileId, string fileContent);
     }
 }

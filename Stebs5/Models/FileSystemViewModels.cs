@@ -16,8 +16,8 @@ namespace Stebs5.Models
             else if(node is File) { return (node as File).ToFileViewModel(); }
             else { return null; }
         }
-        public static FolderViewModel ToFolderViewModel(this Folder node) => new FolderViewModel(node.Name, node.Children.Select(ToNodeViewModel));
-        public static FileViewModel ToFileViewModel(this File node) => new FileViewModel(node.Name);
+        public static FolderViewModel ToFolderViewModel(this Folder node) => new FolderViewModel(node.Id, node.Name, node.Children.Select(ToNodeViewModel));
+        public static FileViewModel ToFileViewModel(this File node) => new FileViewModel(node.Id, node.Name);
     }
     public class FileSystemViewModel
     {
@@ -26,16 +26,17 @@ namespace Stebs5.Models
     }
     public abstract class NodeViewModel
     {
+        public long Id { get; }
         public string Name { get; }
-        public NodeViewModel(string name) { this.Name = name; }
+        public NodeViewModel(long id, string name) { this.Id = id; this.Name = name; }
     }
     public class FolderViewModel : NodeViewModel
     {
         public IEnumerable<NodeViewModel> Children { get; }
-        public FolderViewModel(string name, IEnumerable<NodeViewModel> children) : base(name) { this.Children = children; }
+        public FolderViewModel(long id, string name, IEnumerable<NodeViewModel> children) : base(id, name) { this.Children = children; }
     }
     public class FileViewModel : NodeViewModel
     {
-        public FileViewModel(string name) : base(name) { }
+        public FileViewModel(long id, string name) : base(id, name) { }
     }
 }

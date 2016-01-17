@@ -3,7 +3,6 @@
     export class FileSystem {
         public Id: number;
         public Root: Node;
-        public Nodes: Node[] = [];
     }
 
     export class Node {
@@ -107,17 +106,19 @@
         */
         reloadFileManagement(fileSystem: FileSystem) {
             fileManagement.fileSystem = fileSystem;
-
-            fileSystem.Nodes.forEach(function (n) {
-                if (fileManagement.nodeIsFolder(n)) {
-                    if (n.Id == fileManagement.actualFolder.Id) {
-                        fileManagement.actualFolder = <Folder>n;
+            var searchFolders = function searchFolders(node: Node) {
+                if (fileManagement.nodeIsFolder(node)) {
+                    if (node.Id == fileManagement.actualFolder.Id) {
+                        fileManagement.actualFolder = <Folder>node;
                     }
-                    if (n.Id == fileManagement.rootNode.Id) {
-                        fileManagement.rootNode = <Folder>n;
+                    if (node.Id == fileManagement.rootNode.Id) {
+                        fileManagement.rootNode = <Folder>node;
                     }
+                    (<Folder>node).Children.forEach(searchFolders);
                 }
-            });
+            };
+            searchFolders(fileSystem.Root);
+
             fileManagement.setAndShowActualNode(fileManagement.actualFolder);
         },
 
