@@ -21,6 +21,8 @@ module Stebs {
         runAndDebug: '100px'
     };
 
+    export var devices = <{ [deviceName: string]: Device }>{};
+
     export enum SimulationStepSize { Micro = 0, Macro = 1, Instruction = 2 };
 
     export var utility = {
@@ -115,6 +117,10 @@ module Stebs {
          */
         hardReset() {
             //TODO: Implement
+        },
+
+        serverToDevice(deviceName: string, textData: string[], numberData: number[]) {
+            devices[deviceName].serverToDevice(textData, numberData);
         }
 
     };
@@ -212,6 +218,11 @@ module Stebs {
         */
         saveFileContent(nodeId: number, fileContent: string): void {
             $.connection.stebsHub.server.saveFileContent(nodeId, fileContent);
+        },
+
+        deviceToServer(deviceName: string, textData: string[], numberData: number[]) {
+            console.log("send server Data");
+            $.connection.stebsHub.server.deviceToServer(deviceName, textData, numberData);
         },
 
     };
@@ -367,6 +378,7 @@ $(document).ready(function () {
     hub.client.reset = Stebs.clientHub.reset;
     hub.client.halt = Stebs.clientHub.halt;
     hub.client.hardReset = Stebs.clientHub.hardReset;
+    hub.client.serverToDevice = Stebs.clientHub.serverToDevice;
 
     $.connection.hub.start().done(function () {
         Stebs.fileManagement.init();
@@ -419,5 +431,8 @@ $(document).ready(function () {
         readOnly: true,
         cursorBlinkRate: -1
     });
+
+    var interruptDevice = new Stebs.InterruptDevice();
+    interruptDevice.init();
 
 });

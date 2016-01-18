@@ -315,7 +315,7 @@ html, body, #canvas {
     height: 100%;
     float: left;
     max-width: calc(100% - 68px);
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 

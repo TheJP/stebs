@@ -249,5 +249,14 @@ Loop:
         {
             //TODO implement
         }
+
+
+        public void DeviceToServer(string deviceName, string[] textData, int[] numberData)
+        {
+            //TODO Do here stuff with device call
+            string[] testString = { "serverSet: Test" };
+            int[] testNumbers = { 10 };
+            Clients.Caller.ServerToDevice(deviceName, testString, testNumbers);
+        }
     }
 }
