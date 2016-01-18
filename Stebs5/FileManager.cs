@@ -9,11 +9,18 @@ using Stebs5Model;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 
 namespace Stebs5
 {
     public class FileManager : IFileManager
     {
+        /// <summary>
+        /// Returns the filesystem of the given user.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
         private FileSystem LoadFileSystem(IPrincipal user, StebsDbContext db) =>
             db.Users
                 .Where(u => u.UserName == user.Identity.Name)
@@ -21,6 +28,13 @@ namespace Stebs5
                 .Select(u => u.FileSystem)
                 .Include(fileSystem => fileSystem.Nodes)
                 .FirstOrDefault();
+
+        /// <summary>
+        /// Validates the given node name.
+        /// </summary>
+        /// <param name="nodeName"></param>
+        /// <returns>True if the node name was valid, false otherwise.</returns>
+        private bool ValideNodeName(string nodeName) => nodeName.Length > 0 && !Regex.IsMatch(nodeName, @"[^\w_\-]");
 
         public FileSystemViewModel GetFileSystem(IPrincipal user)
         {
@@ -34,10 +48,12 @@ namespace Stebs5
         {
             using (var db = new StebsDbContext())
             {
+                //Validate input and get necessary information
                 var fileSystem = LoadFileSystem(user, db);
                 var parent = fileSystem.Nodes.FirstOrDefault(folder => folder.Id == parentId);
-                if (parent != null && parent is Folder)
+                if (parent != null && parent is Folder && ValideNodeName(nodeName))
                 {
+                    //Create node
                     if (isFolder)
                     {
                         var node = new Folder() { FileSystem = fileSystem, Folder = parent as Folder, Name = nodeName };
@@ -56,24 +72,68 @@ namespace Stebs5
             }
         }
 
-        public FileSystemViewModel ChangeNodeName(IPrincipal user, long nodeId, string newNodeName, bool isFolder)
+        public FileSystemViewModel ChangeNodeName(IPrincipal user, long nodeId, string newNodeName)
         {
-            throw new NotImplementedException();
+            using(var db = new StebsDbContext())
+            {
+                var fileSystem = LoadFileSystem(user, db);
+                var node = fileSystem.Nodes.FirstOrDefault(n => n.Id == nodeId);
+                if(node != null && ValideNodeName(newNodeName))
+                {
+                    node.Name = newNodeName;
+                    db.SaveChanges();
+                }
+                return fileSystem?.ToViewModel();
+            }
         }
 
-        public FileSystemViewModel DeleteNode(IPrincipal user, long nodeId, bool isFolder)
+        public FileSystemViewModel DeleteNode(IPrincipal user, long nodeId)
         {
-            throw new NotImplementedException();
+            using (var db = new StebsDbContext())
+            {
+                var fileSystem = LoadFileSystem(user, db);
+                var node = fileSystem.Nodes.FirstOrDefault(n => n.Id == nodeId);
+                //Only delete folders if they're empty
+                var validFolder = (!(node is Folder) || !(node as Folder).Children.Any());
+                //The root folder will not be deleted
+                if (node != null && validFolder && fileSystem.Root.Id != node.Id)
+                {
+                    node.Folder.Children.Remove(node);
+                    fileSystem.Nodes.Remove(node);
+                    if(node is Folder) { db.Folders.Remove(node as Folder); }
+                    else if(node is File) { db.Files.Remove(node as File); }
+                    db.SaveChanges();
+                }
+                return fileSystem?.ToViewModel();
+            }
         }
 
         public string GetFileContent(IPrincipal user, long fileId)
         {
-            throw new NotImplementedException();
+            using (var db = new StebsDbContext())
+            {
+                var fileSystem = LoadFileSystem(user, db);
+                var node = fileSystem.Nodes.FirstOrDefault(n => n.Id == fileId);
+                if (node != null && node is File)
+                {
+                    return (node as File).Content;
+                }
+                return "Invalid file";
+            }
         }
 
         public void SaveFileContent(IPrincipal user, long fileId, string fileContent)
         {
-            throw new NotImplementedException();
+            using (var db = new StebsDbContext())
+            {
+                var fileSystem = LoadFileSystem(user, db);
+                var node = fileSystem.Nodes.FirstOrDefault(n => n.Id == fileId);
+                if (node != null && node is File)
+                {
+                    (node as File).Content = fileContent;
+                    db.SaveChanges();
+                }
+            }
         }
     }
 }

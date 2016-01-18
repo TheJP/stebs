@@ -123,9 +123,9 @@ namespace Stebs5
 
         public FileSystemViewModel AddNode(long parentId, string fileName, bool isFolder) => FileManager.AddNode(Context.User, parentId, fileName, isFolder);
 
-        public FileSystemViewModel ChangeNodeName(long nodeId, string newNodeName, bool isFolder) => FileManager.ChangeNodeName(Context.User, nodeId, newNodeName, isFolder);
+        public FileSystemViewModel ChangeNodeName(long nodeId, string newNodeName, bool isFolder) => FileManager.ChangeNodeName(Context.User, nodeId, newNodeName);
 
-        public FileSystemViewModel DeleteNode(long nodeId, bool isFolder) => FileManager.DeleteNode(Context.User, nodeId, isFolder);
+        public FileSystemViewModel DeleteNode(long nodeId, bool isFolder) => FileManager.DeleteNode(Context.User, nodeId);
 
         public FileSystemViewModel GetFileSystem() => FileManager.GetFileSystem(Context.User);
 
