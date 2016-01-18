@@ -250,12 +250,28 @@ Loop:
             //TODO implement
         }
 
-
-        public void DeviceToServer(string deviceName, string[] textData, int[] numberData)
+        /// <summary>
+        /// Receive device data from server
+        /// </summary>
+        /// <param name="deviceName">the sending device</param>
+        /// <param name="textData">the text data</param>
+        /// <param name="numberData">the number data</param>
+        /// <param name="interrupt">if this data is sent with an interrupt</param>
+        public void DeviceToServer(string deviceName, string[] textData, int[] numberData, bool interrupt)
         {
             //TODO Do here stuff with device call
-            string[] testString = { "serverSet: Test" };
-            int[] testNumbers = { 10 };
+            string[] testString = new string[1];
+            int[] testNumbers = new int[1];
+            if (interrupt)
+            {
+                testNumbers[0]++;
+                testString[0] = "server received interrupt" ;
+            }
+            else
+            {
+                testString[0] = "serverSet: Test";
+
+            }
             Clients.Caller.ServerToDevice(deviceName, testString, testNumbers);
         }
     }
