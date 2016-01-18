@@ -16,7 +16,7 @@ namespace Stebs5.Models
             else if(node is File) { return (node as File).ToFileViewModel(); }
             else { return null; }
         }
-        public static FolderViewModel ToFolderViewModel(this Folder node) => new FolderViewModel(node.Id, node.Name, node.Children.Select(ToNodeViewModel));
+        public static FolderViewModel ToFolderViewModel(this Folder node) => new FolderViewModel(node.Id, node.Name, node.Children.Select(ToNodeViewModel).ToList());
         public static FileViewModel ToFileViewModel(this File node) => new FileViewModel(node.Id, node.Name);
     }
     public class FileSystemViewModel

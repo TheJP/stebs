@@ -21,13 +21,12 @@ namespace Stebs5
         /// <param name="user"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        private FileSystem LoadFileSystem(IPrincipal user, StebsDbContext db) =>
-            db.Users
-                .Where(u => u.UserName == user.Identity.Name)
-                .Include(u => u.FileSystem)
-                .Select(u => u.FileSystem)
-                .Include(fileSystem => fileSystem.Nodes)
-                .FirstOrDefault();
+        private FileSystem LoadFileSystem(IPrincipal user, StebsDbContext db) => db.Users
+            .Where(u => u.UserName == user.Identity.Name)
+            .Include(u => u.FileSystem)
+            .Select(u => u.FileSystem)
+            .Include(fileSystem => fileSystem.Nodes)
+            .FirstOrDefault();
 
         /// <summary>
         /// Validates the given node name.
@@ -116,7 +115,7 @@ namespace Stebs5
                 var node = fileSystem.Nodes.FirstOrDefault(n => n.Id == fileId);
                 if (node != null && node is File)
                 {
-                    return (node as File).Content;
+                    return (node as File).Content ?? "";
                 }
                 return "Invalid file";
             }

@@ -16,11 +16,8 @@
     }
 
     export class File extends Node {
-        public Content: string;
-
-        constructor(Id: number, Name: string, Content: string) {
+        constructor(Id: number, Name: string) {
             super(Id, Name);
-            this.Content = Content;
         }
     }
 
@@ -35,7 +32,7 @@
 
     export var fileManagement = {
         fileSystem: <FileSystem>null,
-        rootNode: new Folder(0, 'root', [new File(1, 'child12', '')]),
+        rootNode: new Folder(0, 'Root', []),
         actualFolder: <Folder>null,
         openedFile: <File>null,
         addMode: false,
@@ -57,7 +54,7 @@
             $('#save').click(fileManagement.saveFile);
 
             $('#addFile').click(function () {
-                var newNode = new File(-1, 'new File', '');
+                var newNode = new File(-1, 'new File');
                 fileManagement.addFileOrFolder(newNode);
             });
             $('#addFolder').click(function () {
@@ -81,7 +78,7 @@
          * Create new file and Open FileManagement
          */
         newFile() {
-            var newNode = new File(-1, 'new File', '');
+            var newNode = new File(-1, 'new File');
             fileManagement.addFileOrFolder(newNode);
             fileManagement.openFileManager();
         },
