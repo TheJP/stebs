@@ -24,7 +24,7 @@
      * Sets the state to the initial value.
      */
     export function stateInit(): void {
-        state = new InitialState();
+        state = new InitialState(true);
     };
 
     /**
@@ -74,7 +74,6 @@
         singleStep(stepSize: SimulationStepSize) { }
 
         protected editMode(enable: boolean) {
-
             if (enable) {
                 Stebs.codeEditor.setOption('readOnly', false);
                 Stebs.codeEditor.setOption('cursorBlinkRate', 530);
@@ -89,7 +88,7 @@
         }
     }
 
-    var disableEvent = function () {
+    var disableEvent = function (instance: any, event: Event) {
         event.preventDefault();
     }
 
@@ -97,9 +96,9 @@
      * Starting state of the application.
      */
     class InitialState extends StateAdapter {
-        constructor() {
+        constructor(first = false) {
             super([actions.assemble]);
-            //super.editMode(true);
+            if (!first) { super.editMode(true); }
         }
         assemble() {
             serverHub.assemble();
