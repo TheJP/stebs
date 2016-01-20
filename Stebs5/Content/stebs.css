@@ -6,6 +6,8 @@
     2. Left Sidebars
     3. Bottom sidebar
     4. Coding View
+    5. Run and Debug-Controll Panel
+    CodeMirror external changes
 
 */
 
@@ -25,6 +27,15 @@ html, body, #canvas {
     left: 0;
     /*for debugging */
     display: none;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    text-decoration: underline;
 }
 
 .open-link {
@@ -116,6 +127,7 @@ html, body, #canvas {
 }
 
 /* 3. Bottom sidebar */
+
 /* class for all devices */
 .device {
     border: 1px solid black;
@@ -251,7 +263,7 @@ html, body, #canvas {
     padding: 5px 5px;
 }
 
-/*Rund and Debug-Controll Panel*/
+/* 5. Run and Debug-Controll Panel */
 .runAndDebug {
     position: relative;
     border: 1px solid black;
@@ -390,8 +402,13 @@ html, body, #canvas {
     display: none;
 }
 
+/* Top bar */
 
-/*Register watches*/
+.accountLinks {
+    float: right;
+}
+
+/* Register watches */
 #addWatches {
     z-index: 5000;
     position: absolute;
@@ -424,7 +441,7 @@ html, body, #canvas {
     background-color: ghostwhite;
 }
 
-/*FileManagement styles*/
+/* FileManagement styles */
 #fileSystem {
     z-index: 5000;
     display: none;
@@ -524,7 +541,7 @@ html, body, #canvas {
     background-image: url(/Icons/down-icon.png); 
 }
 
-/*CodeMirror external changes*/
+/* CodeMirror external changes */
 .CodeMirror {
     height: 100% !important;
     font-family: Consolas !important;
