@@ -16,3 +16,9 @@ textarea {
     max-width: 280px;
 }
 
+.navbar-brand {
+    background-image: url(/Icons/Stebs.png);
+    background-repeat: no-repeat;
+    background-size: 50px;
+    padding-left: 55px;
+}

@@ -254,6 +254,7 @@
     <Content Include="Icons\Pause-icon-grey.png" />
     <Content Include="Icons\Pause-icon.png" />
     <Content Include="Icons\Save-icon.png" />
+    <Content Include="Icons\Stebs.png" />
     <Content Include="Icons\Stop-icon-grey.png" />
     <Content Include="Icons\Stop-icon.png" />
     <Content Include="Icons\trash-icon.png" />
