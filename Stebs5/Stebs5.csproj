@@ -323,6 +323,7 @@
     <TypeScriptCompile Include="Scripts\typings\mousetrap\mousetrap.d.ts" />
     <TypeScriptCompile Include="Typescripts\executionStateMachine.ts" />
     <TypeScriptCompile Include="Typescripts\fileManagement.ts" />
+    <TypeScriptCompile Include="Typescripts\devices.ts" />
     <TypeScriptCompile Include="Typescripts\main.ts" />
     <Content Include="Scripts\mousetrap-1.5.3.min.js" />
     <Content Include="Scripts\mousetrap-global-bind.min.js" />

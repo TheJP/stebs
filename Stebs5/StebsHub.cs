@@ -121,82 +121,75 @@ namespace Stebs5
         public void GetInstructions() => Clients.Caller.Instructions(Mpm.Instructions);
         public void GetRegisters() => Clients.Caller.Registers(RegistersExtensions.GetValues().Select(type => type.ToString()));
 
+        /// <summary>
+        /// Add a node to the users filesystem.
+        /// </summary>
+        /// <param name="parentId">Parent Id</param>
+        /// <param name="fileName">name of the file to create</param>
+        /// <param name="isFolder">true if node is a folder</param>
+        /// <returns>The actualized filesystem will be returned</returns>
         public FileSystemViewModel AddNode(long parentId, string fileName, bool isFolder) => FileManager.AddNode(Context.User, parentId, fileName, isFolder);
 
+        /// <summary>
+        /// Change a node (folder/File) name by id.
+        /// </summary>
+        /// <param name="nodeId">node id</param>
+        /// <param name="newNodeName">the new name</param>
+        /// <param name="isFolder">true if node is a folder</param>
+        /// <returns>The actualized filesystem will be returned</returns>
         public FileSystemViewModel ChangeNodeName(long nodeId, string newNodeName, bool isFolder) => FileManager.ChangeNodeName(Context.User, nodeId, newNodeName);
 
+        /// <summary>
+        /// Delete a node (file/folder) by id.
+        /// </summary>
+        /// <param name="nodeId">node id</param>
+        /// <param name="isFolder">true if node is a folder</param>
+        /// <returns>The actualized filesystem will be returned</returns>
         public FileSystemViewModel DeleteNode(long nodeId, bool isFolder) => FileManager.DeleteNode(Context.User, nodeId);
 
+        /// <summary>
+        /// Load the filesystme from the db.
+        /// </summary>
+        /// <returns>filesystem of this user</returns>
         public FileSystemViewModel GetFileSystem() => FileManager.GetFileSystem(Context.User);
 
-        //private Stebs5Model.FileSystem getTestFS()
-        //{
-        //    var fs = new Stebs5Model.FileSystem();
-        //    fs.Id = 0;
-        //    fs.Nodes = new List<Stebs5Model.FileSystemNode>();
-
-        //    var root = new Stebs5Model.Folder();
-        //    root.Id = 0;
-        //    root.Name = "root";
-        //    root.Children = new List<Stebs5Model.FileSystemNode>();
-        //    fs.Root = root;
-        //    fs.Nodes.Add(root);
-
-        //    var folder1 = new Stebs5Model.Folder();
-        //    folder1.Id = 1;
-        //    folder1.Name = "folder1";
-        //    folder1.Children = new List<Stebs5Model.FileSystemNode>();
-        //    root.Children.Add(folder1);
-        //    fs.Nodes.Add(folder1);
-
-        //    for (int i = 0; i < 5; i++)
-        //    {
-        //        var file = new Stebs5Model.File();
-        //        file.Id = i;
-        //        file.Name = "file" + i;
-        //        file.Content = "fileContent" + i;
-        //        fs.Nodes.Add(file);
-        //        folder1.Children.Add(file);
-        //    }
-
-        //    return fs;
-        //}
-
-
+        /// <summary>
+        /// Load a fileContent (node) form the DB
+        /// </summary>
+        /// <param name="fileId">the id of the node</param>
+        /// <returns>string containing the fileContent</returns>
         public string GetFileContent(long fileId) => FileManager.GetFileContent(Context.User, fileId);
-        //            return (@"; -------------------------------------------------------------------------
-        //; Fibonacci
-        //; -------------------------------------------------------------------------
-        //Main:
-        //Init:
-        //    MOV AL, 00 ; Initial value fib(0)
-        //    MOV BL, 01 ; Initial value fib(1)
-        //    MOV CL, 00 ; Result
-        //    MOV DL, 40 ; RAM Position
 
-        //    MOV [DL], AL
-        //    INC DL
-        //    MOV [DL], BL
-
-        //Loop:
-
-        //    MOV CL, 00
-
-        //    ; Fibonacci step: CL = AL + BL => fib(n) = fib(n - 2) + fib(n - 1)
-        //    ADD CL, AL
-        //    ADD CL, BL
-        //    INC DL
-        //    MOV [DL], CL
-
-        //    ; Prepare AL and BL for the next step
-        //    MOV AL, BL
-        //    MOV BL, CL
-
-        //    JMP Loop  ; Next loop iteration
-
-        //    END
-        //; -------------------------------------------------------------------------");
-
+        /// <summary>
+        /// Save the fileContent to the DB
+        /// </summary>
+        /// <param name="fileId">node ID</param>
+        /// <param name="fileContent">the new Content of this file</param>
         public void SaveFileContent(long fileId, string fileContent) => FileManager.SaveFileContent(Context.User, fileId, fileContent);
+
+        /// <summary>
+        /// Receive device data from server
+        /// </summary>
+        /// <param name="deviceName">the sending device</param>
+        /// <param name="textData">the text data</param>
+        /// <param name="numberData">the number data</param>
+        /// <param name="interrupt">if this data is sent with an interrupt</param>
+        public void DeviceToServer(string deviceName, string[] textData, int[] numberData, bool interrupt)
+        {
+            //TODO Do here stuff with device call
+            string[] testString = new string[1];
+            int[] testNumbers = new int[1];
+            if (interrupt)
+            {
+                testNumbers[0]++;
+                testString[0] = "server received interrupt" ;
+            }
+            else
+            {
+                testString[0] = "serverSet: Test";
+
+            }
+            Clients.Caller.ServerToDevice(deviceName, testString, testNumbers);
+        }
     }
 }

@@ -21,6 +21,8 @@ module Stebs {
         runAndDebug: '100px'
     };
 
+    export var devices = <{ [deviceName: string]: Device }>{};
+
     export enum SimulationStepSize { Micro = 0, Macro = 1, Instruction = 2 };
 
     export var utility = {
@@ -115,6 +117,16 @@ module Stebs {
          */
         hardReset() {
             //TODO: Implement
+        },
+
+        /**
+         * Receives data form server for a device.
+         * @param deviceName the name of the device.
+         * @param textData the text data.
+         * @param numberData the number data.
+         */
+        serverToDevice(deviceName: string, textData: string[], numberData: number[]) {
+            devices[deviceName].serverToDevice(textData, numberData);
         }
 
     };
@@ -179,39 +191,51 @@ module Stebs {
             return $.connection.stebsHub.server.addNode(parentId, nodeName, isFolder);
         },
 
-        /*
+        /**
         * Change Node name
         */
         changeNodeName(nodeId: number, newNodeName: string, isFolder: boolean): Promise<FileSystem> {
             return $.connection.stebsHub.server.changeNodeName(nodeId, newNodeName, isFolder);
         },
 
-        /*
+        /**
         * Delete Node 
         */
         deleteNode(nodeId: number, isFolder: boolean): Promise<FileSystem> {
             return $.connection.stebsHub.server.deleteNode(nodeId, isFolder);
         },
 
-        /*
+        /**
         * Get Filesystem 
         */
         getFileSystem(): Promise<FileSystem> {
             return $.connection.stebsHub.server.getFileSystem();
         },
 
-        /*
+        /**
         * Get File content
         */
         getFileContent(nodeId: number): Promise<string> {
             return $.connection.stebsHub.server.getFileContent(nodeId);
         },
 
-        /*
+        /**
         * Save File content
         */
         saveFileContent(nodeId: number, fileContent: string): void {
             $.connection.stebsHub.server.saveFileContent(nodeId, fileContent);
+        },
+
+        /**
+         * Send data from device to server.
+         * @param deviceName name of the sender.
+         * @param textData data array.
+         * @param numberData text array.
+         * @param interrupt send an interrupt.
+         */
+        deviceToServer(deviceName: string, textData: string[], numberData: number[], interrupt: boolean) {
+            console.log("send data to server");
+            $.connection.stebsHub.server.deviceToServer(deviceName, textData, numberData, interrupt);
         },
 
     };
@@ -367,6 +391,7 @@ $(document).ready(function () {
     hub.client.reset = Stebs.clientHub.reset;
     hub.client.halt = Stebs.clientHub.halt;
     hub.client.hardReset = Stebs.clientHub.hardReset;
+    hub.client.serverToDevice = Stebs.clientHub.serverToDevice;
 
     $.connection.hub.start().done(function () {
         Stebs.fileManagement.init();
@@ -419,5 +444,8 @@ $(document).ready(function () {
         readOnly: true,
         cursorBlinkRate: -1
     });
+
+    var interruptDevice = new Stebs.InterruptDevice();
+    interruptDevice.init();
 
 });

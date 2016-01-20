@@ -116,8 +116,8 @@ html, body, #canvas {
 }
 
 /* 3. Bottom sidebar */
-
-#ramDevice {
+/* class for all devices */
+.device {
     border: 1px solid black;
     margin-top: 10px;
     margin-left: auto;
@@ -129,6 +129,13 @@ html, body, #canvas {
     position: relative;
 }
 
+.device p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: normal;
+}
+
+/* RAM device style */
 #ramDevice button {
     float: right;
 }
@@ -308,6 +315,8 @@ html, body, #canvas {
     height: 100%;
     float: left;
     max-width: calc(100% - 68px);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .runAndDebug #watcher-container .watcher {

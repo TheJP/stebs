@@ -7,13 +7,20 @@
         <button id="openDevices"><span>Devices</span></button>
     </div>
     <div id="deviceElements" class="devices-container">
-        <div id="ramDevice">
+        <div id="ramDevice" class="device">
             <div id="ramHeader">
                 <button id="hideShowRam" class="icon arrowUpIcon"></button>
                 <button id="downloadRam" class="icon saveIcon"></button>
-                <span>RAM</span>
+                <p>RAM</p>
             </div>
             <div id="ramTable"></div>
+        </div>
+        <div id="interruptDevice" class="device">
+            <p>Interrupt</p>
+            <!--<input id="speedSlider" type="range" min="0" max="2000" step="10" value="0" />-->
+            <button id="interruptButton">InterruptTest</button>
+            <button id="inputTest">inputTest</button>
+            <label id="outputTest">outputText</label>
         </div>
     </div>
 </div>

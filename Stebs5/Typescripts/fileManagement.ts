@@ -37,6 +37,9 @@
         openedFile: <File>null,
         addMode: false,
 
+        /**
+         * Initialize the FileMangement
+         */
         init() {
             //Get Filesystem
             serverHub.getFileSystem().then(function (fileSystem: FileSystem) {
@@ -55,11 +58,11 @@
 
             $('#addFile').click(function () {
                 var newNode = new File(-1, 'new File');
-                fileManagement.addFileOrFolder(newNode);
+                fileManagement.addNode(newNode);
             });
             $('#addFolder').click(function () {
                 var newNode = new Folder(-1, 'new Folder', []);
-                fileManagement.addFileOrFolder(newNode);
+                fileManagement.addNode(newNode);
             });
         },
 
@@ -79,7 +82,7 @@
          */
         newFile() {
             var newNode = new File(-1, 'new File');
-            fileManagement.addFileOrFolder(newNode);
+            fileManagement.addNode(newNode);
             fileManagement.openFileManager();
         },
 
@@ -119,7 +122,12 @@
             fileManagement.setAndShowActualNode(fileManagement.actualFolder);
         },
 
-        addFileOrFolder(node: Node) {
+        /**
+         * Add a Node to the Filesystem at the actualNode.
+         * (will not be saved to the server until new name is defined)
+         * @param node The new node.
+         */
+        addNode(node: Node) {
             if (!fileManagement.addMode) {
                 fileManagement.addMode = true;
                 var actualNode = fileManagement.actualFolder;
@@ -128,6 +136,11 @@
                 fileManagement.setFilenameEditable(node);
             }
         },
+
+        /**
+         * If node is a Folder the filesystem will be reloaded with the new folder, else the file will be loaded.
+         * @param node The node to load.
+         */
         setAndShowActualNode(node: Node) {
             if (fileManagement.nodeIsFolder(node)) {
                 fileManagement.actualFolder = <Folder>node;
@@ -142,6 +155,11 @@
                 });
             }
         },
+
+        /**
+         * Clear and reinserts the Filemanagement at the given position into $('#files').
+         * @param node The node position.
+         */
         showFileManagement(node: Node) {
             $('#files').empty();
             if (fileManagement.nodeIsFolder(node)) {
@@ -152,6 +170,12 @@
                 }
             }
         },
+
+        /**
+         * Search recursively the parentfolder of the given folder.
+         * @param startFolder the startFolder (normaly start with root).
+         * @param folder the folder to search.
+         */
         getParentFolder(startFolder: Folder, folder: Folder): Folder {
             if (!fileManagement.nodeIsFolder(startFolder)) {
                 console.log('startFolder has no childs');
@@ -176,6 +200,9 @@
             return null;
         },
  
+        /**
+         * Insert the actual path into the FileManagement view.
+         */
         showActualPath() {
             var links: JQuery[] = [];
             var travelFolderNode: Folder = fileManagement.actualFolder;
@@ -210,6 +237,10 @@
             }
         },
 
+        /**
+         * Convert the node into a JQuery.
+         * @param node The node to convert.
+         */
         nodeToHtml(node: Node): JQuery {
             var nodeJQuery = $('<div>')
                 .addClass('file-node')
@@ -256,6 +287,10 @@
             return nodeJQuery;
         },
 
+        /**
+         * Change node name to editable.
+         * @param node The node to change.
+         */
         setFilenameEditable(node: Node) {
             var editableText = $('<input>')
                 .prop('type', 'text')
@@ -294,6 +329,10 @@
             editableText.focus().select();
         },
 
+        /**
+         * Check if node is a folder.
+         * @param node The node to check.
+         */
         nodeIsFolder(node: Node): boolean {
             return typeof (<Folder>node).Children !== 'undefined';
         }
