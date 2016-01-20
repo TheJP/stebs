@@ -22,7 +22,7 @@ namespace Stebs5
         /// <param name="db"></param>
         /// <returns></returns>
         private FileSystem LoadFileSystem(IPrincipal user, StebsDbContext db) => db.Users
-            .Where(u => u.UserName == user.Identity.Name)
+            .Where(u => u.Id == user.Identity.GetUserId())
             .Include(u => u.FileSystem)
             .Select(u => u.FileSystem)
             .Include(fileSystem => fileSystem.Nodes)

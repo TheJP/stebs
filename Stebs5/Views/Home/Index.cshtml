@@ -42,7 +42,7 @@
                 using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                    @Html.ActionLink("Profile", "Index", "Manage", routeValues: null, htmlAttributes: new { title = User.Identity.GetUserName() })
                     <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
                 }
             }
