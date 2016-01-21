@@ -49,6 +49,7 @@
                 fileManagement.setAndShowActualNode(fileManagement.actualFolder);
             });
 
+            $('#closeFileSystem').click(fileManagement.toggleFileManager);
             $('#open').click(fileManagement.toggleFileManager);
 
             $('#new').click(fileManagement.newFile);
