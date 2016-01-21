@@ -21,19 +21,20 @@ namespace Stebs5
         /// <param name="user"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        private FileSystem LoadFileSystem(IPrincipal user, StebsDbContext db) => db.Users
-            .Where(u => u.UserName == user.Identity.Name)
+        private FileSystem LoadFileSystem(string userId, StebsDbContext db) => db.Users
+            .Where(u => u.Id == userId)
             .Include(u => u.FileSystem)
             .Select(u => u.FileSystem)
             .Include(fileSystem => fileSystem.Nodes)
             .FirstOrDefault();
+        private FileSystem LoadFileSystem(IPrincipal user, StebsDbContext db) => LoadFileSystem(user.Identity.GetUserId(), db);
 
         /// <summary>
         /// Validates the given node name.
         /// </summary>
         /// <param name="nodeName"></param>
         /// <returns>True if the node name was valid, false otherwise.</returns>
-        private bool ValideNodeName(string nodeName) => nodeName.Length > 0 && !Regex.IsMatch(nodeName, @"[^\w_\-]");
+        private bool ValideNodeName(string nodeName) => nodeName.Length > 0 && !Regex.IsMatch(nodeName, @"[^\w_\- ]");
 
         public FileSystemViewModel GetFileSystem(IPrincipal user)
         {
