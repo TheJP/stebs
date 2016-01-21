@@ -311,10 +311,11 @@ module Stebs {
          * Opens/Closes the output bar.
          */
         toggleOutput(): void {
+            outputView.refresh();
             $('#codingFrame').animate({ height: (visible.output ? '+=' : '-=') + heights.containerSize }, ui.setCodingFrameHeight);
             visible.output = !visible.output;
             if (visible.output) { $('.output-container').slideDown(); }
-            else { $('.output-container').slideUp(); }
+            else { $('.output-container').slideUp(() => outputView.refresh()); }
         },
 
         openOutput(): void {
