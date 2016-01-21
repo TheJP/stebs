@@ -99,9 +99,9 @@
          * Create new file and Open FileManagement
          */
         newFile() {
+            fileManagement.openFileManager();
             var newNode = new File(-1, 'new File');
             fileManagement.addNode(newNode);
-            fileManagement.openFileManager();
         },
 
         /**
