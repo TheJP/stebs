@@ -76,19 +76,22 @@
                 serverHub.saveFileContent(fileManagement.openedFile.Id, newSource);
             } else {
                 console.log("save new file");
-                var fileName = prompt("Enter file name", "New File"); //TODO: Improve this input
-                if (fileName) {
-                    Stebs.serverHub.addNode(fileManagement.actualFolder.Id, fileName, false).then(fileSystem => {
-                        //TODO: Improve handling: File Replacing / Unique filenames
-                        fileManagement.reloadFileManagement(fileSystem);
-                        var nodes = fileManagement.actualFolder.Children.filter(node => node.Name == fileName);
-                        if (nodes.length < 1) { return; }
-                        var node = nodes[nodes.length - 1];
-                        $('#filename').text(node.Name);
-                        fileManagement.openedFile = <File>node;
-                        fileManagement.saveFile();
-                    });
-                }
+                //This prevents the native save dialog from showin when using prompt()
+                setTimeout(() => {
+                    var fileName = prompt("Enter file name", "New File"); //TODO: Improve this input
+                    if (fileName) {
+                        Stebs.serverHub.addNode(fileManagement.actualFolder.Id, fileName, false).then(fileSystem => {
+                            //TODO: Improve handling: File Replacing / Unique filenames
+                            fileManagement.reloadFileManagement(fileSystem);
+                            var nodes = fileManagement.actualFolder.Children.filter(node => node.Name == fileName);
+                            if (nodes.length < 1) { return; }
+                            var node = nodes[nodes.length - 1];
+                            $('#filename').text(node.Name);
+                            fileManagement.openedFile = <File>node;
+                            fileManagement.saveFile();
+                        });
+                    }
+                }, 0);
             }
         },
 

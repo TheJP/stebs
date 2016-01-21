@@ -401,23 +401,23 @@ $(document).ready(function () {
         hub.server.getInstructions();
         hub.server.getRegisters();
 
-        Mousetrap.bindGlobal('ctrl+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
-        Mousetrap.bindGlobal('ctrl+n', falseDelegate(Stebs.fileManagement.newFile));
-        Mousetrap.bindGlobal('ctrl+s', falseDelegate(Stebs.fileManagement.saveFile)); 
+        Mousetrap.bindGlobal('mod+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
+        Mousetrap.bindGlobal('mod+n', falseDelegate(Stebs.fileManagement.newFile));
+        Mousetrap.bindGlobal('mod+s', falseDelegate(Stebs.fileManagement.saveFile));
 
         $('#assemble').click(() => Stebs.state.assemble());
-        Mousetrap.bindGlobal('ctrl+b', falseDelegate(() => Stebs.state.assemble()));
+        Mousetrap.bindGlobal('mod+b', falseDelegate(() => Stebs.state.assemble()));
 
         $('#debug').click(() => Stebs.state.debug());
-        Mousetrap.bindGlobal('ctrl+j', falseDelegate(() => Stebs.state.debug()));
+        Mousetrap.bindGlobal('mod+j', falseDelegate(() => Stebs.state.debug()));
 
         $('#start').click(() => Stebs.state.start());
         $('#pause, #continue').click(() => Stebs.state.startOrPause());
         Mousetrap.bind('space', falseDelegate(() => Stebs.state.startOrPause()));
-        Mousetrap.bindGlobal('ctrl+g', falseDelegate(() => Stebs.state.startOrPause()));
+        Mousetrap.bindGlobal('mod+g', falseDelegate(() => Stebs.state.startOrPause()));
 
         $('#stop').click(() => Stebs.state.stop());
-        Mousetrap.bindGlobal(['esc', 'ctrl+h'], falseDelegate(() => Stebs.state.stop()));
+        Mousetrap.bindGlobal(['esc', 'mod+h'], falseDelegate(() => Stebs.state.stop()));
 
         $('#instructionStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Instruction));
         $('#macroStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Macro));
