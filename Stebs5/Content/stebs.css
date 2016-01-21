@@ -20,6 +20,10 @@ html, body, #canvas {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+body {
+    background-color: #333;
+}
+
 #canvas {
     position: absolute;
     z-index: 2000;
@@ -38,39 +42,26 @@ a:hover, a:active {
     text-decoration: underline;
 }
 
-.open-link {
-    position: relative;
-}
-
 .open-link-vertical {
-    float: right;
-    left: 50px;
-    width: 50px;
-    height: 50%;
+    left: 100%;
+    width: 30px;
+    position: absolute;
 }
 
 .open-link-vertical button {
-    width: 50px;
     height: 100%;
-}
-
-.open-link-vertical button span {
-    display: inline-block;
-    position: relative;
-    transform: rotate(-90deg);
-    left: -10px;
+    width: 30px;
+    background-repeat: no-repeat;
 }
 
 .open-link button {
     border: none;
-    background-color: forestgreen;
-}
-
-.open-link button:hover, .open-link button:active {
-    background-color: lightgreen;
+    padding: 0;
+    background-color: transparent;
 }
 
 .open-link-horizontal {
+    position: relative;
     box-sizing: border-box;
     height: 40px;
     width: 100%;
@@ -85,6 +76,10 @@ a:hover, a:active {
 .open-link-horizontal button span {
     display: inline-block;
     position: relative;
+}
+
+.changed {
+    background-color: yellow;
 }
 
 /* 2. Left Sidebars */
@@ -103,7 +98,20 @@ a:hover, a:active {
 .devices-container {
     width: 350px;
     height: 100%;
-    background-color: white;
+    background-color: #444;
+}
+
+#devices .open-link {
+    top: 10px;
+    height: 134px;
+}
+
+#devices .open-link button {
+    background-image: url(/Images/DevicesAndRam.png);
+}
+
+#devices .open-link button:hover, #devices .open-link button:active {
+    background-image: url(/Images/DevicesAndRamHighlight.png);
 }
 
 #architecture {
@@ -115,30 +123,39 @@ a:hover, a:active {
 .architecture-container {
     width: 400px;
     height: 100%;
-    background-color: lightgray;
+    background-color: #333;
 }
 
 #architecture .open-link {
-    top: 50%;
+    top: 160px;
+    height: 109px;
+}
+
+#architecture .open-link button {
+    background-image: url(/Images/Architecture.png);
+}
+
+#architecture .open-link button:hover, #architecture .open-link button:active {
+    background-image: url(/Images/ArchitectureHighlight.png);
 }
 
 #architecture .open-link-vertical button span {
-    left: -23px;
+    /*left: -23px;*/
 }
-
-/* 3. Bottom sidebar */
 
 /* class for all devices */
 .device {
     border: 1px solid black;
-    margin-top: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
     margin-left: auto;
     margin-right: auto;
     width: 315px;
     padding-left: 5px;
     overflow: hidden;
-    top: calc(-50% + 10px);
     position: relative;
+    top: 10px;
+    background-color: white;
 }
 
 .device p {
@@ -170,10 +187,6 @@ a:hover, a:active {
     font-weight: bold;
 }
 
-.changed {
-    background-color: yellow;
-}
-
 #ramDevice .stackPointer {
     background-color: lightblue;
 }
@@ -181,6 +194,8 @@ a:hover, a:active {
 #ramDevice .instructionPointer {
     background-color: lightcoral;
 }
+
+/* 3. Bottom sidebar */
 
 .output-container {
     position: relative;
@@ -201,8 +216,8 @@ a:hover, a:active {
     position: relative;
     z-index: 3000;
     height: 100%;
-    width: calc(100% - 50px);
-    left: 50px;
+    width: calc(100% - 30px);
+    left: 30px;
 }
 
 #codingTopBar {
@@ -268,6 +283,7 @@ a:hover, a:active {
     position: relative;
     border: 1px solid black;
     height: 100px;
+    background-color: white;
 }
 
 .runAndDebug .buttonView {

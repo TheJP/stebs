@@ -9,7 +9,8 @@ module Stebs {
 
     export var widths = {
         devices: '350px',
-        architecture: '400px'
+        architecture: '400px',
+        sidebar: '30px'
     };
 
     export var heights = {
@@ -272,7 +273,7 @@ module Stebs {
          */
         setCodingViewWidth(): void {
             var width = (visible.architecture ? ' - ' + widths.architecture : '') + (visible.devices ? ' - ' + widths.devices : '');
-            $('#codingView').css('width', 'calc(100% - 50px' + width + ')');
+            $('#codingView').css('width', 'calc(100% - ' + widths.sidebar + ' ' + width + ')');
         },
 
         /**

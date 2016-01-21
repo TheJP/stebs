@@ -5,7 +5,7 @@ namespace Stebs5Model.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Stebs5Model.StebsDbContext>
+    public sealed class Configuration : DbMigrationsConfiguration<Stebs5Model.StebsDbContext>
     {
         public Configuration()
         {
