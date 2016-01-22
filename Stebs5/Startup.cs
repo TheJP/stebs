@@ -17,8 +17,10 @@ namespace Stebs5
             ConfigureAuth(app);
             //Setup dependency injection
             var container = UnityConfiguration.Container;
-            //Execute micro programm memory parser
             var constants = container.Resolve<IConstants>();
+            //Load all device plugins
+            AddAllDevices(constants);
+            //Execute micro programm memory parser
             container.Resolve<IMpm>().Parse(constants.InstructionsAbsolutePath, constants.Rom1AbsolutePath, constants.Rom2AbsolutePath);
             //Start dispatcher
             container.Resolve<IDispatcher>().Start();
