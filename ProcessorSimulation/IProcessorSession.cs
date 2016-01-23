@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProcessorSimulation.Device;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,5 +34,10 @@ namespace ProcessorSimulation
         /// Access to the Processor encasuled in the session for read operations.
         /// </summary>
         IProcessor Processor { get; }
+
+        /// <summary>
+        /// Manager of the devices of the accessed processor.
+        /// </summary>
+        IDeviceManager DeviceManager { get; }
     }
 }

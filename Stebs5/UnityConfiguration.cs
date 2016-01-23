@@ -2,6 +2,7 @@
 using Microsoft.Practices.Unity;
 using ProcessorDispatcher;
 using ProcessorSimulation;
+using ProcessorSimulation.Device;
 using ProcessorSimulation.MpmParser;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace Stebs5
                 .RegisterType<IDispatcher, Dispatcher>(new ContainerControlledLifetimeManager())
                 .RegisterType<IProcessorManager, ProcessorManager>(new ContainerControlledLifetimeManager())
                 .RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager())
+                .RegisterType<IDeviceManager, DeviceManager>(new ContainerControlledLifetimeManager())
                 //Factories
                 .RegisterInstance(Register.Factory)
                 .RegisterInstance(DispatcherItem.Factory)
