@@ -231,6 +231,7 @@ namespace ProcessorSimulation
                 {
                     session.SetRegister(type, type == Registers.SP ? processor.InitialStackPointer : 0);
                 }
+                foreach(var device in session.DeviceManager.Devices.Values) { device.Reset(); }
                 session.SetHalted(false);
             }
         }

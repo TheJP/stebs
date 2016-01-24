@@ -19,7 +19,8 @@ namespace Stebs5
             var container = UnityConfiguration.Container;
             var constants = container.Resolve<IConstants>();
             //Load all device plugins
-            AddAllDevices(constants);
+            LoadPluginAssemblies(constants);
+            AddAllDevicePlugins(container.Resolve<IPluginManager>());
             //Execute micro programm memory parser
             container.Resolve<IMpm>().Parse(constants.InstructionsAbsolutePath, constants.Rom1AbsolutePath, constants.Rom2AbsolutePath);
             //Start dispatcher
