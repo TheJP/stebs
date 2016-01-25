@@ -123,6 +123,11 @@ namespace ProcessorSimulation
             return ProcessorSession.CreateSession(this);
         }
 
+        public void Execute(Action<IProcessorSession> action)
+        {
+            using (var session = CreateSession()) { action(session); }
+        }
+
         /// <summary>Proxy Pattern to protect write access to the ram.</summary>
         /// <remarks>
         /// This prevents deadlocks, because the ram is locking and often processor and ram sessions are required.

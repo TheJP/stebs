@@ -13,6 +13,6 @@ namespace Stebs5
         /// </summary>
         string Name { get; }
         string PluginId { get; }
-        void CreateDevice();
+        IDevice CreateDevice();
     }
 }

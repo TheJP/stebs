@@ -58,6 +58,7 @@
     <Compile Include="Device\DeviceManager.cs" />
     <Compile Include="Device\IDevice.cs" />
     <Compile Include="Device\IDeviceManager.cs" />
+    <Compile Include="Device\IDeviceUpdate.cs" />
     <Compile Include="IAlu.cs" />
     <Compile Include="IProcessor.cs" />
     <Compile Include="IProcessorSession.cs" />

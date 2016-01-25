@@ -25,21 +25,31 @@ namespace ProcessorSimulation.Device
         /// Called after a device is attached to a processor.
         /// </summary>
         void Attached();
+
         /// <summary>
         /// Called after a device is detached from the processor.
         /// It can be assumed, that the device will not be used any further. (E.g. Resources can be released at this point.)
         /// </summary>
         void Detached();
+
+        /// <summary>
+        /// Update the device with the given external input.
+        /// </summary>
+        /// <param name="input">External input. This can e.g. be user interaction.</param>
+        void Update(IDeviceUpdate input);
+
         /// <summary>
         /// Called after the processor, to which the device was attached, did get a reset.
         /// </summary>
         void Reset();
+
         /// <summary>
         /// This method is called, when data is written to the device.
         /// (This method corresponds with the assembly mnemonic OUT.)
         /// </summary>
         /// <param name="input">Data which is written to the device.</param>
         void Input(byte input);
+
         /// <summary>
         /// This method is called, when data is read from the device.
         /// (This method corresponds with the assembly mnemonic IN.)

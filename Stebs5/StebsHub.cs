@@ -12,6 +12,7 @@ using ProcessorSimulation;
 using System.Threading.Tasks;
 using Stebs5.Models;
 using Stebs5Model;
+using ProcessorSimulation.Device;
 
 namespace Stebs5
 {
@@ -175,9 +176,33 @@ namespace Stebs5
         /// <returns></returns>
         public IDictionary<string, DeviceViewModel> GetDeviceTypes() => PluginManager.DevicePlugins.Values.ToDictionary(device => device.PluginId, device => new DeviceViewModel(device.Name, device.PluginId));
 
+        /// <summary>Adds a device to the processor of the calling client.</summary>
+        /// <param name="deviceId"></param>
+        /// <param name="slot">If the slot is 0, a free slot number is chosen.</param>
+        /// <returns>Slot number, at which the device was placed.</returns>
+        public byte AddDevice(string deviceId, byte slot)
+        {
+            if (PluginManager.DevicePlugins.ContainsKey(deviceId))
+            {
+                var device = PluginManager.DevicePlugins[deviceId].CreateDevice();
+                return Manager.AddDevice(Context.ConnectionId, device, slot);
+            }
+            return 0;
+        }
+
+        /// <summary>Removes the device at the given slot from the processor of the calling client.</summary>
+        /// <param name="slot"></param>
+        public void RemoveDevice(byte slot) => Manager.RemoveDevice(Context.ConnectionId, slot);
+
         /// <summary>
-        /// Receive device data from server
+        /// Update the device with new information from the client.
+        /// This can e.g. be ui interactions with the device.
         /// </summary>
+        /// <param name="slot">Device slot in the processor.</param>
+        /// <param name="input">Update information.</param>
+        public void UpdateDevice(byte slot, IDeviceUpdate input) => Manager.UpdateDevice(Context.ConnectionId, slot, input);
+
+        /// <summary>Receive device data from server</summary>
         /// <param name="deviceName">the sending device</param>
         /// <param name="textData">the text data</param>
         /// <param name="numberData">the number data</param>

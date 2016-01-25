@@ -7,6 +7,7 @@ using System.Web;
 using ProcessorSimulation;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
+using ProcessorSimulation.Device;
 
 namespace Stebs5
 {
@@ -115,5 +116,37 @@ namespace Stebs5
                 Dispatcher.Step(item.Guid, stepSize);
             }
         }
+
+        private void ProcessorAction(string clientId, Action<IProcessorSession> action)
+        {
+            IDispatcherItem item;
+            if (processors.TryGetValue(clientId, out item))
+            {
+                item.Processor.Execute(action);
+            }
+        }
+
+        public byte AddDevice(string clientId, IDevice device, byte slot)
+        {
+            byte result = 0;
+            ProcessorAction(clientId, session =>
+            {
+                if (slot <= 0) { result = session.DeviceManager.AddDevice(device); }
+                else { result = session.DeviceManager.AddDevice(device, slot); }
+            });
+            return result;
+        }
+
+        public void RemoveDevice(string clientId, byte slot) =>
+            ProcessorAction(clientId, session => session.DeviceManager.RemoveDevice(slot));
+
+        public void UpdateDevice(string clientId, byte slot, IDeviceUpdate input) =>
+            ProcessorAction(clientId, session => {
+                var devices = session.DeviceManager.Devices;
+                if (devices.ContainsKey(slot))
+                {
+                    devices[slot].Update(input);
+                }
+            });
     }
 }

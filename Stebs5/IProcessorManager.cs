@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ProcessorSimulation;
 using ProcessorDispatcher;
+using ProcessorSimulation.Device;
 
 namespace Stebs5
 {
@@ -81,5 +82,30 @@ namespace Stebs5
         /// <param name="clientId"></param>
         /// <param name="runDelay"></param>
         void ChangeRunDelay(string clientId, TimeSpan runDelay);
+
+        /// <summary>
+        /// Adds the given device to the processor of the given client id.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="device"></param>
+        /// <param name="slot">Slot where the device will be added. If the slot is 0, a generated id will be used.</param>
+        /// <returns>Slot number, at which the device was placed.</returns>
+        byte AddDevice(string clientId, IDevice device, byte slot);
+
+        /// <summary>
+        /// Remove the device at the given slot from the processor of the given client id.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="slot"></param>
+        void RemoveDevice(string clientId, byte slot);
+
+        /// <summary>
+        /// Update the device with new information from the client.
+        /// This can e.g. be ui interactions with the device.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="slot">Device slot in the processor.</param>
+        /// <param name="input">Update information.</param>
+        void UpdateDevice(string clientId, byte slot, IDeviceUpdate input);
     }
 }
