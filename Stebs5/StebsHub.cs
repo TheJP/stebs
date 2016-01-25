@@ -25,13 +25,15 @@ namespace Stebs5
         private IMpm Mpm { get; }
         private IProcessorManager Manager { get; }
         private IFileManager FileManager { get; }
+        private IPluginManager PluginManager { get; }
 
-        public StebsHub(IConstants constants, IMpm mpm, IProcessorManager manager, IFileManager fileManager)
+        public StebsHub(IConstants constants, IMpm mpm, IProcessorManager manager, IFileManager fileManager, IPluginManager pluginManager)
         {
             this.Constants = constants;
             this.Mpm = mpm;
             this.Manager = manager;
             this.FileManager = fileManager;
+            this.PluginManager = pluginManager;
         }
 
         private void RemoveProcessor()
@@ -166,6 +168,12 @@ namespace Stebs5
         /// <param name="fileId">node ID</param>
         /// <param name="fileContent">the new Content of this file</param>
         public void SaveFileContent(long fileId, string fileContent) => FileManager.SaveFileContent(Context.User, fileId, fileContent);
+
+        /// <summary>
+        /// Returns the available device types.
+        /// </summary>
+        /// <returns></returns>
+        public IDictionary<string, DeviceViewModel> GetDeviceTypes() => PluginManager.DevicePlugins.Values.ToDictionary(device => device.PluginId, device => new DeviceViewModel(device.Name, device.PluginId));
 
         /// <summary>
         /// Receive device data from server

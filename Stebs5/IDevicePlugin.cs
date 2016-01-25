@@ -8,6 +8,10 @@ namespace Stebs5
     /// </summary>
     public interface IDevicePlugin
     {
+        /// <summary>
+        /// Name of the plugin, which is displayed to the user.
+        /// </summary>
+        string Name { get; }
         string PluginId { get; }
         void CreateDevice();
     }

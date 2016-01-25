@@ -410,6 +410,7 @@
     <TypeScriptCompile Include="Scripts\typings\es6-promise\es6-promise.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\mousetrap\mousetrap.d.ts" />
+    <TypeScriptCompile Include="Typescripts\deviceManager.ts" />
     <TypeScriptCompile Include="Typescripts\executionStateMachine.ts" />
     <TypeScriptCompile Include="Typescripts\fileManagement.ts" />
     <TypeScriptCompile Include="Typescripts\devices.ts" />
@@ -444,6 +445,7 @@
     <Compile Include="IPluginManager.cs" />
     <Compile Include="IProcessorManager.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\DeviceViewModel.cs" />
     <Compile Include="Models\FileSystemViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="PluginManager.cs" />

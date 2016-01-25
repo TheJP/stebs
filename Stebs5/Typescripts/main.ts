@@ -396,10 +396,12 @@ $(document).ready(function () {
     $.connection.hub.start().done(function () {
         Stebs.fileManagement.init();
         Stebs.registerControl.init();
+        Stebs.deviceManager.init();
 
         //Get available assembly instructions
         hub.server.getInstructions();
         hub.server.getRegisters();
+        hub.server.getDeviceTypes().done(Stebs.deviceManager.setDeviceTypes);
 
         Mousetrap.bindGlobal('mod+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
         Mousetrap.bindGlobal('mod+n', falseDelegate(Stebs.fileManagement.newFile));
