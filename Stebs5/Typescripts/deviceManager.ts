@@ -11,6 +11,12 @@
          * Initializes the manager.
          */
         init(): void {
+            $('#addDeviceForm').submit(() => {
+                var deviceType = $('#deviceSelect').val();
+                serverHub.addDevice(deviceType, parseInt($('#deviceSlot').val()))
+                    .then(slot => deviceManager.addDevice(deviceType, slot));
+                return false;
+            });
         },
 
         /**
@@ -26,6 +32,14 @@
                 select.append($('<option />').text(deviceType.Name).val(deviceType.Id));
             }
         },
+
+        /**
+         * Add needed gui elements to add the new device.
+         * @param deviceType
+         * @param slot
+         */
+        addDevice(deviceType: string, slot: number): void {
+        }
 
     };
 

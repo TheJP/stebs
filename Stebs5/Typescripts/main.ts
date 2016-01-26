@@ -227,6 +227,15 @@ module Stebs {
         },
 
         /**
+         * Add a new device with the given type at the given slot.
+         * @param deviceType
+         * @param slot
+         */
+        addDevice(deviceType: string, slot: number): Promise<number> {
+            return $.connection.stebsHub.server.addDevice(deviceType, slot);
+        },
+
+        /**
          * Send data from device to server.
          * @param deviceName name of the sender.
          * @param textData data array.
