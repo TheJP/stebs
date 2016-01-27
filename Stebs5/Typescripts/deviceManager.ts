@@ -38,7 +38,13 @@
          * @param deviceType
          * @param slot
          */
-        addDevice(deviceType: string, slot: number): void {
+        addDevice(deviceType: DeviceType, slot: number): void {
+            $('#deviceElements').append(
+                $('<div />')
+                    .attr('id', 'device-' + slot)
+                    .addClass('device')
+                    .append($('<p />').text(deviceType.Name))
+            );
         }
 
     };

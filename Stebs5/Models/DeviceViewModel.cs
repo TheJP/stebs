@@ -11,4 +11,12 @@ namespace Stebs5.Models
         public string Id { get; }
         public DeviceViewModel(string name, string id) { this.Name = name; this.Id = id; }
     }
+    public class AddedDeviceViewModel
+    {
+        public byte Slot { get; }
+        public string Template { get; }
+        public bool Success { get; } = false;
+        public AddedDeviceViewModel(byte slot, string template) { this.Slot = slot; this.Template = template; }
+        public AddedDeviceViewModel(bool success, byte slot = 0, string template = "") : this(slot, template) { this.Success = success; }
+    }
 }

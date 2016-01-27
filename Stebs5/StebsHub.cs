@@ -180,14 +180,15 @@ namespace Stebs5
         /// <param name="deviceId"></param>
         /// <param name="slot">If the slot is 0, a free slot number is chosen.</param>
         /// <returns>Slot number, at which the device was placed.</returns>
-        public byte AddDevice(string deviceId, byte slot)
+        public AddedDeviceViewModel AddDevice(string deviceId, byte slot)
         {
             if (PluginManager.DevicePlugins.ContainsKey(deviceId))
             {
                 var device = PluginManager.DevicePlugins[deviceId].CreateDevice();
-                return Manager.AddDevice(Context.ConnectionId, device, slot);
+                var givenSlot = Manager.AddDevice(Context.ConnectionId, device, slot);
+                return new AddedDeviceViewModel(givenSlot, "TODO");
             }
-            return 0;
+            return new AddedDeviceViewModel(false);
         }
 
         /// <summary>Removes the device at the given slot from the processor of the calling client.</summary>
