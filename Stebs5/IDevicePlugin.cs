@@ -13,6 +13,10 @@ namespace Stebs5
         /// </summary>
         string Name { get; }
         string PluginId { get; }
+        /// <summary>
+        /// Html template of the device.
+        /// </summary>
+        string DeviceTemplate { get; }
         IDevice CreateDevice();
     }
 }

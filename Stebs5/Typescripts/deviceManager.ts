@@ -14,7 +14,7 @@
             $('#addDeviceForm').submit(() => {
                 var deviceType = $('#deviceSelect').val();
                 serverHub.addDevice(deviceType, parseInt($('#deviceSlot').val()))
-                    .then(slot => deviceManager.addDevice(deviceType, slot));
+                    .then(result => { if (result.Success) { deviceManager.addDevice(deviceType, result) } });
                 return false;
             });
         },
@@ -38,12 +38,13 @@
          * @param deviceType
          * @param slot
          */
-        addDevice(deviceType: DeviceType, slot: number): void {
+        addDevice(deviceType: DeviceType, device: AddDeviceViewModel): void {
             $('#deviceElements').append(
                 $('<div />')
-                    .attr('id', 'device-' + slot)
+                    .attr('id', 'device-' + device.Slot)
                     .addClass('device')
-                    .append($('<p />').text(deviceType.Name))
+                    .html(device.Template)
+                    .prepend($('<p />').text(deviceType.Name))
             );
         }
 

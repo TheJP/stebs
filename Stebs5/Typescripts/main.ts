@@ -131,6 +131,12 @@ module Stebs {
 
     };
 
+    export class AddDeviceViewModel {
+        public Slot: number;
+        public Template: string;
+        public Success: boolean;
+    };
+
     export var serverHub = {
 
         /**
@@ -231,7 +237,7 @@ module Stebs {
          * @param deviceType
          * @param slot
          */
-        addDevice(deviceType: string, slot: number): Promise<number> {
+        addDevice(deviceType: string, slot: number): Promise<AddDeviceViewModel> {
             return $.connection.stebsHub.server.addDevice(deviceType, slot);
         },
 

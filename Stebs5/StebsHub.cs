@@ -184,9 +184,10 @@ namespace Stebs5
         {
             if (PluginManager.DevicePlugins.ContainsKey(deviceId))
             {
-                var device = PluginManager.DevicePlugins[deviceId].CreateDevice();
+                var plugin = PluginManager.DevicePlugins[deviceId];
+                var device = plugin.CreateDevice();
                 var givenSlot = Manager.AddDevice(Context.ConnectionId, device, slot);
-                return new AddedDeviceViewModel(givenSlot, "TODO");
+                return new AddedDeviceViewModel(givenSlot, plugin.DeviceTemplate);
             }
             return new AddedDeviceViewModel(false);
         }
