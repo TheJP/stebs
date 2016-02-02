@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace ProcessorSimulation.Device
 {
+
+    /// <summary>Sets the interrupt flag on the processor this device is attached to.</summary>
+    public delegate void Interrupt();
+
     /// <summary>
     /// A device is a sensor or actor (or both), which can be connected to a processor.
     /// 
@@ -24,7 +28,9 @@ namespace ProcessorSimulation.Device
         /// <summary>
         /// Called after a device is attached to a processor.
         /// </summary>
-        void Attached();
+        /// <param name="interrupt">Delegate, over which the device may set the processors interrupt flag.</param>
+        /// <param name="view">View to which state updates can be sent.</param>
+        void Attached(Interrupt interrupt, IDeviceView view);
 
         /// <summary>
         /// Called after a device is detached from the processor.

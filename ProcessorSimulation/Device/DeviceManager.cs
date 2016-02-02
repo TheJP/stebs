@@ -14,20 +14,20 @@ namespace ProcessorSimulation.Device
         private readonly Dictionary<byte, IDevice> devices = new Dictionary<byte, IDevice>();
         public IReadOnlyDictionary<byte, IDevice> Devices => new ReadOnlyDictionary<byte, IDevice>(devices);
 
-        public byte AddDevice(IDevice device)
+        public byte AddDevice(IProcessor processor, IDevice device, IDeviceView view)
         {
             if(devices.Count >= byte.MaxValue) { throw new ArgumentException(MaxDevicedReached); }
             while (devices.ContainsKey(nextSlot)) { ++nextSlot; }
-            return AddDevice(device, nextSlot++);
+            return AddDevice(processor, device, view, nextSlot++);
         }
 
-        public byte AddDevice(IDevice device, byte slot)
+        public byte AddDevice(IProcessor processor, IDevice device, IDeviceView view, byte slot)
         {
-            if (devices.ContainsKey(slot)) { return AddDevice(device); }
+            if (devices.ContainsKey(slot)) { return AddDevice(processor, device, view); }
             else
             {
                 devices[slot] = device;
-                device.Attached();
+                device.Attached(GetInterruptDelegate(processor), view);
                 return slot;
             }
         }
@@ -38,5 +38,11 @@ namespace ProcessorSimulation.Device
             devices.Remove(slot);
             device.Detached();
         }
+
+        /// <summary>Creates the delegate which allows a device to set the interrupt flag.</summary>
+        /// <param name="processor"></param>
+        /// <returns></returns>
+        private Interrupt GetInterruptDelegate(IProcessor processor) =>
+            () => processor.Execute(session => session.SetRegister(Registers.Interrupt, 1));
     }
 }

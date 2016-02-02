@@ -131,8 +131,8 @@ namespace Stebs5
             byte result = 0;
             ProcessorAction(clientId, session =>
             {
-                if (slot <= 0) { result = session.DeviceManager.AddDevice(device); }
-                else { result = session.DeviceManager.AddDevice(device, slot); }
+                if (slot <= 0) { result = session.DeviceManager.AddDevice(session.Processor, device, null); }
+                else { result = session.DeviceManager.AddDevice(session.Processor, device, null, slot); }
             });
             return result;
         }

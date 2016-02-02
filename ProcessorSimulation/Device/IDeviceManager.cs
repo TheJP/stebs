@@ -20,7 +20,7 @@ namespace ProcessorSimulation.Device
         /// </summary>
         /// <param name="device"></param>
         /// <returns>Device slot number</returns>
-        byte AddDevice(IDevice device);
+        byte AddDevice(IProcessor processor, IDevice device, IDeviceView view);
         /// <summary>
         /// Adds a device to the processor at the given slot number.
         /// If the slot number is already in use, a free slot number will be chosen.
@@ -29,7 +29,7 @@ namespace ProcessorSimulation.Device
         /// <param name="device"></param>
         /// <param name="slot">Prefered slot number</param>
         /// <returns>Device slot number</returns>
-        byte AddDevice(IDevice device, byte slot);
+        byte AddDevice(IProcessor processor, IDevice device, IDeviceView view, byte slot);
         /// <summary>
         /// Remove the device in the given slot.
         /// </summary>
