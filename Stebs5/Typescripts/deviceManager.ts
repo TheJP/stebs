@@ -1,11 +1,16 @@
 ﻿module Stebs {
 
+    export function registerDevice(slot: number, callback: (data: any) => void) {
+        deviceManager.updateCallbacks[slot] = callback;
+    };
+
     /**
      * Manager which is responsible for the client side handling of devices.
      */
     export var deviceManager = {
 
         private deviceTypes: <{ [id: string]: DeviceType }>{},
+        private updateCallbacks: <{ [slot: number]: (data: any) => void }>{},
 
         /**
          * Initializes the manager.
@@ -47,6 +52,11 @@
                     .html(device.Template)
                     .prepend($('<p />').text('[' + device.Slot + '] ' + deviceType.Name))
             );
+        },
+
+        updateView(slot: number, update: any) {
+            console.log(update);
+            if (deviceManager.updateCallbacks[slot]) { deviceManager.updateCallbacks[slot](update); }
         }
 
     };

@@ -407,6 +407,7 @@ $(document).ready(function () {
     hub.client.halt = Stebs.clientHub.halt;
     hub.client.hardReset = Stebs.clientHub.hardReset;
     hub.client.serverToDevice = Stebs.clientHub.serverToDevice;
+    hub.client.updateDevice = Stebs.deviceManager.updateView;
 
     $.connection.hub.start().done(function () {
         Stebs.fileManagement.init();
