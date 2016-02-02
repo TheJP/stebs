@@ -16,7 +16,8 @@ namespace PluginApi
         /// <summary>
         /// Html template of the device.
         /// </summary>
-        string DeviceTemplate { get; }
+        /// <param name="slot">Slot for which the template should be generated.</param>
+        string DeviceTemplate(byte slot);
         IDevice CreateDevice();
     }
 }

@@ -10,8 +10,8 @@ namespace TrafficLight
 {
     public class TrafficLightPlugin : IDevicePlugin
     {
-        public string DeviceTemplate => @"Data: <span class=""traffic-data"">0</span>" +
-            @"<script>alert('hi'); Stebs.registerDevice(1, function(data){ $('.traffic-data').text(data.Data); });</script>";
+        public string DeviceTemplate(byte slot) => $@"Data: <span id=""traffic-data-{slot}"">0</span>" +
+            $@"<script>Stebs.registerDevice({slot}, function(data){{ $('#traffic-data-{slot}').text(data.Data); }});</script>";
 
         public string Name => "Traffic Light";
 

@@ -187,7 +187,7 @@ namespace Stebs5
                 var plugin = PluginManager.DevicePlugins[deviceId];
                 var device = plugin.CreateDevice();
                 var givenSlot = Manager.AddDevice(Context.ConnectionId, device, slot);
-                return new AddedDeviceViewModel(givenSlot, plugin.DeviceTemplate);
+                return new AddedDeviceViewModel(givenSlot, plugin.DeviceTemplate(givenSlot));
             }
             return new AddedDeviceViewModel(false);
         }
