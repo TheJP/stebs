@@ -55,7 +55,6 @@
         },
 
         updateView(slot: number, update: any) {
-            console.log(update);
             if (deviceManager.updateCallbacks[slot]) { deviceManager.updateCallbacks[slot](update); }
         }
 

@@ -17,5 +17,7 @@ namespace TrafficLight
             View.UpdateView(new TrafficLightUpdate(input));
         }
         public override byte Output() => data;
+
+        public override void Reset() => Input(0xff);
     }
 }
