@@ -129,11 +129,17 @@ namespace Stebs5
         public byte AddDevice(string clientId, IDevice device, byte slot)
         {
             byte result = 0;
-            ProcessorAction(clientId, session =>
+            IDispatcherItem item;
+            if (processors.TryGetValue(clientId, out item))
             {
-                if (slot <= 0) { result = session.DeviceManager.AddDevice(session.Processor, device, null); }
-                else { result = session.DeviceManager.AddDevice(session.Processor, device, null, slot); }
-            });
+                item.Processor.Execute(session =>
+                {
+                    var view = new SignalrDeviceView(this, item.Guid.ToString());
+                    if (slot <= 0) { result = session.DeviceManager.AddDevice(session.Processor, device, view); }
+                    else { result = session.DeviceManager.AddDevice(session.Processor, device, view, slot); }
+                    view.Slot = result;
+                });
+            }
             return result;
         }
 
@@ -148,5 +154,23 @@ namespace Stebs5
                     devices[slot].Update(input);
                 }
             });
+
+        private class SignalrDeviceView : IDeviceView
+        {
+            private ProcessorManager manager;
+            private string groupGuid;
+            public byte Slot { get; set; }
+
+            public SignalrDeviceView(ProcessorManager manager, string groupGuid)
+            {
+                this.manager = manager;
+                this.groupGuid = groupGuid;
+            }
+
+            public void UpdateView(IDeviceUpdate update)
+            {
+                manager.Clients.Group(groupGuid).UpdateDevice(Slot, update);
+            }
+        }
     }
 }

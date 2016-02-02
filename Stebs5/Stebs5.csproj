@@ -321,6 +321,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\TrafficLight\scripts\trafficlight.js">
+      <Link>Scripts\trafficlight.js</Link>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\site.css" />
@@ -440,7 +443,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="IConstants.cs" />
-    <Compile Include="Managers\IDevicePlugin.cs" />
     <Compile Include="Managers\IFileManager.cs" />
     <Compile Include="Managers\IPluginManager.cs" />
     <Compile Include="Managers\IProcessorManager.cs" />
@@ -456,6 +458,10 @@
     <Compile Include="UnityConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PluginApi\PluginApi.csproj">
+      <Project>{d78c4393-032f-472b-b9c4-1559c3fb105b}</Project>
+      <Name>PluginApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProcessorDispatcher\ProcessorDispatcher.csproj">
       <Project>{ed8b7e99-ea6b-4f79-9507-d83b985c4621}</Project>
       <Name>ProcessorDispatcher</Name>
@@ -467,6 +473,10 @@
     <ProjectReference Include="..\Stebs5Model\Stebs5Model.csproj">
       <Project>{1b148617-99cf-4e49-bd86-491c9498d8c1}</Project>
       <Name>Stebs5Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TrafficLight\TrafficLight.csproj">
+      <Project>{544c5301-f1b7-4812-a012-4af32f3f8368}</Project>
+      <Name>TrafficLight</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

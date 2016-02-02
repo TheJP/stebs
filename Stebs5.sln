@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stebs5", "Stebs5\Stebs5.csproj", "{93421184-BB31-4C97-AAD1-6528F874DEF5}"
 EndProject
@@ -12,6 +12,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessorDispatcher", "ProcessorDispatcher\ProcessorDispatcher.csproj", "{ED8B7E99-EA6B-4F79-9507-D83B985C4621}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stebs5Model", "Stebs5Model\Stebs5Model.csproj", "{1B148617-99CF-4E49-BD86-491C9498D8C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devices", "Devices", "{0AAA79E6-7602-48A1-A637-ABD686BE2C3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginApi", "PluginApi\PluginApi.csproj", "{D78C4393-032F-472B-B9C4-1559C3FB105B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficLight", "TrafficLight\TrafficLight.csproj", "{544C5301-F1B7-4812-A012-4AF32F3F8368}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,8 +45,20 @@ Global
 		{1B148617-99CF-4E49-BD86-491C9498D8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B148617-99CF-4E49-BD86-491C9498D8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B148617-99CF-4E49-BD86-491C9498D8C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D78C4393-032F-472B-B9C4-1559C3FB105B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D78C4393-032F-472B-B9C4-1559C3FB105B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D78C4393-032F-472B-B9C4-1559C3FB105B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D78C4393-032F-472B-B9C4-1559C3FB105B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{544C5301-F1B7-4812-A012-4AF32F3F8368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{544C5301-F1B7-4812-A012-4AF32F3F8368}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{544C5301-F1B7-4812-A012-4AF32F3F8368}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{544C5301-F1B7-4812-A012-4AF32F3F8368}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D78C4393-032F-472B-B9C4-1559C3FB105B} = {0AAA79E6-7602-48A1-A637-ABD686BE2C3D}
+		{544C5301-F1B7-4812-A012-4AF32F3F8368} = {0AAA79E6-7602-48A1-A637-ABD686BE2C3D}
 	EndGlobalSection
 EndGlobal

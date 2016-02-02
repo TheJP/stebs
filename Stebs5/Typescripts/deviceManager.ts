@@ -13,8 +13,9 @@
         init(): void {
             $('#addDeviceForm').submit(() => {
                 var deviceType = $('#deviceSelect').val();
-                serverHub.addDevice(deviceType, parseInt($('#deviceSlot').val()))
-                    .then(result => { if (result.Success) { deviceManager.addDevice(deviceType, result) } });
+                var slot = parseInt($('#deviceSlot').val());
+                serverHub.addDevice(deviceType, isNaN(slot) ? 0 : slot)
+                    .then(result => { if (result.Success) { deviceManager.addDevice(deviceManager.deviceTypes[deviceType], result) } });
                 return false;
             });
         },
@@ -44,7 +45,7 @@
                     .attr('id', 'device-' + device.Slot)
                     .addClass('device')
                     .html(device.Template)
-                    .prepend($('<p />').text(deviceType.Name))
+                    .prepend($('<p />').text('[' + device.Slot + '] ' + deviceType.Name))
             );
         }
 

@@ -1,6 +1,6 @@
 ﻿using ProcessorSimulation.Device;
 
-namespace Stebs5
+namespace PluginApi
 {
     /// <summary>
     /// A device plugin is a stebs plugin, which adds devices.
