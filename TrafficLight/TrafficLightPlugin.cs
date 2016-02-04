@@ -12,8 +12,7 @@ namespace TrafficLight
     {
         /// <remarks>Since html5 style tags are allowed in the body tag.</remarks>
         public string DeviceTemplate(byte slot) =>
-$@"
-<style>
+$@"<style>
     #lights-{slot} span {{
         display: block;
         width: 30px;
@@ -41,6 +40,12 @@ $@"
         margin-top: 10px;
         margin-right: 10px;
     }}
+    .traffic-data {{
+        font-size: 25px;
+        left: 20px;
+        position: relative;
+        top: 40px;
+    }}
 </style>
 <div id=""lights-{slot}"">
     <div class=""lights-left"">
@@ -56,9 +61,13 @@ $@"
         <span></span>
     </div>
 </div>
+<div class=""traffic-data"">
+    <span id=""traffic-data-{slot}"">11111111</span>
+</div>
 <script>
     Stebs.registerDevice({slot}, function(data){{
-        //$('#traffic-data-{slot}').text(data.Data);
+        var binary = Stebs.utility.convertNumber(data.Data, 2, 8)
+        $('#traffic-data-{slot}').text(binary.slice(0, 4) + '\'' + binary.slice(4, 8));
         var byte = data.Data;
         var lights = $('#lights-{slot} span');
         var bit = 128;

@@ -26,7 +26,7 @@ module Stebs {
     export enum SimulationStepSize { Micro = 0, Macro = 1, Instruction = 2 };
 
     export var utility = {
-        addLeadingZeros(value: number, radix: number, size: number): string {
+        convertNumber(value: number, radix: number, size: number): string {
             return (Array(size + 1).join('0') + value.toString(radix)).substr(-size);
         }
     };
