@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devices", "Devices", "{0AAA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginApi", "PluginApi\PluginApi.csproj", "{D78C4393-032F-472B-B9C4-1559C3FB105B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficLight", "TrafficLight\TrafficLight.csproj", "{544C5301-F1B7-4812-A012-4AF32F3F8368}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficLight", "TrafficLight\TrafficLight.csproj", "{CE63A399-E293-4ABF-A400-9738C249EBE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,16 +49,16 @@ Global
 		{D78C4393-032F-472B-B9C4-1559C3FB105B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D78C4393-032F-472B-B9C4-1559C3FB105B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D78C4393-032F-472B-B9C4-1559C3FB105B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{544C5301-F1B7-4812-A012-4AF32F3F8368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{544C5301-F1B7-4812-A012-4AF32F3F8368}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{544C5301-F1B7-4812-A012-4AF32F3F8368}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{544C5301-F1B7-4812-A012-4AF32F3F8368}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE63A399-E293-4ABF-A400-9738C249EBE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE63A399-E293-4ABF-A400-9738C249EBE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE63A399-E293-4ABF-A400-9738C249EBE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE63A399-E293-4ABF-A400-9738C249EBE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D78C4393-032F-472B-B9C4-1559C3FB105B} = {0AAA79E6-7602-48A1-A637-ABD686BE2C3D}
-		{544C5301-F1B7-4812-A012-4AF32F3F8368} = {0AAA79E6-7602-48A1-A637-ABD686BE2C3D}
+		{CE63A399-E293-4ABF-A400-9738C249EBE1} = {0AAA79E6-7602-48A1-A637-ABD686BE2C3D}
 	EndGlobalSection
 EndGlobal

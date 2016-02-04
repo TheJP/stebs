@@ -472,7 +472,7 @@
       <Name>Stebs5Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\TrafficLight\TrafficLight.csproj">
-      <Project>{544c5301-f1b7-4812-a012-4af32f3f8368}</Project>
+      <Project>{ce63a399-e293-4abf-a400-9738c249ebe1}</Project>
       <Name>TrafficLight</Name>
     </ProjectReference>
   </ItemGroup>
