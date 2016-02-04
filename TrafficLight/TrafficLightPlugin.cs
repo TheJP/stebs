@@ -62,7 +62,7 @@ $@"<style>
     </div>
 </div>
 <div class=""traffic-data"">
-    <span id=""traffic-data-{slot}"">11111111</span>
+    <span id=""traffic-data-{slot}"">1111'1111</span>
 </div>
 <script>
     Stebs.registerDevice({slot}, function(data){{

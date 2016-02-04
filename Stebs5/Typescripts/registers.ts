@@ -249,8 +249,8 @@
          */
         getValueFormated(): string {
             if (this.showBinary) {
-                var asBinay = utility.convertNumber(this.register.getValue(), 2, 8);
-                return asBinay.slice(0, 4) + '\'' + asBinay.slice(4, 8);
+                var binary = utility.convertNumber(this.register.getValue(), 2, 8);
+                return binary.slice(0, 4) + '\'' + binary.slice(4, 8);
             }
             return utility.convertNumber(this.register.getValue(), 16, 2);
         }
