@@ -54,12 +54,25 @@
                     .attr('id', 'device-' + device.Slot)
                     .addClass('device')
                     .html(device.Template)
-                    .prepend($('<p />').text('[' + device.Slot + '] ' + deviceType.Name))
+                    .prepend($('<p />').html(
+                        //Remove link
+                        '<a class="closing-link" style="float: right" href="#">x</a>' +
+                        //Device header
+                        '<span class="slot-number">[' + device.Slot + ']</span> ' + deviceType.Name
+                    ))
             );
+            //Remove device if x was clicked.
+            $('#device-' + device.Slot + ' .closing-link').click(() => serverHub.removeDevice(device.Slot)
+                .then(() => $('#device-' + device.Slot).remove()));
         },
 
+        /**
+         * Sends view updates to all registered listeners-
+         */
         updateView(slot: number, update: any) {
-            if (deviceManager.updateCallbacks[slot]) { deviceManager.updateCallbacks[slot](update); }
+            if (deviceManager.updateCallbacks[slot]) {
+                deviceManager.updateCallbacks[slot](update);
+            }
         }
 
     };

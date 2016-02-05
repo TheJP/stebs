@@ -123,6 +123,9 @@ module Stebs {
         public Success: boolean;
     };
 
+    export class RemoveDeviceViewModel {
+    };
+
     export var serverHub = {
 
         /**
@@ -234,6 +237,10 @@ module Stebs {
          */
         updateDevice(slot: number, update: any): void {
             $.connection.stebsHub.server.updateDevice(slot, update);
+        },
+
+        removeDevice(slot: number): Promise<RemoveDeviceViewModel> {
+            return $.connection.stebsHub.server.removeDevice(slot);
         }
 
     };
