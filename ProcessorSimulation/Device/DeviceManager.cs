@@ -10,7 +10,7 @@ namespace ProcessorSimulation.Device
     public class DeviceManager : IDeviceManager
     {
         private const string MaxDevicedReached = "This processor already has the maximal number of devices attached.";
-        private byte nextSlot = 1;
+        private byte nextSlot = 0;
         private readonly Dictionary<byte, IDevice> devices = new Dictionary<byte, IDevice>();
         public IReadOnlyDictionary<byte, IDevice> Devices => new ReadOnlyDictionary<byte, IDevice>(devices);
 

@@ -410,7 +410,6 @@
     <TypeScriptCompile Include="Scripts\typings\es6-promise\es6-promise.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\mousetrap\mousetrap.d.ts" />
-    <TypeScriptCompile Include="Typescripts\deviceManager.ts" />
     <TypeScriptCompile Include="Typescripts\executionStateMachine.ts" />
     <TypeScriptCompile Include="Typescripts\fileManagement.ts" />
     <TypeScriptCompile Include="Typescripts\devices.ts" />
@@ -455,6 +454,10 @@
     <Compile Include="UnityConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InterruptDevice\InterruptDevice.csproj">
+      <Project>{8e3ec0f4-beb2-465b-a2c0-9de526b3ad57}</Project>
+      <Name>InterruptDevice</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PluginApi\PluginApi.csproj">
       <Project>{d78c4393-032f-472b-b9c4-1559c3fb105b}</Project>
       <Name>PluginApi</Name>

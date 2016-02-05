@@ -249,10 +249,10 @@
          */
         getValueFormated(): string {
             if (this.showBinary) {
-                var binary = utility.convertNumber(this.register.getValue(), 2, 8);
+                var binary = convertNumber(this.register.getValue(), 2, 8);
                 return binary.slice(0, 4) + '\'' + binary.slice(4, 8);
             }
-            return utility.convertNumber(this.register.getValue(), 16, 2);
+            return convertNumber(this.register.getValue(), 16, 2);
         }
 
         /** Creates the html structure for this watch. */

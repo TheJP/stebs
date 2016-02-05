@@ -18,7 +18,16 @@ namespace InterruptDevice
 
         public string DeviceTemplate(byte slot) =>
 
-$@"";
+$@"<style>
+</style>
+<div>
+    <button id=""interrupt-{slot}"">Interrupt</button>
+</div>
+<script>
+    $('#interrupt-{slot}').click(function(){{
+        Stebs.updateDevice({slot}, {{ Command: 'InterruptOnce' }});
+    }});
+</script>";
 
     }
 }

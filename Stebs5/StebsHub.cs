@@ -180,7 +180,7 @@ namespace Stebs5
         /// <param name="deviceId"></param>
         /// <param name="slot">If the slot is 0, a free slot number is chosen.</param>
         /// <returns>Slot number, at which the device was placed.</returns>
-        public AddedDeviceViewModel AddDevice(string deviceId, byte slot)
+        public AddedDeviceViewModel AddDevice(string deviceId, byte? slot)
         {
             if (PluginManager.DevicePlugins.ContainsKey(deviceId))
             {
@@ -203,28 +203,5 @@ namespace Stebs5
         /// <param name="slot">Device slot in the processor.</param>
         /// <param name="input">Update information.</param>
         public void UpdateDevice(byte slot, IDeviceUpdate input) => Manager.UpdateDevice(Context.ConnectionId, slot, input);
-
-        /// <summary>Receive device data from server</summary>
-        /// <param name="deviceName">the sending device</param>
-        /// <param name="textData">the text data</param>
-        /// <param name="numberData">the number data</param>
-        /// <param name="interrupt">if this data is sent with an interrupt</param>
-        public void DeviceToServer(string deviceName, string[] textData, int[] numberData, bool interrupt)
-        {
-            //TODO Do here stuff with device call
-            string[] testString = new string[1];
-            int[] testNumbers = new int[1];
-            if (interrupt)
-            {
-                testNumbers[0]++;
-                testString[0] = "server received interrupt" ;
-            }
-            else
-            {
-                testString[0] = "serverSet: Test";
-
-            }
-            Clients.Caller.ServerToDevice(deviceName, testString, testNumbers);
-        }
     }
 }

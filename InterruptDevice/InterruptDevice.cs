@@ -15,7 +15,7 @@ namespace InterruptDevice
 
         public override void Update(IDeviceUpdate input)
         {
-
+            
         }
     }
 }

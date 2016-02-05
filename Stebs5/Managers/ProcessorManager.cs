@@ -126,7 +126,7 @@ namespace Stebs5
             }
         }
 
-        public byte AddDevice(string clientId, IDevice device, byte slot)
+        public byte AddDevice(string clientId, IDevice device, byte? slot)
         {
             byte result = 0;
             IDispatcherItem item;
@@ -135,8 +135,8 @@ namespace Stebs5
                 item.Processor.Execute(session =>
                 {
                     var view = new SignalrDeviceView(this, item.Guid.ToString());
-                    if (slot <= 0) { result = session.DeviceManager.AddDevice(session.Processor, device, view); }
-                    else { result = session.DeviceManager.AddDevice(session.Processor, device, view, slot); }
+                    if (!slot.HasValue) { result = session.DeviceManager.AddDevice(session.Processor, device, view); }
+                    else { result = session.DeviceManager.AddDevice(session.Processor, device, view, slot.Value); }
                     view.Slot = result;
                 });
             }
@@ -155,6 +155,7 @@ namespace Stebs5
                 }
             });
 
+        /// <summary>Class which is used to deliver device updates to the clien</summary>
         private class SignalrDeviceView : IDeviceView
         {
             private ProcessorManager manager;
@@ -167,10 +168,7 @@ namespace Stebs5
                 this.groupGuid = groupGuid;
             }
 
-            public void UpdateView(IDeviceUpdate update)
-            {
-                manager.Clients.Group(groupGuid).UpdateDevice(Slot, update);
-            }
+            public void UpdateView(IDeviceUpdate update) => manager.Clients.Group(groupGuid).UpdateDevice(Slot, update);
         }
     }
 }

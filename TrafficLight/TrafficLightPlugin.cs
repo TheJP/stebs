@@ -74,13 +74,14 @@ $@"<style>
 </div>
 <script>
     Stebs.registerDevice({slot}, function(data){{
-        var binary = Stebs.utility.convertNumber(data.Data, 2, 8)
+        var binary = Stebs.convertNumber(data.Data, 2, 8)
         $('#traffic-data-{slot}').text(binary.slice(0, 4) + '\'' + binary.slice(4, 8));
         var byte = data.Data;
         var lights = $('#lights-{slot} span');
         var bit = 128;
         for(var i = 0; i < 8; ++i, bit >>= 1){{
-            if((byte & bit) != 0){{ $(lights[i]).removeAttr('style'); }} else {{ $(lights[i]).css('border', '1px solid black').css('background-color', 'white'); }}
+            if((byte & bit) != 0){{ $(lights[i]).removeAttr('style'); }}
+            else {{ $(lights[i]).css('border', '1px solid black').css('background-color', 'white'); }}
         }}
     }});
 </script>";

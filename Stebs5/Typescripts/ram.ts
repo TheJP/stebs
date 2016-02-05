@@ -125,7 +125,7 @@
                 return false;
             }
             this.ramContent[pos] = value;
-            $('#cell-' + pos).text(Stebs.utility.convertNumber(value, 16, 2));
+            $('#cell-' + pos).text(Stebs.convertNumber(value, 16, 2));
             this.highlight('#cell-' + pos);
             return true;
         }
@@ -181,7 +181,7 @@
                     }
                     var cell = row.insertCell(j + 1);
 
-                    cell.innerHTML = Stebs.utility.convertNumber(this.ramContent[(i * newWith) + j], 16, 2);
+                    cell.innerHTML = Stebs.convertNumber(this.ramContent[(i * newWith) + j], 16, 2);
                     cell.id = 'cell-' + ((i * newWith) + j);
                 }
             }

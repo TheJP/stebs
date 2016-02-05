@@ -21,14 +21,10 @@ module Stebs {
         runAndDebug: '100px'
     };
 
-    export var devices = <{ [deviceName: string]: Device }>{};
-
     export enum SimulationStepSize { Micro = 0, Macro = 1, Instruction = 2 };
 
-    export var utility = {
-        convertNumber(value: number, radix: number, size: number): string {
-            return (Array(size + 1).join('0') + value.toString(radix)).substr(-size);
-        }
+    export function convertNumber(value: number, radix: number, size: number): string {
+        return (Array(size + 1).join('0') + value.toString(radix)).substr(-size);
     };
 
     var ctx: CanvasRenderingContext2D;
@@ -117,16 +113,6 @@ module Stebs {
          */
         hardReset() {
             //TODO: Implement
-        },
-
-        /**
-         * Receives data form server for a device.
-         * @param deviceName the name of the device.
-         * @param textData the text data.
-         * @param numberData the number data.
-         */
-        serverToDevice(deviceName: string, textData: string[], numberData: number[]) {
-            devices[deviceName].serverToDevice(textData, numberData);
         }
 
     };
@@ -219,14 +205,14 @@ module Stebs {
         },
 
         /**
-        * Get File content
+        * Get File content.
         */
         getFileContent(nodeId: number): Promise<string> {
             return $.connection.stebsHub.server.getFileContent(nodeId);
         },
 
         /**
-        * Save File content
+        * Save File content.
         */
         saveFileContent(nodeId: number, fileContent: string): void {
             $.connection.stebsHub.server.saveFileContent(nodeId, fileContent);
@@ -234,24 +220,21 @@ module Stebs {
 
         /**
          * Add a new device with the given type at the given slot.
-         * @param deviceType
-         * @param slot
+         * @param deviceType Device id, which should be added.
+         * @param slot Prefered slot number.
          */
-        addDevice(deviceType: string, slot: number): Promise<AddDeviceViewModel> {
-            return $.connection.stebsHub.server.addDevice(deviceType, slot);
+        addDevice(deviceType: string, slot: number = NaN): Promise<AddDeviceViewModel> {
+            return $.connection.stebsHub.server.addDevice(deviceType, isNaN(slot) ? null : slot);
         },
 
         /**
-         * Send data from device to server.
-         * @param deviceName name of the sender.
-         * @param textData data array.
-         * @param numberData text array.
-         * @param interrupt send an interrupt.
+         * Updates a device with user input.
+         * @param slot Slot number of the device to update.
+         * @param update Update data from client to server.
          */
-        deviceToServer(deviceName: string, textData: string[], numberData: number[], interrupt: boolean) {
-            console.log("send data to server");
-            $.connection.stebsHub.server.deviceToServer(deviceName, textData, numberData, interrupt);
-        },
+        updateDevice(slot: number, update: any): void {
+            $.connection.stebsHub.server.updateDevice(slot, update);
+        }
 
     };
 
@@ -366,7 +349,10 @@ module Stebs {
  * This interface allows the usage of the signalr library.
  */
 interface JQueryStatic {
-    connection: any;
+    connection: {
+        stebsHub: { server: any, client: any },
+        hub: any
+    };
 }
 
 /**
@@ -406,7 +392,6 @@ $(document).ready(function () {
     hub.client.reset = Stebs.clientHub.reset;
     hub.client.halt = Stebs.clientHub.halt;
     hub.client.hardReset = Stebs.clientHub.hardReset;
-    hub.client.serverToDevice = Stebs.clientHub.serverToDevice;
     hub.client.updateDevice = Stebs.deviceManager.updateView;
 
     $.connection.hub.start().done(function () {
@@ -462,8 +447,5 @@ $(document).ready(function () {
         readOnly: true,
         cursorBlinkRate: -1
     });
-
-    var interruptDevice = new Stebs.InterruptDevice();
-    interruptDevice.init();
 
 });

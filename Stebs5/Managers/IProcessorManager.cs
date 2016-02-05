@@ -90,7 +90,7 @@ namespace Stebs5
         /// <param name="device"></param>
         /// <param name="slot">Slot where the device will be added. If the slot is 0, a generated id will be used.</param>
         /// <returns>Slot number, at which the device was placed.</returns>
-        byte AddDevice(string clientId, IDevice device, byte slot);
+        byte AddDevice(string clientId, IDevice device, byte? slot);
 
         /// <summary>
         /// Remove the device at the given slot from the processor of the given client id.
