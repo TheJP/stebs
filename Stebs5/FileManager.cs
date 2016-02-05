@@ -34,7 +34,7 @@ namespace Stebs5
         /// </summary>
         /// <param name="nodeName"></param>
         /// <returns>True if the node name was valid, false otherwise.</returns>
-        private bool ValideNodeName(string nodeName) => nodeName.Length > 0 && !Regex.IsMatch(nodeName, @"[^\w_\- ]");
+        private bool ValideNodeName(string nodeName) => nodeName.Length > 0 && !Regex.IsMatch(nodeName, @"[^\w_\-\. ]");
 
         public FileSystemViewModel GetFileSystem(IPrincipal user)
         {
