@@ -202,6 +202,6 @@ namespace Stebs5
         /// </summary>
         /// <param name="slot">Device slot in the processor.</param>
         /// <param name="input">Update information.</param>
-        public void UpdateDevice(byte slot, IDeviceUpdate input) => Manager.UpdateDevice(Context.ConnectionId, slot, input);
+        public void UpdateDevice(byte slot, string input) => Manager.UpdateDevice(Context.ConnectionId, slot, input);
     }
 }

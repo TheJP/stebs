@@ -42,7 +42,7 @@ namespace ProcessorSimulation.Device
         /// Update the device with the given external input.
         /// </summary>
         /// <param name="input">External input. This can e.g. be user interaction.</param>
-        void Update(IDeviceUpdate input);
+        void Update(string input);
 
         /// <summary>
         /// Called after the processor, to which the device was attached, did get a reset.

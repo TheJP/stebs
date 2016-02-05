@@ -106,6 +106,6 @@ namespace Stebs5
         /// <param name="clientId"></param>
         /// <param name="slot">Device slot in the processor.</param>
         /// <param name="input">Update information.</param>
-        void UpdateDevice(string clientId, byte slot, IDeviceUpdate input);
+        void UpdateDevice(string clientId, byte slot, string input);
     }
 }

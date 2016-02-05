@@ -25,7 +25,7 @@ $@"<style>
 </div>
 <script>
     $('#interrupt-{slot}').click(function(){{
-        Stebs.updateDevice({slot}, {{ Command: 'InterruptOnce' }});
+        Stebs.updateDevice({slot}, 'InterruptOnce');
     }});
 </script>";
 

@@ -146,7 +146,7 @@ namespace Stebs5
         public void RemoveDevice(string clientId, byte slot) =>
             ProcessorAction(clientId, session => session.DeviceManager.RemoveDevice(slot));
 
-        public void UpdateDevice(string clientId, byte slot, IDeviceUpdate input) =>
+        public void UpdateDevice(string clientId, byte slot, string input) =>
             ProcessorAction(clientId, session => {
                 var devices = session.DeviceManager.Devices;
                 if (devices.ContainsKey(slot))

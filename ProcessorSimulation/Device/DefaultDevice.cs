@@ -23,6 +23,6 @@ namespace ProcessorSimulation.Device
         public virtual void Input(byte input) { }
         public virtual byte Output() { return 0; }
         public virtual void Reset() { }
-        public virtual void Update(IDeviceUpdate input) { }
+        public virtual void Update(string input) { }
     }
 }
