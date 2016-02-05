@@ -10,8 +10,16 @@ namespace TrafficLight
 {
     public class TrafficLightPlugin : IDevicePlugin
     {
-        /// <remarks>Since html5 style tags are allowed in the body tag.</remarks>
+
+        public string Name => "Traffic Light";
+
+        public string PluginId => "TrafficLight";
+
+        public IDevice CreateDevice() => new TrafficLightDevice();
+
+        /// <remarks>Since html5, style tags are allowed in the body tag.</remarks>
         public string DeviceTemplate(byte slot) =>
+
 $@"<style>
     #lights-{slot} span {{
         display: block;
@@ -77,10 +85,5 @@ $@"<style>
     }});
 </script>";
 
-        public string Name => "Traffic Light";
-
-        public string PluginId => "TrafficLight";
-
-        public IDevice CreateDevice() => new TrafficLightDevice();
     }
 }
