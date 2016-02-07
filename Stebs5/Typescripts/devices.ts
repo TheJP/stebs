@@ -1,66 +1,85 @@
 ﻿module Stebs {
-    export interface Device {
-        deviceName: string;
-        deviceTextData: string[];
-        deviceNumberData: number[];
 
-        init(): void;
-        serverToDevice(textData: string[], numberData: number[]): void;
-        deviceToServer(interrupt: boolean): void;
-    }
+    export function registerDevice(slot: number, callback: (data: any) => void) {
+        deviceManager.updateCallbacks[slot] = callback;
+    };
 
-    export abstract class BasicDevice implements Device {
-        public deviceName: string = "BasicDevice";
-        public deviceTextData: string[];
-        public deviceNumberData: number[];
+    export function updateDevice(slot: number, update: any) {
+        serverHub.updateDevice(slot, update);
+    };
+
+    /**
+     * Manager which is responsible for the client side handling of devices.
+     */
+    export var deviceManager = {
+
+        private deviceTypes: <{ [id: string]: DeviceType }>{},
+        private updateCallbacks: <{ [slot: number]: (data: any) => void }>{},
 
         /**
-         * Initalize the basic device.
+         * Initializes the manager.
          */
-        public init() {
-            Stebs.devices[this.deviceName] = this;
-        }
-        /**
-         * Set received data from server.
-         * @param textData all text data.
-         * @param numberData all number data.
-         */
-        public serverToDevice(textData: string[], numberData: number[]) {
-            this.deviceTextData = textData;
-            this.deviceNumberData = numberData;
-        }
-        /**
-         * Send server the device data.
-         * @param interrupt send with interrupt then send true.
-         */
-        public deviceToServer(interrupt: boolean) {
-            Stebs.serverHub.deviceToServer(this.deviceName, this.deviceTextData, this.deviceNumberData, interrupt);
-        }
-    }
+        init(): void {
+            $('#addDeviceForm').submit(() => {
+                var deviceType = $('#deviceSelect').val();
+                var slot = parseInt($('#deviceSlot').val());
+                serverHub.addDevice(deviceType, slot)
+                   .then(result => { if (result.Success) { deviceManager.addDevice(deviceManager.deviceTypes[deviceType], result) } });
+                return false;
+            });
+        },
 
-    export class InterruptDevice extends BasicDevice {
-        public init() {
-            this.deviceName = "InterruptDevice";
-            super.init();
-            $('#interruptButton').click(() => this.clickedInterruptTest());
-            $('#inputTest').click(() => this.clickedInputTest());
-            $('#outputTest').text('initialized');
-        }
-        public clickedInterruptTest = () => {
-            this.deviceToServer(true);
-        }
-        public clickedInputTest = () => {
-            this.deviceToServer(false);
-        }
-        public serverToDevice(textData: string[], numberData: number[]) {
-            super.serverToDevice(textData, numberData);
-            console.log("setData from server " + textData[0]);
-            if (textData.length == 1) {
-                $('#outputTest').text(textData[0]);
-            } else if (numberData.length == 1) {
-                $('#outputTest').text(numberData[0]);
+        /**
+         * Sets the device types.
+         */
+        setDeviceTypes(types: { [id: string]: DeviceType }): void {
+            deviceManager.deviceTypes = types;
+            //Add options to the device adding dialog
+            var select = $('#deviceSelect');
+            select.empty()
+            for (var id in deviceManager.deviceTypes) {
+                var deviceType = deviceManager.deviceTypes[id];
+                select.append($('<option />').text(deviceType.Name).val(deviceType.Id));
+            }
+        },
+
+        /**
+         * Add needed gui elements to add the new device.
+         * @param deviceType
+         * @param slot
+         */
+        addDevice(deviceType: DeviceType, device: AddDeviceViewModel): void {
+            $('#deviceElements').append(
+                $('<div />')
+                    .attr('id', 'device-' + device.Slot)
+                    .addClass('device')
+                    .html(device.Template)
+                    .prepend($('<p />').html(
+                        //Remove link
+                        '<a class="closing-link" style="float: right" href="#">x</a>' +
+                        //Device header
+                        '<span class="slot-number">[' + device.Slot + ']</span> ' + deviceType.Name
+                    ))
+            );
+            //Remove device if x was clicked.
+            $('#device-' + device.Slot + ' .closing-link').click(() => serverHub.removeDevice(device.Slot)
+                .then(() => $('#device-' + device.Slot).remove()));
+        },
+
+        /**
+         * Sends view updates to all registered listeners-
+         */
+        updateView(slot: number, update: any) {
+            if (deviceManager.updateCallbacks[slot]) {
+                deviceManager.updateCallbacks[slot](update);
             }
         }
-    }
+
+    };
+
+    export class DeviceType {
+        public Name: string;
+        public Id: string;
+    };
 
 }

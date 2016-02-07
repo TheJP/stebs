@@ -24,6 +24,10 @@ namespace Stebs5
         /// </summary>
         string Rom2AbsolutePath { get; }
         /// <summary>
+        /// Absolute path to the plugin folder. This folder contains all plugin dlls which have to be loaded on startup.
+        /// </summary>
+        string PluginsAbsolutePath { get; }
+        /// <summary>
         /// Minimal run delay, which can be set for a processor by a user.
         /// </summary>
         TimeSpan MinimalRunDelay { get; }

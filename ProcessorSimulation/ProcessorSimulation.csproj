@@ -55,6 +55,12 @@
   <ItemGroup>
     <Compile Include="Alu.cs" />
     <Compile Include="AluCmd.cs" />
+    <Compile Include="Device\DefaultDevice.cs" />
+    <Compile Include="Device\DeviceManager.cs" />
+    <Compile Include="Device\IDevice.cs" />
+    <Compile Include="Device\IDeviceManager.cs" />
+    <Compile Include="Device\IDeviceUpdate.cs" />
+    <Compile Include="Device\IDeviceView.cs" />
     <Compile Include="IAlu.cs" />
     <Compile Include="IProcessor.cs" />
     <Compile Include="IProcessorSession.cs" />

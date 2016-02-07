@@ -15,12 +15,15 @@
             </div>
             <div id="ramTable"></div>
         </div>
-        <div id="interruptDevice" class="device">
-            <p>Interrupt</p>
-            <!--<input id="speedSlider" type="range" min="0" max="2000" step="10" value="0" />-->
-            <button id="interruptButton">InterruptTest</button>
-            <button id="inputTest">inputTest</button>
-            <label id="outputTest">outputText</label>
+        <div id="deviceControl" class="device">
+            <p>Add Device</p>
+            <form id="addDeviceForm">
+                <select id="deviceSelect">
+                    <option>Loading...</option>
+                </select>
+                <input type="number" min="0" max="255" id="deviceSlot" />
+                <button type="submit">Add</button>
+            </form>
         </div>
     </div>
 </div>

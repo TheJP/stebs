@@ -7,6 +7,7 @@ using System.Web;
 using ProcessorSimulation;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
+using ProcessorSimulation.Device;
 
 namespace Stebs5
 {
@@ -114,6 +115,60 @@ namespace Stebs5
             {
                 Dispatcher.Step(item.Guid, stepSize);
             }
+        }
+
+        private void ProcessorAction(string clientId, Action<IProcessorSession> action)
+        {
+            IDispatcherItem item;
+            if (processors.TryGetValue(clientId, out item))
+            {
+                item.Processor.Execute(action);
+            }
+        }
+
+        public byte AddDevice(string clientId, IDevice device, byte? slot)
+        {
+            byte result = 0;
+            IDispatcherItem item;
+            if (processors.TryGetValue(clientId, out item))
+            {
+                item.Processor.Execute(session =>
+                {
+                    var view = new SignalrDeviceView(this, item.Guid.ToString());
+                    if (!slot.HasValue) { result = session.DeviceManager.AddDevice(session.Processor, device, view); }
+                    else { result = session.DeviceManager.AddDevice(session.Processor, device, view, slot.Value); }
+                    view.Slot = result;
+                });
+            }
+            return result;
+        }
+
+        public void RemoveDevice(string clientId, byte slot) =>
+            ProcessorAction(clientId, session => session.DeviceManager.RemoveDevice(slot));
+
+        public void UpdateDevice(string clientId, byte slot, string input) =>
+            ProcessorAction(clientId, session => {
+                var devices = session.DeviceManager.Devices;
+                if (devices.ContainsKey(slot))
+                {
+                    devices[slot].Update(input);
+                }
+            });
+
+        /// <summary>Class which is used to deliver device updates to the clien</summary>
+        private class SignalrDeviceView : IDeviceView
+        {
+            private ProcessorManager manager;
+            private string groupGuid;
+            public byte Slot { get; set; }
+
+            public SignalrDeviceView(ProcessorManager manager, string groupGuid)
+            {
+                this.manager = manager;
+                this.groupGuid = groupGuid;
+            }
+
+            public void UpdateView(IDeviceUpdate update) => manager.Clients.Group(groupGuid).UpdateDevice(Slot, update);
         }
     }
 }

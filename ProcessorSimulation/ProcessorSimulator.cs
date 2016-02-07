@@ -77,7 +77,7 @@ namespace ProcessorSimulation
             if (processor.IsHalted) { return; }
             //Transfer data from source to target
             session.SetRegister(Registers.MIP, NextMip(processor, mpmEntry));
-            var dataBus = mpmEntry.EnableValue ? (uint)mpmEntry.Value : GetDataBusValue(processor, mpmEntry);
+            var dataBus = mpmEntry.EnableValue ? (uint)mpmEntry.Value : GetDataBusValue(session, mpmEntry);
             WriteDataBusToRegister(session, mpmEntry, dataBus);
             //Reset interrupt flag
             if (mpmEntry.ClearInterrupt)
@@ -92,8 +92,6 @@ namespace ProcessorSimulation
                 session.SetRegister(Registers.RES, result);
                 if (mpmEntry.AffectFlags) { session.SetRegister(status.Register); }
             }
-            //TODO: Implement halt
-            //TODO: notify halt
         }
 
         /// <summary>
@@ -150,17 +148,25 @@ namespace ProcessorSimulation
         /// <param name="processor"></param>
         /// <param name="mpmEntry">Current micro program memory entry</param>
         /// <returns>DataBus value</returns>
-        private uint GetDataBusValue(IProcessor processor, IMicroInstruction mpmEntry)
+        private uint GetDataBusValue(IProcessorSession session, IMicroInstruction mpmEntry)
         {
+            var processor = session.Processor;
             switch (mpmEntry.Source)
             {
                 case Source.Empty:
                     return 0;
                 case Source.Data:
-                    //TODO: Implement IO
-                    if (mpmEntry.DataInput == DataInput.IO) { throw new NotImplementedException(); }
                     var memoryAddress = (byte)processor.Registers[Registers.MAR].Value;
-                    return processor.Ram.Data[memoryAddress];
+                    if (mpmEntry.DataInput == DataInput.IO)
+                    {
+                        var devices = session.DeviceManager.Devices;
+                        if (devices.ContainsKey(memoryAddress)) { return devices[memoryAddress].Output(); }
+                        else { return 0; }
+                    }
+                    else
+                    {
+                        return processor.Ram.Data[memoryAddress];
+                    }
                 case Source.SELReferenced:
                     return processor.Registers[GetSELReferenced(processor)].Value;
                 default:
@@ -187,10 +193,13 @@ namespace ProcessorSimulation
                 case Destination.MDR:
                     if (mpmEntry.ReadWrite == ReadWrite.Write)
                     {
-                        //TODO: Implement IO
-                        if (mpmEntry.DataInput == DataInput.IO) { throw new NotImplementedException(); }
                         var memoryAddress = (byte)session.Processor.Registers[Registers.MAR].Value;
-                        session.RamSession.Set(memoryAddress, (byte)dataBus);
+                        if (mpmEntry.DataInput == DataInput.IO)
+                        {
+                            var devices = session.DeviceManager.Devices;
+                            if (devices.ContainsKey(memoryAddress)) { devices[memoryAddress].Input((byte)dataBus); }
+                        }
+                        else { session.RamSession.Set(memoryAddress, (byte)dataBus); }
                     }
                     target = Registers.MDR;
                     break;
@@ -222,6 +231,7 @@ namespace ProcessorSimulation
                 {
                     session.SetRegister(type, type == Registers.SP ? processor.InitialStackPointer : 0);
                 }
+                foreach(var device in session.DeviceManager.Devices.Values) { device.Reset(); }
                 session.SetHalted(false);
             }
         }
