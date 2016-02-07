@@ -126,7 +126,8 @@
         * Create a StatusWatchElement form a register.
         */
         private static watchFactories: { [type: string]: (register: Register) => WatchElement } = {
-            ['Status']: (register) => new StatusWatchElement(register)
+            ['Status']: (register) => new StatusWatchElement(register),
+            ['MIP']: (register) => new MipWatchElement(register)
         }
 
         private type: string;
@@ -298,6 +299,18 @@
             var zero = (value & 2) > 0 ? 1 : 0;
             $('#watch-' + this.getType() + ' .watch-element-value').text('I:' + interrupt + ' S:' + signed + ' O:' + overflow + ' Z:' + zero);
         }
+    }
+
+    class MipWatchElement extends WatchElement {
+
+        getValueFormated(): string {
+            if (this.isShowBinary()) {
+                var binary = convertNumber(this.getRegister().getValue(), 2, 12);
+                return binary.slice(0, 4) + '\'' + binary.slice(4, 8) + '\'' + binary.slice(8, 12);
+            }
+            return convertNumber(this.getRegister().getValue(), 16, 3);
+        }
+
     }
     
 }
