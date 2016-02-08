@@ -124,10 +124,12 @@
         start() {
             state = new RunningState();
             serverHub.run(Stebs.ui.getStepSize());
+            Stebs.ui.highlightLine(0);
         }
         debug() {
             state = new PausedState();
             serverHub.pause();
+            Stebs.ui.highlightLine(0);
         }
     }
 
