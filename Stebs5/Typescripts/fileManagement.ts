@@ -54,7 +54,10 @@
 
             $('#new').click(fileManagement.newFile);
 
-            $('#save').click(fileManagement.saveFile);
+            $('#save').click(function () {
+                fileManagement.saveFile();
+                Stebs.editorContentChanged = false;
+            });
 
             $('#addFile').click(function () {
                 var newNode = new File(-1, 'new File');
@@ -343,7 +346,12 @@
                         } else {
                             console.log('change filename on server clicked');
                             serverHub.changeNodeName(node.Id, newName, fileManagement.nodeIsFolder(node))
-                                .then(fileManagement.reloadFileManagement);
+                                .then(function (filesystem: FileSystem) {
+                                    fileManagement.reloadFileManagement(filesystem);
+                                    if (!fileManagement.nodeIsFolder(node) && node.Id == fileManagement.openedFile.Id) {
+                                        $('#filename').text(newName);
+                                    }
+                                });
                         }
                     });
 
