@@ -30,7 +30,6 @@ namespace Stebs5
                 .RegisterType<IMpm, Mpm>(new ContainerControlledLifetimeManager())
                 .RegisterType<IProcessorSimulator, ProcessorSimulator>(new ContainerControlledLifetimeManager())
                 .RegisterType<IAlu, Alu>(new ContainerControlledLifetimeManager())
-                .RegisterType<IRam, Ram>(new ContainerControlledLifetimeManager())
                 .RegisterType<IDispatcher, Dispatcher>(new ContainerControlledLifetimeManager())
                 .RegisterType<IProcessorManager, ProcessorManager>(new ContainerControlledLifetimeManager())
                 .RegisterType<IFileManager, FileManager>(new ContainerControlledLifetimeManager())
