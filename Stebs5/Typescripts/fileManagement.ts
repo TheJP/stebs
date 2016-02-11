@@ -54,10 +54,7 @@
 
             $('#new').click(fileManagement.newFile);
 
-            $('#save').click(function () {
-                fileManagement.saveFile();
-                Stebs.editorContentChanged = false;
-            });
+            $('#save').click(() => fileManagement.saveFile());
 
             $('#addFile').click(function () {
                 var newNode = new File(-1, 'new File');
@@ -74,12 +71,11 @@
          */
         saveFile() {
             if (fileManagement.openedFile != null) {
-                console.log('save called');
                 var newSource = Stebs.codeEditor.getDoc().getValue().replace(/\r?\n/g, '\r\n').replace(/\t/g, '    ');
                 serverHub.saveFileContent(fileManagement.openedFile.Id, newSource);
+                Stebs.editorContentChanged = false;
             } else {
-                console.log("save new file");
-                //This prevents the native save dialog from showin when using prompt()
+                //This prevents the native save dialog from showing when using prompt()
                 setTimeout(() => {
                     var fileName = prompt("Enter file name", "New File"); //TODO: Improve this input
                     if (fileName) {
@@ -178,6 +174,7 @@
                     $('#fileSystem').toggle();
                     codeEditor.getDoc().setValue(fileContent);
                     fileManagement.openedFile = <File>node;
+                    Stebs.editorContentChanged = false;
                 });
             }
         },
