@@ -21,6 +21,8 @@ module Stebs {
         runAndDebug: '100px'
     };
 
+    export var editorContentChanged = false;
+
     export enum SimulationStepSize { Micro = 0, Macro = 1, Instruction = 2 };
 
     export function convertNumber(value: number, radix: number, size: number): string {
@@ -454,5 +456,21 @@ $(document).ready(function () {
         readOnly: true,
         cursorBlinkRate: -1
     });
+    //Get change event from codeEditor
+    Stebs.codeEditor.on("change", function (cm, change) {
+        Stebs.editorContentChanged = true;
+    })
+
+    //Show confirm. If the user stays on page the connection will be recreated 
+    $(window).on('beforeunload', function () {
+        var timeout: number;
+        if (Stebs.editorContentChanged) {
+            timeout = setTimeout(function () {
+                $.connection.hub.start();
+            }, 1000);
+            return 'Are you sure you want to leave?';
+        }
+    });
+
 
 });
