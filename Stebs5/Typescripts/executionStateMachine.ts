@@ -23,8 +23,8 @@
     /**
      * Sets the state to the initial value.
      */
-    export function stateInit(): void {
-        state = new InitialState(true);
+    export function stateInit(first = true): void {
+        state = new InitialState(first);
     };
 
     /**

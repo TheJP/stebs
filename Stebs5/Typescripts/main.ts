@@ -466,7 +466,13 @@ $(document).ready(function () {
         var timeout: number;
         if (Stebs.editorContentChanged) {
             timeout = setTimeout(function () {
+                //Reconnect
                 $.connection.hub.start();
+                //Because processor was deleted on disconnect
+                Stebs.stateInit(false);
+                Stebs.ramContent = new Stebs.Ram(256);
+                Stebs.ramContent.init();
+                Stebs.registerControl.resetRegisters();
             }, 1000);
             return 'Are you sure you want to leave?';
         }
