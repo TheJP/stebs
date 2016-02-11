@@ -1,0 +1,61 @@
+00  HALT
+9A  ROL reg
+9B  ROR reg
+9C  SHL reg
+9D  SHR reg
+A0  ADD reg1,reg2
+A1  SUB reg1,reg2
+A2  MUL reg1,reg2
+A3  DIV reg1,reg2
+A4  INC reg
+A5  DEC reg
+A6  MOD reg1,reg2
+AA  AND reg1,reg2
+AB  OR reg1,reg2
+AC  XOR reg1,reg2
+AD  NOT reg
+B0  ADD reg,const
+B1  SUB reg,const
+B2  MUL reg,const
+B3  DIV reg,const
+B6  MOD reg,const
+BA  AND reg,const
+BB  OR reg,const
+BC  XOR reg,const
+C0  JMP offset
+C1  JZ offset
+C2  JNZ offset
+C3  JS offset
+C4  JNS offset
+C5  JO offset
+C6  JNO offset
+CA  CALL addr
+CB  RET
+CC  INT addr
+CD  IRET
+D0  MOV reg,const
+D1  MOV reg,|addr|
+D2  MOV |addr|,reg
+D3  MOV reg1,|reg2|
+D4  MOV |reg1|,reg2
+D5  MOV reg1,reg2
+DA  CMP reg1,reg2
+DB  CMP reg,const
+DC  CMP reg,|addr|
+E0  PUSH reg
+E1  POP reg
+EA  PUSHF
+EB  POPF
+F0  IN addr
+F1  OUT addr
+FC  STI
+FD  CLI
+FF  NOP
+80  INC |reg|
+C7  JPA absolute
+81  DEC |addr|
+82  SWAP |addr|
+83  CLINC |reg|
+10  NEXT addr
+D6  XCHG reg1,reg2
+D7  CPYD |reg|,const
