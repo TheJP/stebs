@@ -57,6 +57,27 @@ namespace Stebs5
             Clients.Group(guid).UpdateProcessor(stepSize, ramChanges, registerChanges);
         }
 
+        /// <summary>Handle register changes so the client can be notified about asynchronous changes like interrupts.</summary>
+        private Action<IProcessor, IRegister> RegisterChanged(IDispatcherItem item) => (processor, register) =>
+        {
+            if (register.Type == Registers.Interrupt)
+            {
+                var guid = item.Guid.ToString();
+                Clients.Group(guid).ProcessorInterrupt(processor.Registers[Registers.Interrupt].Value);
+            }
+        };
+
+        /// <summary>
+        /// Method which is used to create any processor in the processor manager.
+        /// This method can be used to change the initalisation of the processor and hook into events.
+        /// </summary>
+        private IDispatcherItem ProcessorFactory(string clientId)
+        {
+            var item = Dispatcher.CreateProcessor(runDelay: Constants.DefaultRunDelay);
+            item.Processor.RegisterChanged += RegisterChanged(item);
+            return item;
+        }
+
         public Guid CreateProcessor(string clientId)
         {
             //Remove processor, if it exists for given client id
@@ -68,7 +89,7 @@ namespace Stebs5
 
         public Guid AssureProcessorExists(string clientId) =>
             //Create new processor if none exists; Use existing otherwise
-            processors.AddOrUpdate(clientId, id => Dispatcher.CreateProcessor(runDelay: Constants.DefaultRunDelay), (id, processor) => processor).Guid;
+            processors.AddOrUpdate(clientId, ProcessorFactory, (id, processor) => processor).Guid;
 
         public Guid? RemoveProcessor(string clientId)
         {

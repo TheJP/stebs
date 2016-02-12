@@ -174,7 +174,8 @@ namespace Stebs5
         /// Returns the available device types.
         /// </summary>
         /// <returns></returns>
-        public IDictionary<string, DeviceViewModel> GetDeviceTypes() => PluginManager.DevicePlugins.Values.ToDictionary(device => device.PluginId, device => new DeviceViewModel(device.Name, device.PluginId));
+        public IDictionary<string, DeviceViewModel> GetDeviceTypes() =>
+            PluginManager.DevicePlugins.Values.ToDictionary(device => device.PluginId, device => new DeviceViewModel(device.Name, device.PluginId));
 
         /// <summary>Adds a device to the processor of the calling client.</summary>
         /// <param name="deviceId"></param>

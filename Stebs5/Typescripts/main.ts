@@ -95,6 +95,13 @@ module Stebs {
         },
 
         /**
+         * Update interrupt flag (IRF) with the sent update.
+         */
+        processorInterrupt(flagValue: number): void {
+            registerControl.updateRegister('Interrupt', flagValue);
+        },
+
+        /**
          * Called, when the processor was soft resetted.
          * (All registers cleared, but memory unchanged.)
          */
@@ -398,6 +405,7 @@ $(document).ready(function () {
     hub.client.assembleError = Stebs.clientHub.assembleError;
     hub.client.registers = Stebs.clientHub.registers;
     hub.client.updateProcessor = Stebs.clientHub.updateProcessor;
+    hub.client.processorInterrupt = Stebs.clientHub.processorInterrupt;
     hub.client.reset = Stebs.clientHub.reset;
     hub.client.halt = Stebs.clientHub.halt;
     hub.client.hardReset = Stebs.clientHub.hardReset;
