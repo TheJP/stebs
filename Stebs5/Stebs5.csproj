@@ -326,7 +326,7 @@
     <Content Include="Content\site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Icons\Debug-icon-grey.png" />
+    <Content Include="Icons\assemble.png" />
     <Content Include="Icons\delete-2-icon.png" />
     <Content Include="Icons\down-icon.png" />
     <Content Include="Icons\file-text-icon.png" />
@@ -335,14 +335,14 @@
     <Content Include="Icons\Pencil-icon.png" />
     <Content Include="Icons\Play-icon-grey.png" />
     <Content Include="Icons\Play-icon.png" />
-    <Content Include="Icons\Debug-icon.png" />
-    <Content Include="Icons\Mimetypes-text-x-hex-icon.png" />
     <Content Include="Icons\new-file-icon.png" />
     <Content Include="Icons\open-file-icon.png" />
     <Content Include="Icons\Pause-icon-grey.png" />
     <Content Include="Icons\Pause-icon.png" />
     <Content Include="Icons\Save-icon.png" />
     <Content Include="Icons\Stebs.png" />
+    <Content Include="Icons\step-by-step-grey.png" />
+    <Content Include="Icons\step-by-step.png" />
     <Content Include="Icons\Stop-icon-grey.png" />
     <Content Include="Icons\Stop-icon.png" />
     <Content Include="Icons\trash-icon.png" />
