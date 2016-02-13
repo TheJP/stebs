@@ -339,6 +339,8 @@
     <Content Include="Icons\open-file-icon.png" />
     <Content Include="Icons\Pause-icon-grey.png" />
     <Content Include="Icons\Pause-icon.png" />
+    <Content Include="Icons\reset-grey.png" />
+    <Content Include="Icons\reset.png" />
     <Content Include="Icons\Save-icon.png" />
     <Content Include="Icons\Stebs.png" />
     <Content Include="Icons\step-by-step-grey.png" />
