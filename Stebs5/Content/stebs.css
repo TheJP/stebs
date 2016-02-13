@@ -397,6 +397,8 @@ a:hover, a:active {
 #continue:enabled .disabled-icon,
 #stop:disabled .enabled-icon,
 #stop:enabled .disabled-icon,
+#reset:disabled .enabled-icon,
+#reset:enabled .disabled-icon,
 #pause:enabled + #continue:disabled,
 #pause:disabled {
     display: none;

@@ -42,6 +42,7 @@
         pause: 'pause',
         continue: 'continue',
         stop: 'stop',
+        reset: 'reset',
         microStep: 'microStep',
         macroStep: 'macroStep',
         instructionStep: 'instructionStep'
