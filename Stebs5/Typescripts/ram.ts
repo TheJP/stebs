@@ -1,5 +1,8 @@
 ﻿module Stebs {
     export class Ram {
+
+        public static RamSize = 256;
+
         private ramContent: number[];
         private ramToLine: number[];
         private isHighlighted: string[] = [];
@@ -7,7 +10,7 @@
         private stackPointerPos: number = 0;
         private instructionPointerPos: number = 0;
 
-        constructor(size: number) {
+        constructor(size: number = Ram.RamSize) {
             this.ramContent = Array(size);
             for (var i: number = 0; i < size; i++) {
                 this.ramContent[i] = 0;

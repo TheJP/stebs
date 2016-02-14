@@ -110,18 +110,20 @@ module Stebs {
         },
 
         /**
-         * Called, when the processor was halted.
-         */
-        halt() {
-            state.halted();
-        },
-
-        /**
          * Called, when the processor was hard resetted.
          * (All registers and complete memory cleared.)
          */
         hardReset() {
-            //TODO: Implement
+            registerControl.resetRegisters();
+            ramContent = new Ram();
+            ramContent.init();
+        },
+
+        /**
+         * Called, when the processor was halted.
+         */
+        halt() {
+            state.halted();
         }
 
     };
@@ -488,7 +490,7 @@ $(document).ready(function () {
                 $.connection.hub.start();
                 //Because processor was deleted on disconnect
                 Stebs.stateInit(false);
-                Stebs.ramContent = new Stebs.Ram(256);
+                Stebs.ramContent = new Stebs.Ram();
                 Stebs.ramContent.init();
                 Stebs.registerControl.resetRegisters();
             }, 1000);
