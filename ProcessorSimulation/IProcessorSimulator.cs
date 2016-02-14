@@ -17,20 +17,29 @@ namespace ProcessorSimulation
         /// </summary>
         /// <param name="processor"></param>
         void ExecuteMicroStep(IProcessor processor);
+
         /// <summary>
         /// Executes a macro step on the given processor.
         /// </summary>
         /// <param name="processor"></param>
         void ExecuteMacroStep(IProcessor processor);
+
         /// <summary>
         /// Executes a instruction step on the given processor.
         /// </summary>
         /// <param name="processor"></param>
         void ExecuteInstructionStep(IProcessor processor);
+
         /// <summary>
         /// Resets all registers of the processor, but keeps the same RAM.
         /// </summary>
         /// <param name="processor"></param>
         void SoftReset(IProcessor processor);
+
+        /// <summary>
+        /// Resets the RAM and all registers of the processor.
+        /// </summary>
+        /// <param name="processor"></param>
+        void HardReset(IProcessor processor);
     }
 }

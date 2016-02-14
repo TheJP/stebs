@@ -175,6 +175,13 @@ module Stebs {
         },
 
         /**
+         * Stops the simulation of the processor and resets the ram and all registers.
+         */
+        reset() {
+            $.connection.stebsHub.server.reset();
+        },
+
+        /**
          * Changes the simulation speed: The speed is used as minimal delay between two simulation steps.
          */
         changeSpeed(speed: number) {
@@ -438,6 +445,9 @@ $(document).ready(function () {
 
         $('#stop').click(() => Stebs.state.stop());
         Mousetrap.bindGlobal(['esc', 'mod+h'], falseDelegate(() => Stebs.state.stop()));
+
+        $('#reset').click(() => Stebs.state.reset());
+        //TODO: Add keyboard binding
 
         $('#instructionStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Instruction));
         $('#macroStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Macro));

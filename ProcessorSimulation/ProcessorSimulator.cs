@@ -223,17 +223,32 @@ namespace ProcessorSimulation
             return SELReference[sel];
         }
 
-        public void SoftReset(IProcessor processor)
+        /// <summary>
+        /// Resets all registers of the processor in the given session.
+        /// </summary>
+        /// <param name="session"></param>
+        private void ResetRegisters(IProcessorSession session)
         {
-            using(var session = processor.CreateSession())
+            foreach (var type in RegistersExtensions.GetValues())
             {
-                foreach (var type in (Registers[])Enum.GetValues(typeof(Registers)))
-                {
-                    session.SetRegister(type, type == Registers.SP ? processor.InitialStackPointer : 0);
-                }
-                foreach(var device in session.DeviceManager.Devices.Values) { device.Reset(); }
-                session.SetHalted(false);
+                session.SetRegister(type, type == Registers.SP ? session.Processor.InitialStackPointer : 0);
             }
         }
+
+        public void SoftReset(IProcessor processor) => processor.Execute(session =>
+        {
+            ResetRegisters(session);
+            foreach (var device in session.DeviceManager.Devices.Values) { device.Reset(); }
+            session.SetHalted(false);
+        });
+
+        public void HardReset(IProcessor processor) => processor.Execute(session =>
+        {
+            ResetRegisters(session);
+            var ramSession = session.RamSession;
+            ramSession.Set(new byte[ramSession.Ram.Data.Count]);
+            foreach (var device in session.DeviceManager.Devices.Values) { device.Reset(); }
+            session.SetHalted(false);
+        });
     }
 }

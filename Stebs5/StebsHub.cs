@@ -112,6 +112,7 @@ namespace Stebs5
         public void ChangeStepSize(SimulationStepSize stepSize) => DoWithCheckedStepSize(stepSize, s => Manager.ChangeSetpSize(Context.ConnectionId, s));
         public void Pause() => Manager.Pause(Context.ConnectionId);
         public void Stop() => Manager.Stop(Context.ConnectionId);
+        public void Reset() => Manager.Reset(Context.ConnectionId);
         public void Step(SimulationStepSize stepSize) => DoWithCheckedStepSize(stepSize, s => Manager.Step(Context.ConnectionId, s));
         /// <summary>Sets the run delay in milliseconds. The absolute minimum is defined</summary>
         /// <param name="delay"></param>

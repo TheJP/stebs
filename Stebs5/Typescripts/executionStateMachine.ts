@@ -11,6 +11,7 @@
         debug(): void;
         startOrPause(): void;
         stop(): void;
+        reset(): void;
         halted(): void;
         singleStep(stepSize: SimulationStepSize): void;
     }
@@ -74,6 +75,12 @@
         halted() { }
         singleStep(stepSize: SimulationStepSize) { }
 
+        //Reset is possible in almost every state. If it should not be possible: Overwrite this method.
+        reset() {
+            state = new InitialState();
+            state.reset();
+        }
+
         protected editMode(enable: boolean) {
             if (enable) {
                 Stebs.codeEditor.setOption('readOnly', false);
@@ -98,7 +105,7 @@
      */
     class InitialState extends StateAdapter {
         constructor(first = false) {
-            super([actions.assemble]);
+            super([actions.assemble, actions.reset]);
             if (!first) { super.editMode(true); }
         }
         assemble() {
@@ -107,6 +114,9 @@
         assembled() {
             state = new AssembledState();
         }
+        reset() {
+            serverHub.reset();
+        }
     }
 
     /**
@@ -114,7 +124,7 @@
      */
     class AssembledState extends StateAdapter {
         constructor() {
-            super([actions.assemble, actions.start, actions.debug, actions.continue]);
+            super([actions.assemble, actions.start, actions.debug, actions.continue, actions.reset]);
             super.editMode(true);
         }
         assemble() {
@@ -139,7 +149,7 @@
      */
     class RunningState extends StateAdapter {
         constructor() {
-            super([actions.pause, actions.stop, actions.assemble], ContinuousOrSingleStep.Continuous);
+            super([actions.pause, actions.stop, actions.reset, actions.assemble], ContinuousOrSingleStep.Continuous);
             super.editMode(false);
         }
         assemble() {
@@ -165,7 +175,8 @@
      */
     class PausedState extends StateAdapter {
         constructor() {
-            super([actions.start, actions.continue, actions.stop, actions.assemble, actions.microStep, actions.macroStep, actions.instructionStep], ContinuousOrSingleStep.SingleStep);
+            super([actions.start, actions.continue, actions.stop, actions.reset, actions.assemble,
+                actions.microStep, actions.macroStep, actions.instructionStep], ContinuousOrSingleStep.SingleStep);
             super.editMode(false);
         }
         assemble() {

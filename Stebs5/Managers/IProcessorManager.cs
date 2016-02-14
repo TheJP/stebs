@@ -63,6 +63,12 @@ namespace Stebs5
         void Stop(string clientId);
 
         /// <summary>
+        /// Stops the processor of the given client id and resets the ram and all registers.
+        /// </summary>
+        /// <param name="clientId"></param>
+        void Reset(string clientId);
+
+        /// <summary>
         /// Execute a step with the given size on the processor of the given client id.
         /// </summary>
         /// <param name="clientId"></param>

@@ -126,6 +126,7 @@ namespace Stebs5
         public void Run(string clientId, SimulationStepSize stepSize) => Update(clientId, item => item.SetStepSize(stepSize).SetRunning(true));
         public void Pause(string clientId) => Update(clientId, item => item.SetRunning(false));
         public void Stop(string clientId) => Update(clientId, item => { Dispatcher.SoftReset(item.Guid); return item.SetRunning(false); });
+        public void Reset(string clientId) => Update(clientId, item => { Dispatcher.HardReset(item.Guid); return item.SetRunning(false); });
         public void ChangeSetpSize(string clientId, SimulationStepSize stepSize) => Update(clientId, item => item.SetStepSize(stepSize));
         public void ChangeRunDelay(string clientId, TimeSpan runDelay) => Update(clientId, item => item.SetRunDelay(runDelay));
 
