@@ -21,8 +21,6 @@ module Stebs {
         runAndDebug: '100px'
     };
 
-    export var editorContentChanged = false;
-
     export enum SimulationStepSize { Micro = 0, Macro = 1, Instruction = 2 };
 
     export function convertNumber(value: number, radix: number, size: number): string {
@@ -265,6 +263,23 @@ module Stebs {
 
     export var ui = {
 
+        private editorContentChanged: false,
+
+        /**
+         * Sets the flag, if stebs thinks the editor content is changed.
+         */
+        setEditorContentChanged(value: boolean) {
+            ui.editorContentChanged = value;
+            $('#filename-star').css('display', value ? 'inline' : 'none');
+        },
+
+        /**
+         * Returns if the editor content is flaged as changed.
+         */
+        isEditorContentChanged(): boolean {
+            return ui.editorContentChanged;
+        },
+
         /**
          * Stores a global reference of the canvas and sets the global style.
          */
@@ -478,13 +493,13 @@ $(document).ready(function () {
     });
     //Get change event from codeEditor
     Stebs.codeEditor.on("change", function (cm, change) {
-        Stebs.editorContentChanged = true;
+        Stebs.ui.setEditorContentChanged(true);
     })
 
     //Show confirm. If the user stays on page the connection will be recreated 
     $(window).on('beforeunload', function () {
         var timeout: number;
-        if (Stebs.editorContentChanged) {
+        if (Stebs.ui.isEditorContentChanged()) {
             timeout = setTimeout(function () {
                 //Reconnect
                 $.connection.hub.start();

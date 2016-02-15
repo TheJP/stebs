@@ -222,6 +222,11 @@ a:hover, a:active {
     float: left;
 }
 
+#filename-star {
+    display: none;
+    float: left;
+}
+
 #codingTopBar button {
     box-sizing: content-box;
     height: 20px;

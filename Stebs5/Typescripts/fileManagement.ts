@@ -73,7 +73,7 @@
             if (fileManagement.openedFile != null) {
                 var newSource = Stebs.codeEditor.getDoc().getValue().replace(/\r?\n/g, '\r\n').replace(/\t/g, '    ');
                 serverHub.saveFileContent(fileManagement.openedFile.Id, newSource);
-                Stebs.editorContentChanged = false;
+                ui.setEditorContentChanged(false);
             } else {
                 //This prevents the native save dialog from showing when using prompt()
                 setTimeout(() => {
@@ -174,7 +174,7 @@
                     $('#fileSystem').toggle();
                     codeEditor.getDoc().setValue(fileContent);
                     fileManagement.openedFile = <File>node;
-                    Stebs.editorContentChanged = false;
+                    ui.setEditorContentChanged(false);
                 });
             }
         },
