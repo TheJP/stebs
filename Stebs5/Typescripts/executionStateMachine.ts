@@ -14,6 +14,11 @@
         reset(): void;
         halted(): void;
         singleStep(stepSize: SimulationStepSize): void;
+        /**
+         * Called, when new input was entered in the editor.
+         * This can cause state updates (e.g. Assembled -> Initial).
+         */
+        codeChanged(): void;
     }
 
     /**
@@ -74,6 +79,7 @@
         stop() { }
         halted() { }
         singleStep(stepSize: SimulationStepSize) { }
+        codeChanged() { }
 
         //Reset is possible in almost every state. If it should not be possible: Overwrite this method.
         reset() {
@@ -141,6 +147,9 @@
             state = new PausedState();
             serverHub.pause();
             Stebs.ui.highlightLine(0);
+        }
+        codeChanged() {
+            state = new InitialState();
         }
     }
 

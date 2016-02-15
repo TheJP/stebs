@@ -493,6 +493,7 @@ $(document).ready(function () {
     });
     //Get change event from codeEditor
     Stebs.codeEditor.on("change", function (cm, change) {
+        Stebs.state.codeChanged();
         Stebs.ui.setEditorContentChanged(true);
     })
 
