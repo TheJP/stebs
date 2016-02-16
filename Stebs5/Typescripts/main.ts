@@ -30,8 +30,6 @@ module Stebs {
     var ctx: CanvasRenderingContext2D;
     var canvas: HTMLCanvasElement;
 
-    export var instructions: any;
-
     /**
      * The clientHub is a public singleton object, which contains client methods that can be called by the SignalR server.
      */
@@ -40,12 +38,14 @@ module Stebs {
         /**
          * Receive available assembly instructions from the server.
          */
-        instructions(data: any): void {
-            Stebs.instructions = data;
-            //Simplify input for syntax highlighting
-            for (var instruction in data) {
-                assemblerInstruction[data[instruction].Mnemonic] = 'variable-2';
+        init(data: any): void {
+            //Add syntax highlighting for received instructions
+            for (var instruction in data.Instructions) {
+                assemblerInstruction[data.Instructions[instruction].Mnemonic] = 'variable-2';
             }
+            //Initialise components
+            registerControl.addAll(data.Registers);
+            deviceManager.setDeviceTypes(data.DeviceTypes);
         },
 
         /**
@@ -67,13 +67,6 @@ module Stebs {
             Stebs.outputView.setOption('mode', 'none');
             ui.openOutput();
             ui.showOutput(error);
-        },
-
-        /**
-        * Add all available registers.
-        */
-        registers(registers: string[]) {
-            registerControl.addAll(registers);
         },
 
         /**
@@ -254,6 +247,9 @@ module Stebs {
             $.connection.stebsHub.server.updateDevice(slot, update);
         },
 
+        /**
+         * Removes the device with the given slot.
+         */
         removeDevice(slot: number): Promise<RemoveDeviceViewModel> {
             return $.connection.stebsHub.server.removeDevice(slot);
         }
@@ -423,10 +419,8 @@ $(document).ready(function () {
     Stebs.stateInit();
 
     var hub = $.connection.stebsHub;
-    hub.client.instructions = Stebs.clientHub.instructions;
     hub.client.assembled = Stebs.clientHub.assembled;
     hub.client.assembleError = Stebs.clientHub.assembleError;
-    hub.client.registers = Stebs.clientHub.registers;
     hub.client.updateProcessor = Stebs.clientHub.updateProcessor;
     hub.client.processorInterrupt = Stebs.clientHub.processorInterrupt;
     hub.client.reset = Stebs.clientHub.reset;
@@ -435,14 +429,12 @@ $(document).ready(function () {
     hub.client.updateDevice = Stebs.deviceManager.updateView;
 
     $.connection.hub.start().done(function () {
+
+        //Initialise stebs
+        hub.server.initialise().done(Stebs.clientHub.init);
         Stebs.fileManagement.init();
         Stebs.registerControl.init();
         Stebs.deviceManager.init();
-
-        //Get available assembly instructions
-        hub.server.getInstructions();
-        hub.server.getRegisters();
-        hub.server.getDeviceTypes().done(Stebs.deviceManager.setDeviceTypes);
 
         Mousetrap.bindGlobal('mod+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
         Mousetrap.bindGlobal('mod+n', falseDelegate(Stebs.fileManagement.newFile));
@@ -473,6 +465,7 @@ $(document).ready(function () {
             Stebs.serverHub.changeSpeed((2000 + 10) - parseInt($('#speedSlider').val()))
         });
         $('.stepSizeRadios input').change(() => Stebs.serverHub.changeStepSize(Stebs.ui.getStepSize()));
+
     });
 
     $('#openDevices').click(Stebs.ui.toggleDevices);

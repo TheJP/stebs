@@ -450,6 +450,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Managers\PluginManager.cs" />
     <Compile Include="Managers\ProcessorManager.cs" />
+    <Compile Include="Models\ProcessorViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="StebsHub.cs" />

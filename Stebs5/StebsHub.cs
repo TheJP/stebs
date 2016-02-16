@@ -73,6 +73,13 @@ namespace Stebs5
             return base.OnDisconnected(stopCalled);
         }
 
+        public InitialiseViewModel Initialise() => new InitialiseViewModel(
+            instructions: Mpm.Instructions,
+            registers: RegistersExtensions.GetValues().Select(type => type.ToString()),
+            deviceTypes: PluginManager.DevicePlugins.Values
+                .ToDictionary(device => device.PluginId, device => new DeviceViewModel(device.Name, device.PluginId))
+        );
+
         /// <summary>
         /// Assemble the given source from the client.
         /// The assembly file does not have to be saved: That's why the source is submitted as string,
@@ -122,8 +129,6 @@ namespace Stebs5
             value = value < Constants.MinimalRunDelay ? Constants.MinimalRunDelay : value;
             Manager.ChangeRunDelay(Context.ConnectionId, value);
         }
-        public void GetInstructions() => Clients.Caller.Instructions(Mpm.Instructions);
-        public void GetRegisters() => Clients.Caller.Registers(RegistersExtensions.GetValues().Select(type => type.ToString()));
 
         /// <summary>
         /// Add a node to the users filesystem.
@@ -170,13 +175,6 @@ namespace Stebs5
         /// <param name="fileId">node ID</param>
         /// <param name="fileContent">the new Content of this file</param>
         public void SaveFileContent(long fileId, string fileContent) => FileManager.SaveFileContent(Context.User, fileId, fileContent);
-
-        /// <summary>
-        /// Returns the available device types.
-        /// </summary>
-        /// <returns></returns>
-        public IDictionary<string, DeviceViewModel> GetDeviceTypes() =>
-            PluginManager.DevicePlugins.Values.ToDictionary(device => device.PluginId, device => new DeviceViewModel(device.Name, device.PluginId));
 
         /// <summary>Adds a device to the processor of the calling client.</summary>
         /// <param name="deviceId"></param>
