@@ -37,6 +37,13 @@ namespace Stebs5
         Guid? RemoveProcessor(string clientId);
 
         /// <summary>
+        /// Returns the id of the processor if one exists for the given client id.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <returns>Id of the processor.</returns>
+        Guid? GetProcessorId(string clientId);
+
+        /// <summary>
         /// Set the ram of the processor of the given client id to the given new content.
         /// </summary>
         /// <param name="clientId"></param>

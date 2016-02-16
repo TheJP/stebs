@@ -102,6 +102,13 @@ namespace Stebs5
             return null;
         }
 
+        public Guid? GetProcessorId(string clientId)
+        {
+            IDispatcherItem item;
+            if (processors.TryGetValue(clientId, out item)) { return item.Guid; }
+            return null;
+        }
+
         public void ChangeRamContent(string clientId, int[] newContent)
         {
             IDispatcherItem item;

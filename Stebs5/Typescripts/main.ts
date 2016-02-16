@@ -39,7 +39,6 @@ module Stebs {
 
         /**
          * Receive available assembly instructions from the server.
-         * TODO: Add type to data.
          */
         instructions(data: any): void {
             Stebs.instructions = data;
@@ -491,6 +490,7 @@ $(document).ready(function () {
         readOnly: true,
         cursorBlinkRate: -1
     });
+
     //Get change event from codeEditor
     Stebs.codeEditor.on("change", function (cm, change) {
         Stebs.state.codeChanged();

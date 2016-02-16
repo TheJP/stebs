@@ -148,7 +148,7 @@ a:hover, a:active {
 }
 
 /* RAM device style */
-#ramDevice button {
+#ramDevice #hideShowRam, #ramDevice #downloadRam {
     float: right;
 }
 

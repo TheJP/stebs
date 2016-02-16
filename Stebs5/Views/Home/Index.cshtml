@@ -10,7 +10,7 @@
         <div id="ramDevice" class="device">
             <div id="ramHeader">
                 <button id="hideShowRam" class="icon arrowUpIcon"></button>
-                <button id="downloadRam" class="icon saveIcon"></button>
+                @Html.ActionLink(" ", "DownloadMemory", null, new Dictionary<string, object>() { ["id"] = "downloadRam", ["class"] = "icon saveIcon", ["target"] = "_blank" })
                 <p>RAM</p>
             </div>
             <div id="ramTable"></div>
