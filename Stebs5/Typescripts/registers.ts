@@ -126,7 +126,9 @@
         * Create a StatusWatchElement form a register.
         */
         private static watchFactories: { [type: string]: (register: Register) => WatchElement } = {
-            ['Status']: (register) => new StatusWatchElement(register)
+            ['Status']: (register) => new StatusWatchElement(register),
+            ['MIP']: (register) => new MipWatchElement(register),
+            ['Interrupt']: (register) => new IrfWatchElement(register)
         }
 
         private type: string;
@@ -249,13 +251,10 @@
          */
         getValueFormated(): string {
             if (this.showBinary) {
-                var asBinay = utility.addLeadingZeros(this.register.getValue(), 2, 8);
-                var asBinaryValue = asBinay.slice(0, 4);
-                asBinaryValue += '\'';
-                asBinaryValue += asBinay.slice(4, 8);
-                return asBinaryValue;
+                var binary = convertNumber(this.register.getValue(), 2, 8);
+                return binary.slice(0, 4) + '\'' + binary.slice(4, 8);
             }
-            return utility.addLeadingZeros(this.register.getValue(), 16, 2);
+            return convertNumber(this.register.getValue(), 16, 2);
         }
 
         /** Creates the html structure for this watch. */
@@ -279,21 +278,31 @@
 
     }
 
-    enum StatusWatchStates { Custom, Hex, Bin };
+    enum CustomWatchStates { Custom, Hex, Bin };
 
-    class StatusWatchElement extends WatchElement {
+    /**
+     * Base class for whatch elements that toggle between 3 states.
+     */
+    abstract class CustomStateWhatchElement extends WatchElement {
 
-        private state = StatusWatchStates.Custom
+        private state = CustomWatchStates.Custom
+
+        getState(): CustomWatchStates {
+            return this.state;
+        }
 
         /** Toggles between the three possible states. */
         toggleRepresentation() {
-            if (this.state == StatusWatchStates.Custom) { this.state = StatusWatchStates.Bin; this.setShowBinary(true); }
-            else if (this.state == StatusWatchStates.Bin) { this.state = StatusWatchStates.Hex; this.setShowBinary(false); }
-            else { this.state = StatusWatchStates.Custom; this.setShowBinary(false); }
+            if (this.state == CustomWatchStates.Custom) { this.state = CustomWatchStates.Bin; this.setShowBinary(true); }
+            else if (this.state == CustomWatchStates.Bin) { this.state = CustomWatchStates.Hex; this.setShowBinary(false); }
+            else { this.state = CustomWatchStates.Custom; this.setShowBinary(false); }
         }
+    }
+
+    class StatusWatchElement extends CustomStateWhatchElement {
 
         update() {
-            if (this.state != StatusWatchStates.Custom) { super.update(); return; }
+            if (this.getState() != CustomWatchStates.Custom) { super.update(); return; }
             var value = this.getRegister().getValue();
             var interrupt = (value & 16) > 0 ? 1 : 0;
             var signed = (value & 8) > 0 ? 1 : 0;
@@ -301,6 +310,28 @@
             var zero = (value & 2) > 0 ? 1 : 0;
             $('#watch-' + this.getType() + ' .watch-element-value').text('I:' + interrupt + ' S:' + signed + ' O:' + overflow + ' Z:' + zero);
         }
+
+    }
+
+    class IrfWatchElement extends CustomStateWhatchElement {
+
+        update() {
+            if (this.getState() != CustomWatchStates.Custom) { super.update(); return; }
+            $('#watch-' + this.getType() + ' .watch-element-value').text('IRF: ' + this.getRegister().getValue());
+        }
+
+    }
+
+    class MipWatchElement extends WatchElement {
+
+        getValueFormated(): string {
+            if (this.isShowBinary()) {
+                var binary = convertNumber(this.getRegister().getValue(), 2, 12);
+                return binary.slice(0, 4) + '\'' + binary.slice(4, 8) + '\'' + binary.slice(8, 12);
+            }
+            return convertNumber(this.getRegister().getValue(), 16, 3);
+        }
+
     }
     
 }

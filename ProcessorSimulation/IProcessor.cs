@@ -27,5 +27,9 @@ namespace ProcessorSimulation
         /// <returns>Session instance</returns>
         /// <remarks>This method can block, because only one session should exist and it should be used by one thread only.</remarks>
         IProcessorSession CreateSession();
+
+        /// <summary>Creates a session and executes the given action in this session.</summary>
+        /// <param name="action"></param>
+        void Execute(Action<IProcessorSession> action);
     }
 }

@@ -12,6 +12,7 @@ using ProcessorSimulation;
 using System.Threading.Tasks;
 using Stebs5.Models;
 using Stebs5Model;
+using ProcessorSimulation.Device;
 
 namespace Stebs5
 {
@@ -25,13 +26,15 @@ namespace Stebs5
         private IMpm Mpm { get; }
         private IProcessorManager Manager { get; }
         private IFileManager FileManager { get; }
+        private IPluginManager PluginManager { get; }
 
-        public StebsHub(IConstants constants, IMpm mpm, IProcessorManager manager, IFileManager fileManager)
+        public StebsHub(IConstants constants, IMpm mpm, IProcessorManager manager, IFileManager fileManager, IPluginManager pluginManager)
         {
             this.Constants = constants;
             this.Mpm = mpm;
             this.Manager = manager;
             this.FileManager = fileManager;
+            this.PluginManager = pluginManager;
         }
 
         private void RemoveProcessor()
@@ -69,6 +72,14 @@ namespace Stebs5
             RemoveProcessor();
             return base.OnDisconnected(stopCalled);
         }
+
+        public InitialiseViewModel Initialise() => new InitialiseViewModel(
+            instructions: Mpm.Instructions,
+            registers: RegistersExtensions.GetValues().Select(type => type.ToString()),
+            deviceTypes: PluginManager.DevicePlugins.Values
+                .ToDictionary(device => device.PluginId, device => new DeviceViewModel(device.Name, device.PluginId)),
+            processorId: Manager.GetProcessorId(Context.ConnectionId)?.ToString()
+        );
 
         /// <summary>
         /// Assemble the given source from the client.
@@ -109,6 +120,7 @@ namespace Stebs5
         public void ChangeStepSize(SimulationStepSize stepSize) => DoWithCheckedStepSize(stepSize, s => Manager.ChangeSetpSize(Context.ConnectionId, s));
         public void Pause() => Manager.Pause(Context.ConnectionId);
         public void Stop() => Manager.Stop(Context.ConnectionId);
+        public void Reset() => Manager.Reset(Context.ConnectionId);
         public void Step(SimulationStepSize stepSize) => DoWithCheckedStepSize(stepSize, s => Manager.Step(Context.ConnectionId, s));
         /// <summary>Sets the run delay in milliseconds. The absolute minimum is defined</summary>
         /// <param name="delay"></param>
@@ -118,8 +130,6 @@ namespace Stebs5
             value = value < Constants.MinimalRunDelay ? Constants.MinimalRunDelay : value;
             Manager.ChangeRunDelay(Context.ConnectionId, value);
         }
-        public void GetInstructions() => Clients.Caller.Instructions(Mpm.Instructions);
-        public void GetRegisters() => Clients.Caller.Registers(RegistersExtensions.GetValues().Select(type => type.ToString()));
 
         /// <summary>
         /// Add a node to the users filesystem.
@@ -167,29 +177,32 @@ namespace Stebs5
         /// <param name="fileContent">the new Content of this file</param>
         public void SaveFileContent(long fileId, string fileContent) => FileManager.SaveFileContent(Context.User, fileId, fileContent);
 
-        /// <summary>
-        /// Receive device data from server
-        /// </summary>
-        /// <param name="deviceName">the sending device</param>
-        /// <param name="textData">the text data</param>
-        /// <param name="numberData">the number data</param>
-        /// <param name="interrupt">if this data is sent with an interrupt</param>
-        public void DeviceToServer(string deviceName, string[] textData, int[] numberData, bool interrupt)
+        /// <summary>Adds a device to the processor of the calling client.</summary>
+        /// <param name="deviceId"></param>
+        /// <param name="slot">If the slot is 0, a free slot number is chosen.</param>
+        /// <returns>Slot number, at which the device was placed.</returns>
+        public AddedDeviceViewModel AddDevice(string deviceId, byte? slot)
         {
-            //TODO Do here stuff with device call
-            string[] testString = new string[1];
-            int[] testNumbers = new int[1];
-            if (interrupt)
+            if (PluginManager.DevicePlugins.ContainsKey(deviceId))
             {
-                testNumbers[0]++;
-                testString[0] = "server received interrupt" ;
+                var plugin = PluginManager.DevicePlugins[deviceId];
+                var device = plugin.CreateDevice();
+                var givenSlot = Manager.AddDevice(Context.ConnectionId, device, slot);
+                return new AddedDeviceViewModel(givenSlot, plugin.DeviceTemplate(givenSlot));
             }
-            else
-            {
-                testString[0] = "serverSet: Test";
-
-            }
-            Clients.Caller.ServerToDevice(deviceName, testString, testNumbers);
+            return new AddedDeviceViewModel(false);
         }
+
+        /// <summary>Removes the device at the given slot from the processor of the calling client.</summary>
+        /// <param name="slot"></param>
+        public void RemoveDevice(byte slot) => Manager.RemoveDevice(Context.ConnectionId, slot);
+
+        /// <summary>
+        /// Update the device with new information from the client.
+        /// This can e.g. be ui interactions with the device.
+        /// </summary>
+        /// <param name="slot">Device slot in the processor.</param>
+        /// <param name="input">Update information.</param>
+        public void UpdateDevice(byte slot, string input) => Manager.UpdateDevice(Context.ConnectionId, slot, input);
     }
 }

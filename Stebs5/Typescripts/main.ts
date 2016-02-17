@@ -22,20 +22,14 @@ module Stebs {
         runAndDebug: '100px'
     };
 
-    export var devices = <{ [deviceName: string]: Device }>{};
-
     export enum SimulationStepSize { Micro = 0, Macro = 1, Instruction = 2 };
 
-    export var utility = {
-        addLeadingZeros(value: number, radix: number, size: number): string {
-            return (Array(size + 1).join('0') + value.toString(radix)).substr(-size);
-        }
+    export function convertNumber(value: number, radix: number, size: number): string {
+        return (Array(size + 1).join('0') + value.toString(radix)).substr(-size);
     };
 
     var ctx: CanvasRenderingContext2D;
     var canvas: HTMLCanvasElement;
-
-    export var instructions: any;
 
     /**
      * The clientHub is a public singleton object, which contains client methods that can be called by the SignalR server.
@@ -44,14 +38,18 @@ module Stebs {
 
         /**
          * Receive available assembly instructions from the server.
-         * TODO: Add type to data.
          */
-        instructions(data: any): void {
-            Stebs.instructions = data;
-            //Simplify input for syntax highlighting
-            for (var instruction in data) {
-                assemblerInstruction[data[instruction].Mnemonic] = 'variable-2';
+        init(data: any): void {
+            //Add syntax highlighting for received instructions
+            for (var instruction in data.Instructions) {
+                assemblerInstruction[data.Instructions[instruction].Mnemonic] = 'variable-2';
             }
+            //Initialise components
+            registerControl.addAll(data.Registers);
+            deviceManager.setDeviceTypes(data.DeviceTypes);
+            //Add processor id to the ram download link
+            var link = $('#downloadRam');
+            link.prop('href', link.prop('href') + '?processorId=' + data.ProcessorId);
         },
 
         /**
@@ -76,13 +74,6 @@ module Stebs {
         },
 
         /**
-        * Add all available registers.
-        */
-        registers(registers: string[]) {
-            registerControl.addAll(registers);
-        },
-
-        /**
          * Update ram and register with sent updates.
          */
         updateProcessor(stepSize: SimulationStepSize, ramChanges: { [address: number]: number }, registerChanges: { [register: string]: { Type: number, Value: number } }) {
@@ -98,6 +89,13 @@ module Stebs {
         },
 
         /**
+         * Update interrupt flag (IRF) with the sent update.
+         */
+        processorInterrupt(flagValue: number): void {
+            registerControl.updateRegister('Interrupt', flagValue);
+        },
+
+        /**
          * Called, when the processor was soft resetted.
          * (All registers cleared, but memory unchanged.)
          */
@@ -106,30 +104,31 @@ module Stebs {
         },
 
         /**
-         * Called, when the processor was halted.
-         */
-        halt() {
-            state.halted();
-        },
-
-        /**
          * Called, when the processor was hard resetted.
          * (All registers and complete memory cleared.)
          */
         hardReset() {
-            //TODO: Implement
+            registerControl.resetRegisters();
+            ramContent = new Ram();
+            ramContent.init();
         },
 
         /**
-         * Receives data form server for a device.
-         * @param deviceName the name of the device.
-         * @param textData the text data.
-         * @param numberData the number data.
+         * Called, when the processor was halted.
          */
-        serverToDevice(deviceName: string, textData: string[], numberData: number[]) {
-            devices[deviceName].serverToDevice(textData, numberData);
+        halt() {
+            state.halted();
         }
 
+    };
+
+    export class AddDeviceViewModel {
+        public Slot: number;
+        public Template: string;
+        public Success: boolean;
+    };
+
+    export class RemoveDeviceViewModel {
     };
 
     export var serverHub = {
@@ -169,6 +168,13 @@ module Stebs {
          */
         stop() {
             $.connection.stebsHub.server.stop();
+        },
+
+        /**
+         * Stops the simulation of the processor and resets the ram and all registers.
+         */
+        reset() {
+            $.connection.stebsHub.server.reset();
         },
 
         /**
@@ -214,34 +220,64 @@ module Stebs {
         },
 
         /**
-        * Get File content
+        * Get File content.
         */
         getFileContent(nodeId: number): Promise<string> {
             return $.connection.stebsHub.server.getFileContent(nodeId);
         },
 
         /**
-        * Save File content
+        * Save File content.
         */
         saveFileContent(nodeId: number, fileContent: string): void {
             $.connection.stebsHub.server.saveFileContent(nodeId, fileContent);
         },
 
         /**
-         * Send data from device to server.
-         * @param deviceName name of the sender.
-         * @param textData data array.
-         * @param numberData text array.
-         * @param interrupt send an interrupt.
+         * Add a new device with the given type at the given slot.
+         * @param deviceType Device id, which should be added.
+         * @param slot Prefered slot number.
          */
-        deviceToServer(deviceName: string, textData: string[], numberData: number[], interrupt: boolean) {
-            console.log("send data to server");
-            $.connection.stebsHub.server.deviceToServer(deviceName, textData, numberData, interrupt);
+        addDevice(deviceType: string, slot: number = NaN): Promise<AddDeviceViewModel> {
+            return $.connection.stebsHub.server.addDevice(deviceType, isNaN(slot) ? null : slot);
         },
+
+        /**
+         * Updates a device with user input.
+         * @param slot Slot number of the device to update.
+         * @param update Update data from client to server.
+         */
+        updateDevice(slot: number, update: any): void {
+            $.connection.stebsHub.server.updateDevice(slot, update);
+        },
+
+        /**
+         * Removes the device with the given slot.
+         */
+        removeDevice(slot: number): Promise<RemoveDeviceViewModel> {
+            return $.connection.stebsHub.server.removeDevice(slot);
+        }
 
     };
 
     export var ui = {
+
+        private editorContentChanged: false,
+
+        /**
+         * Sets the flag, if stebs thinks the editor content is changed.
+         */
+        setEditorContentChanged(value: boolean) {
+            ui.editorContentChanged = value;
+            $('#filename-star').css('display', value ? 'inline' : 'none');
+        },
+
+        /**
+         * Returns if the editor content is flaged as changed.
+         */
+        isEditorContentChanged(): boolean {
+            return ui.editorContentChanged;
+        },
 
         /**
          * Stores a global reference of the canvas and sets the global style.
@@ -353,7 +389,10 @@ module Stebs {
  * This interface allows the usage of the signalr library.
  */
 interface JQueryStatic {
-    connection: any;
+    connection: {
+        stebsHub: { server: any, client: any },
+        hub: any
+    };
 }
 
 /**
@@ -385,23 +424,22 @@ $(document).ready(function () {
     Stebs.stateInit();
 
     var hub = $.connection.stebsHub;
-    hub.client.instructions = Stebs.clientHub.instructions;
     hub.client.assembled = Stebs.clientHub.assembled;
     hub.client.assembleError = Stebs.clientHub.assembleError;
-    hub.client.registers = Stebs.clientHub.registers;
     hub.client.updateProcessor = Stebs.clientHub.updateProcessor;
+    hub.client.processorInterrupt = Stebs.clientHub.processorInterrupt;
     hub.client.reset = Stebs.clientHub.reset;
     hub.client.halt = Stebs.clientHub.halt;
     hub.client.hardReset = Stebs.clientHub.hardReset;
-    hub.client.serverToDevice = Stebs.clientHub.serverToDevice;
+    hub.client.updateDevice = Stebs.deviceManager.updateView;
 
     $.connection.hub.start().done(function () {
+
+        //Initialise stebs
+        hub.server.initialise().done(Stebs.clientHub.init);
         Stebs.fileManagement.init();
         Stebs.registerControl.init();
-
-        //Get available assembly instructions
-        hub.server.getInstructions();
-        hub.server.getRegisters();
+        Stebs.deviceManager.init();
 
         Mousetrap.bindGlobal('mod+o', falseDelegate(Stebs.fileManagement.toggleFileManager));
         Mousetrap.bindGlobal('mod+n', falseDelegate(Stebs.fileManagement.newFile));
@@ -421,6 +459,9 @@ $(document).ready(function () {
         $('#stop').click(() => Stebs.state.stop());
         Mousetrap.bindGlobal(['esc', 'mod+h'], falseDelegate(() => Stebs.state.stop()));
 
+        $('#reset').click(() => Stebs.state.reset());
+        //TODO: Add keyboard binding
+
         $('#instructionStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Instruction));
         $('#macroStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Macro));
         $('#microStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Micro));
@@ -429,6 +470,7 @@ $(document).ready(function () {
             Stebs.serverHub.changeSpeed((2000 + 10) - parseInt($('#speedSlider').val()))
         });
         $('.stepSizeRadios input').change(() => Stebs.serverHub.changeStepSize(Stebs.ui.getStepSize()));
+
     });
 
     $('#openDevices').click(Stebs.ui.toggleDevices);
@@ -447,7 +489,28 @@ $(document).ready(function () {
         cursorBlinkRate: -1
     });
 
-    var interruptDevice = new Stebs.InterruptDevice();
-    interruptDevice.init();
+    //Get change event from codeEditor
+    Stebs.codeEditor.on("change", function (cm, change) {
+        Stebs.state.codeChanged();
+        Stebs.ui.setEditorContentChanged(true);
+    })
+
+    //Show confirm. If the user stays on page the connection will be recreated 
+    $(window).on('beforeunload', function () {
+        var timeout: number;
+        if (Stebs.ui.isEditorContentChanged()) {
+            timeout = setTimeout(function () {
+                //Reconnect
+                $.connection.hub.start();
+                //Because processor was deleted on disconnect
+                Stebs.stateInit(false);
+                Stebs.ramContent = new Stebs.Ram();
+                Stebs.ramContent.init();
+                Stebs.registerControl.resetRegisters();
+            }, 1000);
+            return 'Are you sure you want to leave?';
+        }
+    });
+
 
 });

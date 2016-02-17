@@ -35,7 +35,6 @@
         rootNode: new Folder(0, 'Root', []),
         actualFolder: <Folder>null,
         openedFile: <File>null,
-        addMode: false,
 
         /**
          * Initialize the FileMangement
@@ -50,11 +49,12 @@
                 fileManagement.setAndShowActualNode(fileManagement.actualFolder);
             });
 
+            $('#closeFileSystem').click(fileManagement.toggleFileManager);
             $('#open').click(fileManagement.toggleFileManager);
 
             $('#new').click(fileManagement.newFile);
 
-            $('#save').click(fileManagement.saveFile);
+            $('#save').click(() => fileManagement.saveFile());
 
             $('#addFile').click(function () {
                 var newNode = new File(-1, 'new File');
@@ -71,12 +71,11 @@
          */
         saveFile() {
             if (fileManagement.openedFile != null) {
-                console.log('save called');
                 var newSource = Stebs.codeEditor.getDoc().getValue().replace(/\r?\n/g, '\r\n').replace(/\t/g, '    ');
                 serverHub.saveFileContent(fileManagement.openedFile.Id, newSource);
+                ui.setEditorContentChanged(false);
             } else {
-                console.log("save new file");
-                //This prevents the native save dialog from showin when using prompt()
+                //This prevents the native save dialog from showing when using prompt()
                 setTimeout(() => {
                     var fileName = prompt("Enter file name", "New File"); //TODO: Improve this input
                     if (fileName) {
@@ -146,12 +145,17 @@
          * @param node The new node.
          */
         addNode(node: Node) {
-            if (!fileManagement.addMode) {
-                fileManagement.addMode = true;
+            var unsavedNewFile = false;
+            fileManagement.actualFolder.Children.forEach(function (child) {
+                if (child.Id == -1) {
+                    unsavedNewFile = true;
+                }
+            });
+            if (!unsavedNewFile) {
                 var actualNode = fileManagement.actualFolder;
                 actualNode.Children.push(node);
                 fileManagement.showFileManagement(actualNode);
-                fileManagement.setFilenameEditable(node);
+                fileManagement.setFilenameEditable(node, false);
             }
         },
 
@@ -170,6 +174,7 @@
                     $('#fileSystem').toggle();
                     codeEditor.getDoc().setValue(fileContent);
                     fileManagement.openedFile = <File>node;
+                    ui.setEditorContentChanged(false);
                 });
             }
         },
@@ -287,19 +292,24 @@
                 .addClass('editIcon')
                 .prop('href', '#')
                 .click(function () {
-                    fileManagement.setFilenameEditable(node);
+                    fileManagement.setFilenameEditable(node, true);
                 });
             nodeJQuery.append(editJQuery);
+
             var deleteJQuery = $('<a>')
                 .addClass('icon')
-                .addClass('removeIcon')
                 .prop('href', '#')
                 .click(function () {
                     if (node.Id != -1) {
-                        console.log('delete file in backend clicked');
-                        serverHub.deleteNode(node.Id, fileManagement.nodeIsFolder(node)).then(fileManagement.reloadFileManagement);
+                        if (confirm('Delete this ' + (fileManagement.nodeIsFolder(node) ? 'folder' : 'file'))) {
+                            console.log('delete file in backend clicked');
+                            serverHub.deleteNode(node.Id, fileManagement.nodeIsFolder(node)).then(fileManagement.reloadFileManagement);
+                        }
                     }
                 });
+            if (!fileManagement.nodeIsFolder(node) || (<Folder>node).Children.length == 0) {
+                deleteJQuery.addClass('removeIcon');
+            }
             nodeJQuery.append(deleteJQuery);
 
             return nodeJQuery;
@@ -309,42 +319,51 @@
          * Change node name to editable.
          * @param node The node to change.
          */
-        setFilenameEditable(node: Node) {
-            var editableText = $('<input>')
-                .prop('type', 'text')
-                .val($('#file-' + node.Id + ' a.openLink').text());
-            $('#file-' + node.Id + ' a.openLink').replaceWith(editableText);
-            var okLink = $('<a>')
+        setFilenameEditable(node: Node, withReload: boolean) {
+            serverHub.getFileSystem().then(function (filesystem) {
+                if (withReload) {
+                    fileManagement.reloadFileManagement(filesystem);
+                }
+                var editableText = $('<input>')
+                    .prop('type', 'text')
+                    .val($('#file-' + node.Id + ' a.openLink').text());
+                $('#file-' + node.Id + ' a.openLink').replaceWith(editableText);
+                var okLink = $('<a>')
 
-            $('#file-' + node.Id + ' a.editIcon')
-                .removeClass('editIcon')
-                .addClass('okIcon')
-                .prop('href', '#')
-                .click(function () {
-                    var newName = $('#file-' + node.Id + ' input').val();
-                    if (node.Id == -1) {
-                        console.log('add new File on server clicked');
-                        serverHub.addNode(fileManagement.actualFolder.Id, newName, fileManagement.nodeIsFolder(node))
-                            .then(fileManagement.reloadFileManagement);
-                    } else {
-                        console.log('change filename on server clicked');
-                        serverHub.changeNodeName(node.Id, newName, fileManagement.nodeIsFolder(node))
-                            .then(fileManagement.reloadFileManagement);
-                    }
-                    fileManagement.addMode = false;
-                });
+                $('#file-' + node.Id + ' a.editIcon')
+                    .removeClass('editIcon')
+                    .addClass('okIcon')
+                    .prop('href', '#')
+                    .click(function () {
+                        var newName = $('#file-' + node.Id + ' input').val();
+                        if (node.Id == -1) {
+                            console.log('add new File on server clicked');
+                            serverHub.addNode(fileManagement.actualFolder.Id, newName, fileManagement.nodeIsFolder(node))
+                                .then(fileManagement.reloadFileManagement);
+                        } else {
+                            console.log('change filename on server clicked');
+                            serverHub.changeNodeName(node.Id, newName, fileManagement.nodeIsFolder(node))
+                                .then(function (filesystem: FileSystem) {
+                                    fileManagement.reloadFileManagement(filesystem);
+                                    if (!fileManagement.nodeIsFolder(node) && node.Id == fileManagement.openedFile.Id) {
+                                        $('#filename').text(newName);
+                                    }
+                                });
+                        }
+                    });
 
-            $('#file-' + node.Id + ' a.removeIcon')
-                .removeClass('removeIcon')
-                .addClass('cancelIcon')
-                .prop('href', '#')
-                .unbind()
-                .click(function () {
-                    console.log('reload without change clicked');
-                    serverHub.getFileSystem().then(fileManagement.reloadFileManagement);
-                    fileManagement.addMode = false;
-                });
-            editableText.focus().select();
+                $('#file-' + node.Id + ' a.removeIcon')
+                    .removeClass('removeIcon')
+                    .addClass('cancelIcon')
+                    .prop('href', '#')
+                    .unbind()
+                    .click(function () {
+                        console.log('reload without change clicked');
+                        serverHub.getFileSystem().then(fileManagement.reloadFileManagement);
+                    });
+                editableText.focus().select();
+            });
+
         },
 
         /**

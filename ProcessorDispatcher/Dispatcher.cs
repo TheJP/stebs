@@ -21,7 +21,14 @@ namespace ProcessorDispatcher
         private readonly DispatcherItemFactory itemFactory;
         private readonly ConcurrentDictionary<Guid, IDispatcherItem> processors = new ConcurrentDictionary<Guid, IDispatcherItem>();
         private readonly ConcurrentDictionary<Guid, ImmutableQueue<SimulationStepSize>> stepRequests = new ConcurrentDictionary<Guid, ImmutableQueue<SimulationStepSize>>();
-        private readonly ConcurrentBag<Guid> resetRequests = new ConcurrentBag<Guid>();
+        private readonly ConcurrentBag<ResetRequest> resetRequests = new ConcurrentBag<ResetRequest>();
+
+        private enum ResetType { Soft, Hard }
+        private struct ResetRequest
+        {
+            public Guid Guid { get; set; }
+            public ResetType Type { get; set; }
+        }
 
         private readonly object executionLock = new object();
         /// <summary>Mapping of processor ids to last execution times. This should only be accessed if a lock to <see cref="executionLock"/> was acquired.</summary>
@@ -134,15 +141,12 @@ namespace ProcessorDispatcher
             return processors.TryRemove(id, out item);
         }
 
-        public void Step(Guid id, SimulationStepSize stepSize)
-        {
+        public void Step(Guid id, SimulationStepSize stepSize) =>
             stepRequests.AddOrUpdate(id, ImmutableQueue.Create(stepSize), (key, list) => list.Enqueue(stepSize));
-        }
 
-        public void SoftReset(Guid id)
-        {
-            resetRequests.Add(id);
-        }
+        public void SoftReset(Guid id) => resetRequests.Add(new ResetRequest() { Guid = id, Type = ResetType.Soft });
+
+        public void HardReset(Guid id) => resetRequests.Add(new ResetRequest() { Guid = id, Type = ResetType.Hard });
 
         /// <summary>Collect execution stebs, which were triggered manually on the client side.</summary>
         /// <param name="executions"></param>
@@ -190,16 +194,24 @@ namespace ProcessorDispatcher
         private void ExecuteResets()
         {
             if (resetRequests.IsEmpty) { return; }
-            var requests = new HashSet<Guid>();
-            Guid id;
-            while (!resetRequests.IsEmpty && resetRequests.TryTake(out id)) { requests.Add(id); }
-            foreach(var guid in requests)
+            var requests = new HashSet<ResetRequest>();
+            ResetRequest reset;
+            while (!resetRequests.IsEmpty && resetRequests.TryTake(out reset)) { requests.Add(reset); }
+            foreach(var request in requests)
             {
                 IDispatcherItem item;
-                if(processors.TryGetValue(guid, out item))
+                if(processors.TryGetValue(request.Guid, out item))
                 {
-                    simulator.SoftReset(item.Processor);
-                    NotifyStateChanged(item, StateChange.SoftReset);
+                    if (request.Type == ResetType.Soft)
+                    {
+                        simulator.SoftReset(item.Processor);
+                        NotifyStateChanged(item, StateChange.SoftReset);
+                    }
+                    else
+                    {
+                        simulator.HardReset(item.Processor);
+                        NotifyStateChanged(item, StateChange.HardReset);
+                    }
                 }
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections.Immutable;
 using System.Threading;
+using ProcessorSimulation.Device;
 
 namespace ProcessorSimulation
 {
@@ -59,15 +60,18 @@ namespace ProcessorSimulation
 
         public bool IsHalted { get; private set; }
 
+        private IDeviceManager deviceManager;
+
         /// <summary>Processor constructor with needed dependencies.</summary>
         /// <param name="alu">Alu, which is used for calculations in this processor.</param>
         /// <param name="ram">Ram, which is used as memory for this processor.</param>
         /// <param name="registerFactory">Factory function, that is used to create register instances.</param>
-        public Processor(IAlu alu, IRam ram, RegisterFactory registerFactory)
+        public Processor(IAlu alu, IRam ram, RegisterFactory registerFactory, IDeviceManager deviceManager)
         {
             this.Alu = alu;
             this.ram = ram;
             this.registerFactory = registerFactory;
+            this.deviceManager = deviceManager;
             //Initialize the registers dictionary with all existing registers
             registers = registers.AddRange(RegistersExtensions.GetValues()
                 .Select(type => registerFactory(type, 0))
@@ -119,6 +123,11 @@ namespace ProcessorSimulation
             return ProcessorSession.CreateSession(this);
         }
 
+        public void Execute(Action<IProcessorSession> action)
+        {
+            using (var session = CreateSession()) { action(session); }
+        }
+
         /// <summary>Proxy Pattern to protect write access to the ram.</summary>
         /// <remarks>
         /// This prevents deadlocks, because the ram is locking and often processor and ram sessions are required.
@@ -151,6 +160,7 @@ namespace ProcessorSimulation
             private Processor Processor { get; }
             public IRamSession RamSession { get; }
             IProcessor IProcessorSession.Processor => Processor;
+            public IDeviceManager DeviceManager => Processor.deviceManager;
 
             private ProcessorSession(Processor processor, IRamSession ram)
             {

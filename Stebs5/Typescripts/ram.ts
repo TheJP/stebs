@@ -1,5 +1,8 @@
 ﻿module Stebs {
     export class Ram {
+
+        public static RamSize = 256;
+
         private ramContent: number[];
         private ramToLine: number[];
         private isHighlighted: string[] = [];
@@ -7,7 +10,7 @@
         private stackPointerPos: number = 0;
         private instructionPointerPos: number = 0;
 
-        constructor(size: number) {
+        constructor(size: number = Ram.RamSize) {
             this.ramContent = Array(size);
             for (var i: number = 0; i < size; i++) {
                 this.ramContent[i] = 0;
@@ -125,7 +128,7 @@
                 return false;
             }
             this.ramContent[pos] = value;
-            $('#cell-' + pos).text(Stebs.utility.addLeadingZeros(value, 16, 2));
+            $('#cell-' + pos).text(Stebs.convertNumber(value, 16, 2));
             this.highlight('#cell-' + pos);
             return true;
         }
@@ -181,7 +184,7 @@
                     }
                     var cell = row.insertCell(j + 1);
 
-                    cell.innerHTML = Stebs.utility.addLeadingZeros(this.ramContent[(i * newWith) + j], 16, 2);
+                    cell.innerHTML = Stebs.convertNumber(this.ramContent[(i * newWith) + j], 16, 2);
                     cell.id = 'cell-' + ((i * newWith) + j);
                 }
             }

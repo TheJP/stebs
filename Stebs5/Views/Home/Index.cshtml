@@ -7,17 +7,20 @@
         <div id="ramDevice" class="device">
             <div id="ramHeader">
                 <button id="hideShowRam" class="icon arrowUpIcon"></button>
-                <button id="downloadRam" class="icon saveIcon"></button>
+                @Html.ActionLink(" ", "DownloadMemory", null, new Dictionary<string, object>() { ["id"] = "downloadRam", ["class"] = "icon saveIcon", ["target"] = "_blank" })
                 <p>RAM</p>
             </div>
             <div id="ramTable"></div>
         </div>
-        <div id="interruptDevice" class="device">
-            <p>Interrupt</p>
-            <!--<input id="speedSlider" type="range" min="0" max="2000" step="10" value="0" />-->
-            <button id="interruptButton">InterruptTest</button>
-            <button id="inputTest">inputTest</button>
-            <label id="outputTest">outputText</label>
+        <div id="deviceControl" class="device">
+            <p>Add Device</p>
+            <form id="addDeviceForm">
+                <select id="deviceSelect">
+                    <option>Loading...</option>
+                </select>
+                <input type="number" min="0" max="255" id="deviceSlot" />
+                <button type="submit">Add</button>
+            </form>
         </div>
     </div>
     <div class="open-link open-link-vertical">
@@ -48,16 +51,16 @@
             }
         </div>
         <div class="simulationControl">
-            <button id="assemble" title="Assemble (ctrl+b)"><img src="/Icons/Mimetypes-text-x-hex-icon.png" /></button>
-            <button id="debug" title="Single Step (ctrl+j)"><img class="disabled-icon" src="/Icons/Debug-icon-grey.png" /><img class="enabled-icon" src="/Icons/Debug-icon.png" /></button>
-            <button id="start" title="Run (ctrl+g)"><img class="disabled-icon" src="/Icons/Play-icon-grey.png" /><img class="enabled-icon" src="/Icons/Play-icon.png" /></button>
+            <button id="assemble" title="Assemble (ctrl+b)"><img src="~/Icons/assemble.png" /></button>
+            <button id="debug" title="Single Step (ctrl+j)"><img class="disabled-icon" src="~/Icons/step-by-step-grey.png" /><img class="enabled-icon" src="~/Icons/step-by-step.png" /></button>
+            <button id="start" title="Run (ctrl+g)"><img class="disabled-icon" src="~/Icons/Play-icon-grey.png" /><img class="enabled-icon" src="~/Icons/Play-icon.png" /></button>
         </div>
         <div class="fileControl">
-            <button id="open" title="Open (ctrl+o)"><img class="enabled-icon" src="/Icons/open-file-icon.png" /></button>
-            <button id="save" title="Save (ctrl+s)"><img class="enabled-icon" src="/Icons/Save-icon.png" /></button>
-            <button id="new" title="New (ctrl+n)"><img class="enabled-icon" src="/Icons/new-file-icon.png" /></button>
+            <button id="open" title="Open (ctrl+o)"><img class="enabled-icon" src="~/Icons/open-file-icon.png" /></button>
+            <button id="save" title="Save (ctrl+s)"><img class="enabled-icon" src="~/Icons/Save-icon.png" /></button>
+            <button id="new" title="New (ctrl+n)"><img class="enabled-icon" src="~/Icons/new-file-icon.png" /></button>
         </div>
-        <span id="filename">New File</span>
+        <span id="filename-star">*</span><span id="filename">New File</span>
     </div>
     <div id="codingFrame">
         <textarea id="codingTextArea"></textarea>
@@ -73,9 +76,10 @@
     <div class="runAndDebug">
         <div class="buttonView">
             <div class="controlButtons">
-                <button id="pause" title="Pause (ctrl+g)"><img class="disabled-icon" src="/Icons/Pause-icon-grey.png" /><img class="enabled-icon" src="/Icons/Pause-icon.png" /></button>
-                <button id="continue" title="Continue (ctrl+g)"><img class="disabled-icon" src="/Icons/Play-icon-grey.png" /><img class="enabled-icon" src="/Icons/Play-icon.png" /></button>
-                <button id="stop" title="Stop (ctrl+h or esc)"><img class="disabled-icon" src="/Icons/Stop-icon-grey.png" /><img class="enabled-icon" src="/Icons/Stop-icon.png" /></button>
+                <button id="pause" title="Pause (ctrl+g)"><img class="disabled-icon" src="/Icons/Pause-icon-grey.png" /><img class="enabled-icon" src="~/Icons/Pause-icon.png" /></button>
+                <button id="continue" title="Continue (ctrl+g)"><img class="disabled-icon" src="~/Icons/Play-icon-grey.png" /><img class="enabled-icon" src="~/Icons/Play-icon.png" /></button>
+                <button id="stop" title="Stop (ctrl+h or esc)"><img class="disabled-icon" src="~/Icons/Stop-icon-grey.png" /><img class="enabled-icon" src="~/Icons/Stop-icon.png" /></button>
+                <button id="reset" title="Reset"><img class="disabled-icon" src="~/Icons/reset-grey.png" /><img class="enabled-icon" src="~/Icons/reset.png" /></button>
             </div>
             <div class="stepSizeRadios">
                 <label><input id="instructionStepSpeed" name="speedGroup" type="radio" checked="checked" /> Instruction Step</label>
@@ -102,11 +106,12 @@
         </div>
     </div>
     <div id='fileSystem'>
+        <button id="closeFileSystem">x</button>
         <div id="folderPath"></div>
         <div id="files"></div>
         <div class="addElement">
-            <button id="addFile"><img class="icon" src="/Icons/file-text-icon.png"> Add</button>
-            <button id="addFolder"><img class="icon" src="/Icons/folder-close-icon.png"> Add</button>
+            <button id="addFile"><img class="icon" src="~/Icons/file-text-icon.png"> Add</button>
+            <button id="addFolder"><img class="icon" src="~/Icons/folder-close-icon.png"> Add</button>
         </div>
     </div>
 </div>

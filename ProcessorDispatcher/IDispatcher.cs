@@ -79,6 +79,13 @@ namespace ProcessorDispatcher
         void SoftReset(Guid id);
 
         /// <summary>
+        /// Execute a hard reset using the <see cref="IProcessorSimulator"/> on the <see cref="IProcessor"/> with the given id.
+        /// The reset is queued as a request and executed in the simulation loop.
+        /// </summary>
+        /// <param name="guid"></param>
+        void HardReset(Guid guid);
+
+        /// <summary>
         /// Start executing steps of the managed <see cref="IProcessor"/>s.
         /// </summary>
         void Start();
