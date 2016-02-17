@@ -54,18 +54,18 @@ namespace Stebs5.Controllers
                 //The order of dictionaries is non deterministic, so the conversion has to be done this way.
                 for (int i = 0; i <= byte.MaxValue; ++i)
                 {
-                    output.Append(ram[(byte)i]);
+                    output.Append(ram[(byte)i].ToString("X2"));
                     output.Append(' ');
                 }
                 output.AppendLine();
                 //Return the generated file as result
                 var result = output.ToString();
-                var fileName = $"stebs-logisim-export-{DateTime.Now.ToString("yyyy-MM-dd")}.data";
+                var fileName = $"stebs-logisim-export-{DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")}.data";
                 return File(Encoding.ASCII.GetBytes(result), MediaTypeNames.Application.Octet, fileName);
             }
             catch (Exception)
             {
-                return RedirectToAction("Index");
+                return View("DownloadFailed");
             }
         }
     }

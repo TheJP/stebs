@@ -77,7 +77,8 @@ namespace Stebs5
             instructions: Mpm.Instructions,
             registers: RegistersExtensions.GetValues().Select(type => type.ToString()),
             deviceTypes: PluginManager.DevicePlugins.Values
-                .ToDictionary(device => device.PluginId, device => new DeviceViewModel(device.Name, device.PluginId))
+                .ToDictionary(device => device.PluginId, device => new DeviceViewModel(device.Name, device.PluginId)),
+            processorId: Manager.GetProcessorId(Context.ConnectionId)?.ToString()
         );
 
         /// <summary>

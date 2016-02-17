@@ -46,6 +46,9 @@ module Stebs {
             //Initialise components
             registerControl.addAll(data.Registers);
             deviceManager.setDeviceTypes(data.DeviceTypes);
+            //Add processor id to the ram download link
+            var link = $('#downloadRam');
+            link.prop('href', link.prop('href') + '?processorId=' + data.ProcessorId);
         },
 
         /**
