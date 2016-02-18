@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Stebs5.Tests
 {
@@ -17,12 +18,18 @@ namespace Stebs5.Tests
         public IProcessor Processor { get; }
         public RegisterFactory RegisterFactory { get; }
         public IProcessorSimulator Simulator { get; }
+        public static Lazy<Mpm> Mpm = new Lazy<Mpm>(() =>
+        {
+            var mpm = new Mpm(new MpmFileParser());
+            mpm.Parse("Resources\\INSTRUCTION.data", "Resources\\ROM1.data", "Resources\\ROM2.data");
+            return mpm;
+        });
 
         public ProcessorTestUtility()
         {
             RegisterFactory = (type, data) => new Register(type, data);
             Processor = new Processor(new Alu(RegisterFactory), new Ram(), RegisterFactory, new DeviceManager());
-            Simulator = new ProcessorSimulator(new Mpm(new MpmFileParser()));
+            Simulator = new ProcessorSimulator(Mpm.Value);
         }
 
         /// <summary>Alternative constructor with given initial RAM.</summary>
@@ -59,6 +66,56 @@ namespace Stebs5.Tests
         /// <param name="value"></param>
         public void SetRegister(Registers type, uint value) => Processor.Execute(session => session.SetRegister(type, value));
 
+        public void SimulateInstructionStep() => Simulator.ExecuteInstructionStep(Processor);
+        public void SimulateMacroStep() => Simulator.ExecuteMacroStep(Processor);
+        public void SimulateMicroStep() => Simulator.ExecuteMicroStep(Processor);
+        public void SimulateInstructionStep(int times)
+        {
+            for (int i = 0; i < times; ++i) { SimulateInstructionStep(); }
+        }
+        public void SimulateMacroStep(int times)
+        {
+            for (int i = 0; i < times; ++i) { SimulateMacroStep(); }
+        }
+        public void SimulateMicroStep(int times)
+        {
+            for (int i = 0; i < times; ++i) { SimulateMicroStep(); }
+        }
 
+        /// <summary>Simulates until the processor halts or until the number of stebs specified in "abort" are reached.</summary>
+        /// <param name="abort"></param>
+        public void SimulateUntilHalt(int? abort = null)
+        {
+            uint steps = 0;
+            while (!Processor.IsHalted)
+            {
+                SimulateInstructionStep();
+                ++steps;
+                if (abort.HasValue && steps >= abort) { Assert.Fail("Processor did not halt after the specified number of steps."); }
+            }
+        }
+
+        /// <summary>Asserts, that the given expected RAM is equal to the actual RAM.</summary>
+        /// <param name="expected"></param>
+        public void AssertRamEquals(byte[] expected)
+        {
+            using (var ram = new Ram().CreateSession())
+            {
+                ram.Set(expected);
+                Helper.DictionaryEqual(ram.Ram.Data, Processor.Ram.Data);
+            }
+        }
+
+        public void AssertRegisterEquals(Registers type, uint value)
+        {
+            var register = Processor.Registers[type];
+            Assert.IsTrue(value == register.Value, $"Register is {register.Value} but should be {value}.");
+        }
+
+        public void AssertRegisterEquals(IRegister expected)
+        {
+            var actual = Processor.Registers[expected.Type];
+            Assert.IsTrue(actual.Value == expected.Value, $"Register is {actual.Value} but should be {expected.Value}.");
+        }
     }
 }
