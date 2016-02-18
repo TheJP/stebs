@@ -108,7 +108,7 @@ namespace ProcessorSimulation
 
             public void Set(byte[] values)
             {
-                if(values.Length != RamSize) { throw new ArgumentException($"{values.Length} should be written to the Ram, but the Ram has size {RamSize}"); }
+                if(values.Length != RamSize) { throw new ArgumentException($"{values.Length} bytes should be written to the Ram, but the Ram has size {RamSize}"); }
                 var dataBuilder = ImmutableDictionary.CreateBuilder<byte, byte>();
                 for (int i = 0; i < RamSize; ++i)
                 {

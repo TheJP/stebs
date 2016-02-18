@@ -44,7 +44,7 @@ namespace Stebs5.Tests.ProcessorSimulation.MpmParser
         [TestMethod]
         public void TestParseInstructionsFile()
         {
-            var testCase = "Resources\\INSTRUCTION.data";
+            var testCase = "Resources\\INSTRUCTIONTEST.data";
             var result = parser.ParseInstructionsFile(testCase);
             var expected = new Dictionary<byte, IInstruction>()
             {
