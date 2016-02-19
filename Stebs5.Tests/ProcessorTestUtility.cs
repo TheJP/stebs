@@ -18,6 +18,7 @@ namespace Stebs5.Tests
         public IProcessor Processor { get; }
         public RegisterFactory RegisterFactory { get; }
         public IProcessorSimulator Simulator { get; }
+
         public static Lazy<Mpm> Mpm = new Lazy<Mpm>(() =>
         {
             var mpm = new Mpm(new MpmFileParser());
@@ -66,17 +67,24 @@ namespace Stebs5.Tests
         /// <param name="value"></param>
         public void SetRegister(Registers type, uint value) => Processor.Execute(session => session.SetRegister(type, value));
 
+        /// <summary>Simulates one instruction step.</summary>
         public void SimulateInstructionStep() => Simulator.ExecuteInstructionStep(Processor);
+        /// <summary>Simulates one macro step.</summary>
         public void SimulateMacroStep() => Simulator.ExecuteMacroStep(Processor);
+        /// <summary>Simulates one micro step.</summary>
         public void SimulateMicroStep() => Simulator.ExecuteMicroStep(Processor);
+        /// <summary>Simulates the given amount of instruction steps.</summary>
+        /// <param name="times"></param>
         public void SimulateInstructionStep(int times)
         {
             for (int i = 0; i < times; ++i) { SimulateInstructionStep(); }
         }
+        /// <summary>Simulates the given amount of macro steps.</summary>
         public void SimulateMacroStep(int times)
         {
             for (int i = 0; i < times; ++i) { SimulateMacroStep(); }
         }
+        /// <summary>Simulates the given amount of micro steps.</summary>
         public void SimulateMicroStep(int times)
         {
             for (int i = 0; i < times; ++i) { SimulateMicroStep(); }
@@ -91,7 +99,7 @@ namespace Stebs5.Tests
             {
                 SimulateInstructionStep();
                 ++steps;
-                if (abort.HasValue && steps >= abort) { Assert.Fail("Processor did not halt after the specified number of steps."); }
+                if (abort.HasValue && steps >= abort.Value) { Assert.Fail("Processor did not halt after the specified number of steps."); }
             }
         }
 
@@ -106,21 +114,30 @@ namespace Stebs5.Tests
             }
         }
 
+        /// <summary>Asserts, that the RAM contains the given expected value at the given address.</summary>
+        /// <param name="address"></param>
+        /// <param name="value"></param>
+        /// <param name="message"></param>
+        public void AssertRamEquals(byte address, byte value, string message = null) =>
+            Assert.AreEqual(value, Processor.Ram.Data[address], message ?? $"RAM [{address}] does not contain the expected value");
+
         /// <summary>Asserts, that the value of the register of the given type is equal to the given value.</summary>
         /// <param name="type"></param>
         /// <param name="value"></param>
-        public void AssertRegisterEquals(Registers type, uint value)
+        /// <param name="message"></param>
+        public void AssertRegisterEquals(Registers type, uint value, string message = null)
         {
             var register = Processor.Registers[type];
-            Assert.IsTrue(value == register.Value, $"Register is {register.Value} but should be {value}.");
+            Assert.AreEqual(value, register.Value, message ?? $"Register {type} does not have the expected value");
         }
 
         /// <summary>Asserts that the given expected register is equal to the actual register with the same type.</summary>
         /// <param name="expected"></param>
-        public void AssertRegisterEquals(IRegister expected)
+        /// <param name="message"></param>
+        public void AssertRegisterEquals(IRegister expected, string message = null)
         {
             var actual = Processor.Registers[expected.Type];
-            Assert.IsTrue(actual.Value == expected.Value, $"Register is {actual.Value} but should be {expected.Value}.");
+            Assert.AreEqual(expected.Value, actual.Value, message ?? $"Register {expected.Type} does not have the expected value");
         }
     }
 }
