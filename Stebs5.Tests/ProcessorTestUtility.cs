@@ -106,12 +106,17 @@ namespace Stebs5.Tests
             }
         }
 
+        /// <summary>Asserts, that the value of the register of the given type is equal to the given value.</summary>
+        /// <param name="type"></param>
+        /// <param name="value"></param>
         public void AssertRegisterEquals(Registers type, uint value)
         {
             var register = Processor.Registers[type];
             Assert.IsTrue(value == register.Value, $"Register is {register.Value} but should be {value}.");
         }
 
+        /// <summary>Asserts that the given expected register is equal to the actual register with the same type.</summary>
+        /// <param name="expected"></param>
         public void AssertRegisterEquals(IRegister expected)
         {
             var actual = Processor.Registers[expected.Type];

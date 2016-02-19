@@ -74,6 +74,8 @@
     <Compile Include="Helper.cs" />
     <Compile Include="ProcessorSimulation\AluTest.cs" />
     <Compile Include="ProcessorSimulation\MpmParser\MpmFileParserTest.cs" />
+    <Compile Include="ProcessorSimulation\ProcessorSimulatorTest.cs" />
+    <Compile Include="ProcessorTestUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -89,7 +91,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Resources\INSTRUCTION.data">
+    <None Include="Resources\INSTRUCTIONTEST.data">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
