@@ -12,11 +12,13 @@ namespace ProcessorSimulation.Device
         private Interrupt interrupt;
         protected IDeviceView View { get; private set; }
 
-        public virtual void Attached(Interrupt interrupt, IDeviceView view)
+        public void Attached(Interrupt interrupt, IDeviceView view)
         {
             this.interrupt = interrupt;
             this.View = view;
+            Attached();
         }
+        public virtual void Attached() { }
         protected void Interrupt() { interrupt(); }
 
         public virtual void Detached() { }

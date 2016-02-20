@@ -15,9 +15,8 @@ namespace InterruptDevice
         private const int MinimalInterval = 20;
         private Timer timer = new Timer();
 
-        public override void Attached(Interrupt interrupt, IDeviceView view)
+        public override void Attached()
         {
-            base.Attached(interrupt, view);
             timer.Elapsed += (sender, e) => Interrupt();
         }
 
