@@ -85,6 +85,8 @@ namespace ProcessorSimulation
                 this.Ram = ram;
             }
 
+            ~RamSession() { Dispose(); }
+
             public void Dispose()
             {
                 if (!disposed)
@@ -102,13 +104,15 @@ namespace ProcessorSimulation
 
             public void Set(byte address, byte value)
             {
+                if (disposed) { throw new InvalidOperationException("Mutative access to closed session"); }
                 Ram.data = Ram.data.SetItem(address, value);
                 Ram.NotifyRamChanged(address, value);
             }
 
             public void Set(byte[] values)
             {
-                if(values.Length != RamSize) { throw new ArgumentException($"{values.Length} bytes should be written to the Ram, but the Ram has size {RamSize}"); }
+                if (disposed) { throw new InvalidOperationException("Mutative access to closed session"); }
+                if (values.Length != RamSize) { throw new ArgumentException($"{values.Length} bytes should be written to the Ram, but the Ram has size {RamSize}"); }
                 var dataBuilder = ImmutableDictionary.CreateBuilder<byte, byte>();
                 for (int i = 0; i < RamSize; ++i)
                 {

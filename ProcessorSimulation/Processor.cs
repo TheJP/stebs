@@ -168,6 +168,8 @@ namespace ProcessorSimulation
                 this.RamSession = ram;
             }
 
+            ~ProcessorSession() { Dispose(); }
+
             public static ProcessorSession CreateSession(Processor processor)
             {
                 Monitor.Enter(processor.writeLock);
@@ -186,6 +188,7 @@ namespace ProcessorSimulation
 
             public void SetRegister(Registers type, uint value)
             {
+                if (disposed) { throw new InvalidOperationException("Mutative access to closed session"); }
                 var register = Processor.registerFactory(type, value);
                 Processor.registers = Processor.registers.SetItem(type, register);
                 Processor.NotifyRegisterChanged(register);
@@ -193,12 +196,14 @@ namespace ProcessorSimulation
 
             public void SetRegister(IRegister register)
             {
+                if (disposed) { throw new InvalidOperationException("Mutative access to closed session"); }
                 Processor.registers = Processor.registers.SetItem(register.Type, register);
                 Processor.NotifyRegisterChanged(register);
             }
 
             public void SetHalted(bool value)
             {
+                if (disposed) { throw new InvalidOperationException("Mutative access to closed session"); }
                 Processor.IsHalted = value;
                 if (value) { Processor.NotifyHalt(); }
             }
