@@ -9,14 +9,14 @@ namespace ProcessorSimulation.Device
 {
     public class DeviceManager : IDeviceManager
     {
-        private const string MaxDevicedReached = "This processor already has the maximal number of devices attached.";
+        private const string MessageMaxDevicesReached = "This processor already has the maximal number of devices attached.";
         private byte nextSlot = 0;
         private readonly Dictionary<byte, IDevice> devices = new Dictionary<byte, IDevice>();
         public IReadOnlyDictionary<byte, IDevice> Devices => new ReadOnlyDictionary<byte, IDevice>(devices);
 
         public byte AddDevice(IProcessor processor, IDevice device, IDeviceView view)
         {
-            if(devices.Count >= byte.MaxValue) { throw new ArgumentException(MaxDevicedReached); }
+            if(devices.Count >= byte.MaxValue) { throw new ArgumentException(MessageMaxDevicesReached); }
             while (devices.ContainsKey(nextSlot)) { ++nextSlot; }
             return AddDevice(processor, device, view, nextSlot++);
         }

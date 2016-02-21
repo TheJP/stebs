@@ -40,9 +40,11 @@ namespace Stebs5.Tests
             SetRam(initialRam);
         }
 
-        /// <summary>Replaces the data of the RAM with the given new data.</summary>
-        /// <param name="data"></param>
-        public void SetRam(byte[] data)
+        /// <summary>
+        /// Makes sure, that the returned result has the same size as required by the RAM.
+        /// If the input is too short, it will be filled up with zeros. If the input is too long it will be cropped.
+        /// </summary>
+        private byte[] AssureLength(byte[] data)
         {
             if (data.Length != Processor.Ram.Data.Count())
             {
@@ -54,6 +56,14 @@ namespace Stebs5.Tests
                 }
                 data = tmp;
             }
+            return data;
+        }
+
+        /// <summary>Replaces the data of the RAM with the given new data.</summary>
+        /// <param name="data"></param>
+        public void SetRam(byte[] data)
+        {
+            data = AssureLength(data);
             Processor.Execute(session => session.RamSession.Set(data));
         }
 
@@ -109,7 +119,7 @@ namespace Stebs5.Tests
         {
             using (var ram = new Ram().CreateSession())
             {
-                ram.Set(expected);
+                ram.Set(AssureLength(expected));
                 Helper.DictionaryEqual(ram.Ram.Data, Processor.Ram.Data);
             }
         }
