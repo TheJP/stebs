@@ -497,15 +497,19 @@ $(document).ready(function () {
     $(window).on('beforeunload', function () {
         var timeout: number;
         if (Stebs.ui.isEditorContentChanged()) {
-            timeout = setTimeout(function () {
-                //Reconnect
-                $.connection.hub.start();
-                //Because processor was deleted on disconnect
-                Stebs.stateInit(false);
-                Stebs.ramContent = new Stebs.Ram();
-                Stebs.ramContent.init();
-                Stebs.registerControl.resetRegisters();
-            }, 1000);
+            //Only reconnect if the browser is firefox.
+            //The false disconnection bug is known and intentionally not fixed by the SignalR developers.
+            if (navigator.userAgent.toLowerCase().indexOf('firefox') >= 0) {
+                timeout = setTimeout(function () {
+                    //Reconnect
+                    $.connection.hub.start();
+                    //Because processor was deleted on disconnect
+                    Stebs.stateInit(false);
+                    Stebs.ramContent = new Stebs.Ram();
+                    Stebs.ramContent.init();
+                    Stebs.registerControl.resetRegisters();
+                }, 1000);
+            }
             return 'Are you sure you want to leave?';
         }
     });
