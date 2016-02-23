@@ -44,11 +44,10 @@ module Stebs {
                 assemblerInstruction[data.Instructions[instruction].Mnemonic] = 'variable-2';
             }
             //Initialise components
-            registerControl.addAll(data.Registers);
+            registerControl.setRegisters(data.Registers);
             deviceManager.setDeviceTypes(data.DeviceTypes);
             //Add processor id to the ram download link
-            var link = $('#downloadRam');
-            link.prop('href', link.prop('href') + '?processorId=' + data.ProcessorId);
+            ui.setRamDownloadLink(data.ProcessorId);
         },
 
         /**
@@ -372,9 +371,20 @@ module Stebs {
         /**
         * Highlight the given line
         */
-        highlightLine(ipNr: number): void {
+        highlightLine(ipNr: number) {
             var linenr = Stebs.ramContent.getLineNr(ipNr);
             Stebs.codeEditor.getDoc().setCursor({ ch: 0, line: linenr });
+        },
+
+        /**
+         * Sets the ram download link using the new processor id.
+         */
+        setRamDownloadLink(processorId: string) {
+            var link = $('#downloadRam');
+            var href: string = link.prop('href');
+            var position = href.indexOf('?processorId');
+            if (position >= 0) { href = href.substring(0, position); }
+            link.prop('href', href + '?processorId=' + processorId);
         }
 
     };
@@ -422,6 +432,7 @@ $(document).ready(function () {
     Stebs.stateInit();
 
     var hub = $.connection.stebsHub;
+    hub.client.initialise = Stebs.clientHub.init;
     hub.client.assembled = Stebs.clientHub.assembled;
     hub.client.assembleError = Stebs.clientHub.assembleError;
     hub.client.updateProcessor = Stebs.clientHub.updateProcessor;
@@ -434,7 +445,6 @@ $(document).ready(function () {
     $.connection.hub.start().done(function () {
 
         //Initialise stebs
-        hub.server.initialise().done(Stebs.clientHub.init);
         Stebs.fileManagement.init();
         Stebs.registerControl.init();
         Stebs.deviceManager.init();

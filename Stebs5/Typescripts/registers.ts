@@ -43,7 +43,15 @@
         /**
          * Called when available registers are received from the server.
          */
-        addAll(registersByTypes: string[]) {
+        setRegisters(registersByTypes: string[]) {
+            //Remove all watches
+            for (var type in this.registers) {
+                var register: Register = this.registers[type];
+                if (register.hasWatchElemet()) { register.getWatchElement().remove(); }
+            }
+            //Remove all registers
+            registerControl.registers = {};
+            //Add new register and watches
             for (var i = 0; i < registersByTypes.length; i++) {
                 var newRegister = new Register(registersByTypes[i]);
                 this.registers[registersByTypes[i]] = newRegister;
@@ -146,6 +154,10 @@
 
         public getValue(): number {
             return this.value;
+        }
+
+        public getWatchElement(): WatchElement {
+            return this.watchElement;
         }
 
         public hasWatchElemet(): boolean {

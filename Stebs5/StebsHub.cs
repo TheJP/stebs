@@ -43,27 +43,39 @@ namespace Stebs5
             if (guid != null) { Groups.Remove(Context.ConnectionId, guid.Value.ToString()); }
         }
 
-        private void CreateProcessor()
+        private Guid CreateProcessor()
         {
-            var guid = Manager.CreateProcessor(Context.ConnectionId).ToString();
-            Groups.Add(Context.ConnectionId, guid);
+            var guid = Manager.CreateProcessor(Context.ConnectionId);
+            Groups.Add(Context.ConnectionId, guid.ToString());
+            return guid;
         }
 
-        private void AssureProcessorExists()
+        private Guid AssureProcessorExists()
         {
-            var guid = Manager.AssureProcessorExists(Context.ConnectionId).ToString();
-            Groups.Add(Context.ConnectionId, guid);
+            var guid = Manager.AssureProcessorExists(Context.ConnectionId);
+            Groups.Add(Context.ConnectionId, guid.ToString());
+            return guid;
         }
+
+        private void InitialiseClient(Guid guid) => Clients.Caller.Initialise(new InitialiseViewModel(
+            instructions: Mpm.Instructions,
+            registers: RegistersExtensions.GetValues().Select(type => type.ToString()),
+            deviceTypes: PluginManager.DevicePlugins.Values
+                .ToDictionary(device => device.PluginId, device => new DeviceViewModel(device.Name, device.PluginId)),
+            processorId: guid.ToString()
+        ));
 
         public override Task OnConnected()
         {
-            CreateProcessor();
+            var guid = CreateProcessor();
+            InitialiseClient(guid);
             return base.OnConnected();
         }
 
         public override Task OnReconnected()
         {
-            AssureProcessorExists();
+            var guid = AssureProcessorExists();
+            InitialiseClient(guid);
             return base.OnReconnected();
         }
 
@@ -72,14 +84,6 @@ namespace Stebs5
             RemoveProcessor();
             return base.OnDisconnected(stopCalled);
         }
-
-        public InitialiseViewModel Initialise() => new InitialiseViewModel(
-            instructions: Mpm.Instructions,
-            registers: RegistersExtensions.GetValues().Select(type => type.ToString()),
-            deviceTypes: PluginManager.DevicePlugins.Values
-                .ToDictionary(device => device.PluginId, device => new DeviceViewModel(device.Name, device.PluginId)),
-            processorId: Manager.GetProcessorId(Context.ConnectionId)?.ToString()
-        );
 
         /// <summary>
         /// Assemble the given source from the client.
