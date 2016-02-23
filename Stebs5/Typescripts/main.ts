@@ -442,7 +442,7 @@ $(document).ready(function () {
     hub.client.hardReset = Stebs.clientHub.hardReset;
     hub.client.updateDevice = Stebs.deviceManager.updateView;
 
-    $.connection.hub.start().done(function () {
+    $.connection.hub.start().done(() => {
 
         //Initialise stebs
         Stebs.fileManagement.init();
@@ -512,7 +512,10 @@ $(document).ready(function () {
             if (navigator.userAgent.toLowerCase().indexOf('firefox') >= 0) {
                 timeout = setTimeout(function () {
                     //Reconnect
-                    $.connection.hub.start();
+                    $.connection.hub.start().done(() => {
+                        //Reinitialise devices
+                        Stebs.deviceManager.reInitialise();
+                    });
                     //Because processor was deleted on disconnect
                     Stebs.stateInit(false);
                     Stebs.ramContent = new Stebs.Ram();

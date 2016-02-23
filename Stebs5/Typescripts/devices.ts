@@ -15,6 +15,7 @@
 
         private deviceTypes: <{ [id: string]: DeviceType }>{},
         private updateCallbacks: <{ [slot: number]: (data: any) => void }>{},
+        private devices: <[{ slot: number, type: DeviceType }]>[],
 
         /**
          * Initializes the manager.
@@ -24,9 +25,25 @@
                 var deviceType = $('#deviceSelect').val();
                 var slot = parseInt($('#deviceSlot').val());
                 serverHub.addDevice(deviceType, slot)
-                   .then(result => { if (result.Success) { deviceManager.addDevice(deviceManager.deviceTypes[deviceType], result) } });
+                    .then(result => deviceManager.addDevice(deviceManager.deviceTypes[deviceType], result));
                 return false;
             });
+        },
+
+        /**
+         * Removes and readds all devices.
+         * This is used, when reconnecting without a browser reload.
+         */
+        reInitialise(): void {
+            this.updateCallbacks = {};
+            var oldDevices = deviceManager.devices;
+            this.devices = [];
+            $('#deviceElements .removeable-device').remove();
+            for (var i = 0; i < oldDevices.length; ++i) {
+                var device = oldDevices[i];
+                ((d: { slot: number, type: DeviceType }) => serverHub.addDevice(d.type.Id, d.slot)
+                    .then(result => deviceManager.addDevice(d.type, result)))(device);
+            }
         },
 
         /**
@@ -36,7 +53,7 @@
             deviceManager.deviceTypes = types;
             //Add options to the device adding dialog
             var select = $('#deviceSelect');
-            select.empty()
+            select.empty();
             for (var id in deviceManager.deviceTypes) {
                 var deviceType = deviceManager.deviceTypes[id];
                 select.append($('<option />').text(deviceType.Name).val(deviceType.Id));
@@ -49,10 +66,13 @@
          * @param slot
          */
         addDevice(deviceType: DeviceType, device: AddDeviceViewModel): void {
+            if (!device.Success) { return; }
+            deviceManager.devices.push({ slot: device.Slot, type: deviceType });
             $('#deviceElements').append(
                 $('<div />')
                     .attr('id', 'device-' + device.Slot)
                     .addClass('device')
+                    .addClass('removeable-device')
                     .html(device.Template)
                     .prepend($('<p />').html(
                         //Remove link
