@@ -1,24 +1,31 @@
 ﻿/// <reference path="ram.ts"/>
 
 module Stebs {
+
     export var visible = {
         devices: false,
         architecture: false,
         output: false
     };
 
-    export var widths = {
+    export var Widths = {
         devices: '350px',
         architecture: '400px'
     };
 
-    export var heights = {
+    export var Heights = {
         topbar: '38px',
         containerBar: '38px',
         containerSize: '150px',
         /* 1x topbar & 1x containerBar */
         bars: '76px',
         runAndDebug: '100px'
+    };
+
+    /** Speed slider values in ms. */
+    var SpeedSlider = {
+        min: 10,
+        max: 5000
     };
 
     export enum SimulationStepSize { Micro = 0, Macro = 1, Instruction = 2 };
@@ -306,7 +313,7 @@ module Stebs {
          * This allows correct browser resizing without additional client code.
          */
         setCodingViewWidth(): void {
-            var width = (visible.architecture ? ' - ' + widths.architecture : '') + (visible.devices ? ' - ' + widths.devices : '');
+            var width = (visible.architecture ? ' - ' + Widths.architecture : '') + (visible.devices ? ' - ' + Widths.devices : '');
             $('#codingView').css('width', 'calc(100% - 50px' + width + ')');
         },
 
@@ -314,9 +321,9 @@ module Stebs {
          * Opens/Closes the devices sidebar.
          */
         toggleDevices(): void {
-            var animation = { left: (visible.devices ? '-=' : '+=') + widths.devices };
+            var animation = { left: (visible.devices ? '-=' : '+=') + Widths.devices };
             $('#devices, #architecture').animate(animation);
-            var animation2 = { left: animation.left, width: (visible.devices ? '+=' : '-=') + widths.devices };
+            var animation2 = { left: animation.left, width: (visible.devices ? '+=' : '-=') + Widths.devices };
             $('#codingView').animate(animation2, ui.setCodingViewWidth);
             visible.devices = !visible.devices;
         },
@@ -325,9 +332,9 @@ module Stebs {
          * Opens/Closes the architecture sidebar.
          */
         toggleArchitecture(): void {
-            var animation = { left: (visible.architecture ? '-=' : '+=') + widths.architecture };
+            var animation = { left: (visible.architecture ? '-=' : '+=') + Widths.architecture };
             $('#architecture').animate(animation);
-            var animation2 = { left: animation.left, width: (visible.architecture ? '+=' : '-=') + widths.architecture };
+            var animation2 = { left: animation.left, width: (visible.architecture ? '+=' : '-=') + Widths.architecture };
             $('#codingView').animate(animation2, ui.setCodingViewWidth);
             visible.architecture = !visible.architecture;
         },
@@ -337,15 +344,15 @@ module Stebs {
          * This allows correct browser resizing without additional client code.
          */
         setCodingFrameHeight(): void {
-            var height = (visible.output ? ' - ' + heights.containerSize : '');
-            $('#codingFrame').css('height', 'calc(100% - ' + heights.bars + ' - ' + heights.runAndDebug + height + ')');
+            var height = (visible.output ? ' - ' + Heights.containerSize : '');
+            $('#codingFrame').css('height', 'calc(100% - ' + Heights.bars + ' - ' + Heights.runAndDebug + height + ')');
         },
 
         /**
          * Opens/Closes the output bar.
          */
         toggleOutput(): void {
-            $('#codingFrame').animate({ height: (visible.output ? '+=' : '-=') + heights.containerSize }, ui.setCodingFrameHeight);
+            $('#codingFrame').animate({ height: (visible.output ? '+=' : '-=') + Heights.containerSize }, ui.setCodingFrameHeight);
             visible.output = !visible.output;
             if (visible.output) { $('.output-container').slideDown(); }
             else { $('.output-container').slideUp(); }
@@ -372,8 +379,8 @@ module Stebs {
         * Highlight the given line
         */
         highlightLine(ipNr: number) {
-            var linenr = Stebs.ramContent.getLineNr(ipNr);
-            Stebs.codeEditor.getDoc().setCursor({ ch: 0, line: linenr });
+            var lineNummer = Stebs.ramContent.getLineNr(ipNr);
+            Stebs.codeEditor.getDoc().setCursor({ ch: 0, line: lineNummer });
         },
 
         /**
@@ -385,6 +392,43 @@ module Stebs {
             var position = href.indexOf('?processorId');
             if (position >= 0) { href = href.substring(0, position); }
             link.prop('href', href + '?processorId=' + processorId);
+        },
+
+        /**
+         * Allows the use of a logarithmic slider.
+         */
+        logarithmicScale(value: number, min: number, max: number, inverse: boolean) {
+            //position will be between 0 and 100 (fixed)
+            var maxPosition = 100;
+            //The result should be between given min an max
+            var minValue = Math.log(min);
+            var maxValue = Math.log(max);
+            //calculate adjustment factor
+            var scale = (maxValue - minValue) / (maxPosition);
+            if (inverse) { return (Math.log(value) - minValue) / scale; }
+            else { return Math.exp(minValue + scale * (value)); }
+        },
+
+        /**
+         * Returns the position of the slider [0, 100] calculated using a logarithmic function.
+         */
+        logarithmicPosition(value: number, min: number, max: number) {
+            return ui.logarithmicScale(value, min, max, true);
+        },
+
+        /**
+         * Returns the value of a slider [0, 100] scaled to a logarithmic function.
+         */
+        logarithmicValue(position: number, min: number, max: number): number {
+            return ui.logarithmicScale(position, min, max, false);
+        },
+
+        /**
+         * Is Called, when the value of the speed slider changed.
+         */
+        speedSliderChanged() {
+            var newValue = ui.logarithmicValue(parseInt($('#speedSlider').val()), SpeedSlider.max, SpeedSlider.min);
+            Stebs.serverHub.changeSpeed(newValue);
         }
 
     };
@@ -474,9 +518,7 @@ $(document).ready(function () {
         $('#macroStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Macro));
         $('#microStep').click(() => Stebs.state.singleStep(Stebs.SimulationStepSize.Micro));
 
-        $('#speedSlider').change(() => {
-            Stebs.serverHub.changeSpeed((2000 + 10) - parseInt($('#speedSlider').val()))
-        });
+        $('#speedSlider').change(Stebs.ui.speedSliderChanged);
         $('.stepSizeRadios input').change(() => Stebs.serverHub.changeStepSize(Stebs.ui.getStepSize()));
 
     });

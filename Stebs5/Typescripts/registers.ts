@@ -36,7 +36,7 @@
                 $('#elementList').append(link);
             }
             var offset = $('#newWatchesButton').offset();
-            $('#addWatches').css('left', offset.left).css('bottom', Stebs.heights.runAndDebug);
+            $('#addWatches').css('left', offset.left).css('bottom', Stebs.Heights.runAndDebug);
             $('#addWatches').show();
         },
 
