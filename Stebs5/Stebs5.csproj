@@ -329,6 +329,7 @@
     <Content Include="Icons\assemble.png" />
     <Content Include="Icons\delete-2-icon.png" />
     <Content Include="Icons\down-icon.png" />
+    <Content Include="Icons\favicon.png" />
     <Content Include="Icons\file-text-icon.png" />
     <Content Include="Icons\folder-close-icon.png" />
     <Content Include="Icons\ok-icon.png" />
@@ -429,6 +430,7 @@
     <Content Include="Web.config" />
     <TypeScriptCompile Include="Typescripts\ram.ts" />
     <TypeScriptCompile Include="Typescripts\registers.ts" />
+    <TypeScriptCompile Include="Typescripts\ui.ts" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />

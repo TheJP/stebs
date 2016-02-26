@@ -3,9 +3,9 @@
     Project: http://github.com/TheJP/stebs
 
     1. General Style
-    2. Left Sidebars
-    3. Bottom sidebar
-    4. Top bar
+    2. Top bar
+    3. Left Sidebars
+    4. Bottom bar
     5. Coding View
     6. Run and Debug-Controll Panel
     CodeMirror external changes
@@ -56,7 +56,7 @@ a:hover, a:active {
 }
 
 .open-link button {
-    border: none;
+    border: 0;
     padding: 0;
     background-color: transparent;
 }
@@ -64,13 +64,16 @@ a:hover, a:active {
 .open-link-horizontal {
     position: relative;
     box-sizing: border-box;
-    height: 42px;
+    height: 25px;
     width: 100%;
+    font-size: 14px;
+    padding-left: 16px;
 }
 
 .open-link-horizontal button {
     height: 100%;
     width: 100%;
+    text-align: left;
 }
 
 .open-link-horizontal button span {
@@ -82,7 +85,61 @@ a:hover, a:active {
     background-color: yellow;
 }
 
-/* 2. Left Sidebars */
+/* 2. Top bar */
+
+#codingTopBar {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 7px 10px;
+    background-color: #ccc;
+    height: 38px;
+}
+
+#filename {
+    min-width: 10%;
+    max-width: 30%;
+    float: left;
+}
+
+#filename-star {
+    display: none;
+    float: left;
+}
+
+#codingTopBar button {
+    box-sizing: content-box;
+    height: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-right: 10px;
+    margin-top: -3px;
+    border: none;
+    background-color: transparent;
+}
+
+.simulationControl {
+     float: right;
+}
+
+.fileControl {
+     float: left;
+}
+
+#codingTopBar img, .buttonView .controlButtons img {
+    width: 20px;
+    height: 20px;
+}
+
+.accountLinks {
+    float: right;
+}
+
+.accountLinks a {
+    margin-left: 5px;
+    margin-right: 10px;
+}
+
+/* 3. Left Sidebars */
 
 #devices {
     z-index: 5000;
@@ -139,10 +196,6 @@ a:hover, a:active {
     background-image: url(/Images/ArchitectureHighlight.png);
 }
 
-#architecture .open-link-vertical button span {
-    /*left: -23px;*/
-}
-
 /* class for all devices */
 .device {
     border: 1px solid black;
@@ -195,7 +248,7 @@ a:hover, a:active {
     background-color: lightcoral;
 }
 
-/* 3. Bottom sidebar */
+/* 4. Bottom bar */
 
 .output-container {
     position: relative;
@@ -210,62 +263,8 @@ a:hover, a:active {
     margin: 0 0 0 5px;
 }
 
-/* 4. Top bar */
-
-#codingTopBar {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 6px 10px;
-    background-color: lightgrey;
-    height: 38px;
-}
-
-#codingTopBar #filename {
-    min-width: 10%;
-    max-width: 30%;
-    float: left;
-}
-
-#filename-star {
-    display: none;
-    float: left;
-}
-
-#codingTopBar button {
-    box-sizing: content-box;
-    height: 20px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-right: 10px;
-    margin-top: -3px;
-    border: none;
-    background-color: transparent;
-}
-
-#codingTopBar .simulationControl {
-     float: right;  
-}
-
-#codingTopBar .fileControl {
-     float: left;  
-}
-
-#codingTopBar button:hover {
-    background-color: #383;
-}
-
-#codingTopBar img, .buttonView .controlButtons img {
-    width: 20px;
-    height: 20px;
-}
-
-.accountLinks {
-    float: right;
-}
-
-.accountLinks a {
-    margin-left: 5px;
-    margin-right: 10px;
+.output .open-link {
+    background-color: #ccc;
 }
 
 /* 5. Coding View */
@@ -279,14 +278,13 @@ a:hover, a:active {
 }
 
 #codingFrame {
-    height: calc(100% - 38px - 38px - 100px);
+    height: calc(100% - 163px);
 }
 
 /* 6. Run and Debug-Controll Panel */
 
 .runAndDebug {
     position: relative;
-    border: 1px solid black;
     height: 100px;
     background-color: white;
 }
@@ -427,6 +425,7 @@ a:hover, a:active {
 
 /* Register watches */
 #addWatches {
+    display: none;
     z-index: 5000;
     position: absolute;
     left: 2px;
@@ -526,8 +525,10 @@ a:hover, a:active {
     width: 20px;
     height: 20px;
     margin-right: 5px;
+    background-color: transparent;
     background-size: 20px 20px;
-    background-repeat: no-repeat;   
+    background-repeat: no-repeat;
+    border: none;
 }
 
 .fileIcon {
@@ -555,17 +556,14 @@ a:hover, a:active {
 }
 
 .saveIcon {
-    background-size: 15px 15px;
     background-image: url(/Icons/Save-icon.png);   
 }
 
 .arrowUpIcon {
-    background-size: 15px 15px;
     background-image: url(/Icons/up-icon.png); 
 }
 
 .arrowDownIcon {
-    background-size: 15px 15px;
     background-image: url(/Icons/down-icon.png); 
 }
 
