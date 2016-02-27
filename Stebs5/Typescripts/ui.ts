@@ -93,8 +93,13 @@
             outputView.refresh();
             $('#codingFrame').animate({ height: (visible.output ? '+=' : '-=') + heights.output }, ui.setCodingFrameHeight);
             visible.output = !visible.output;
-            if (visible.output) { $('.output-container').slideDown(); }
-            else { $('.output-container').slideUp(() => outputView.refresh()); }
+            if (visible.output) {
+                $('.output-container').slideDown();
+                $('#openOutput .arrow-icon').removeClass('up').addClass('down');
+            } else {
+                $('.output-container').slideUp(() => outputView.refresh());
+                $('#openOutput .arrow-icon').addClass('up').removeClass('down');
+            }
         },
 
         openOutput(): void {

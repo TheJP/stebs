@@ -19,7 +19,7 @@ module Stebs {
         /* 1x topbar & 1x containerBar */
         //containerBar: '25px',
         bars: '63px',
-        runAndDebug: '120px'
+        runAndDebug: '110px'
     };
 
     export enum SimulationStepSize { Micro = 0, Macro = 1, Instruction = 2 };
