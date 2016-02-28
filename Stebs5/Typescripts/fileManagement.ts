@@ -173,6 +173,7 @@
                     $('#filename').text(node.Name);
                     $('#fileSystem').toggle();
                     codeEditor.getDoc().setValue(fileContent);
+                    codeEditor.getDoc().clearHistory();
                     fileManagement.openedFile = <File>node;
                     ui.setEditorContentChanged(false);
                 });
