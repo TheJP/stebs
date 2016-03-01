@@ -82,8 +82,8 @@
          * This allows correct browser resizing without additional client code.
          */
         setCodingFrameHeight(): void {
-            var height = (visible.output ? ' - ' + heights.output : '');
-            $('#codingFrame').css('height', 'calc(100% - ' + heights.bars + ' - ' + heights.runAndDebug + height + ')');
+            var height = (visible.output ? ' - ' + heights.output : '') + (visible.runAndDebug ? ' - ' + heights.runAndDebug : '');
+            $('#codingFrame').css('height', 'calc(100% - ' + heights.bars + height + ')');
         },
 
         /**
@@ -94,7 +94,7 @@
             $('#codingFrame').animate({ height: (visible.output ? '+=' : '-=') + heights.output }, ui.setCodingFrameHeight);
             visible.output = !visible.output;
             if (visible.output) {
-                $('.output-container').slideDown();
+                $('.output-container').slideDown(() => outputView.refresh());
                 $('#openOutput .arrow-icon').removeClass('up').addClass('down');
             } else {
                 $('.output-container').slideUp(() => outputView.refresh());
@@ -108,6 +108,13 @@
 
         showOutput(text: string): void {
             outputView.getDoc().setValue(text);
+        },
+
+        toggleRunAndDebug(): void {
+            $('#codingFrame').animate({ height: (visible.runAndDebug ? '+=' : '-=') + heights.runAndDebug }, ui.setCodingFrameHeight);
+            visible.runAndDebug = !visible.runAndDebug;
+            if (visible.runAndDebug) { $('#run-open-link .arrow-icon').removeClass('up').addClass('down'); }
+            else { $('#run-open-link .arrow-icon').addClass('up').removeClass('down'); }
         },
 
         /**

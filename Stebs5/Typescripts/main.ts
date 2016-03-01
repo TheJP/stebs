@@ -4,7 +4,8 @@ module Stebs {
     export var visible = {
         devices: false,
         architecture: false,
-        output: false
+        output: false,
+        runAndDebug: true
     };
 
     export var widths = {
@@ -352,6 +353,7 @@ $(document).ready(function () {
     $('#openDevices').click(Stebs.ui.toggleDevices);
     $('#openArchitecture').click(Stebs.ui.toggleArchitecture);
     $('#openOutput').click(Stebs.ui.toggleOutput);
+    $('#run-open-link').click(Stebs.ui.toggleRunAndDebug);
 
     Stebs.codeEditor = CodeMirror.fromTextArea(<HTMLTextAreaElement>$('#codingTextArea').get(0), {
         mode: 'assembler',

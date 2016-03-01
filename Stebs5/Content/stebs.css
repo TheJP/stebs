@@ -87,6 +87,21 @@ a:hover, a:active {
     background-color: yellow;
 }
 
+.arrow-icon {
+    width: 15px;
+    height: 15px;
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+}
+
+.arrow-icon.up {
+    background-image: url(/Icons/up-icon.png);
+}
+
+.arrow-icon.down {
+    background-image: url(/Icons/down-icon.png);
+}
+
 /* 2. Top bar */
 
 #codingTopBar {
@@ -272,18 +287,6 @@ a:hover, a:active {
     position: absolute;
     top: 5px;
     left: 16px;
-    width: 15px;
-    height: 15px;
-    background-size: 15px 15px;
-    background-repeat: no-repeat;
-}
-
-#openOutput .arrow-icon.up {
-    background-image: url(/Icons/up-icon.png);
-}
-
-#openOutput .arrow-icon.down {
-    background-image: url(/Icons/down-icon.png);
 }
 
 /* 5. Coding View */
@@ -308,6 +311,29 @@ a:hover, a:active {
     background-color: #ccc;
     padding-top: 5px;
     padding-left: 5px;
+}
+
+#run-open-link {
+    top: -25px;
+    right: 0;
+    position: absolute;
+    height: 25px;
+    z-index: 4000;
+}
+
+#run-open-link button {
+    border: 0;
+    color: white;
+    background-color: #aaa;
+    height: 25px;
+    padding-right: 20px;
+    padding-left: 34px;
+}
+
+#run-open-link .arrow-icon {
+    position: absolute;
+    top: 5px;
+    left: 10px;
 }
 
 .runAndDebug .buttonView {
