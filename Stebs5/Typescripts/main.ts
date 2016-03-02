@@ -5,7 +5,7 @@ module Stebs {
         devices: false,
         architecture: false,
         output: false,
-        runAndDebug: true
+        runAndDebug: false
     };
 
     export var widths = {

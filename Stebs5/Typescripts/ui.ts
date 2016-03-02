@@ -103,18 +103,25 @@
         },
 
         openOutput(): void {
-            if (!visible.output) { this.toggleOutput(); }
+            if (!visible.output) { ui.toggleOutput(); }
         },
 
         showOutput(text: string): void {
             outputView.getDoc().setValue(text);
         },
 
+        /**
+         * Toggles the visibility of the run and debug panel.
+         */
         toggleRunAndDebug(): void {
             $('#codingFrame').animate({ height: (visible.runAndDebug ? '+=' : '-=') + heights.runAndDebug }, ui.setCodingFrameHeight);
             visible.runAndDebug = !visible.runAndDebug;
             if (visible.runAndDebug) { $('#run-open-link .arrow-icon').removeClass('up').addClass('down'); }
             else { $('#run-open-link .arrow-icon').addClass('up').removeClass('down'); }
+        },
+
+        openRunAndDebug(): void {
+            if (!visible.runAndDebug) { ui.toggleRunAndDebug(); }
         },
 
         /**

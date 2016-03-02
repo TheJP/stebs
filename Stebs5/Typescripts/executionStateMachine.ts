@@ -139,14 +139,16 @@
         }
         startOrPause() { this.start(); }
         start() {
+            ui.openRunAndDebug();
             state = new RunningState();
             serverHub.run(Stebs.ui.getStepSize());
-            Stebs.ui.highlightLine(0);
+            ui.highlightLine(0);
         }
         debug() {
+            ui.openRunAndDebug();
             state = new PausedState();
             serverHub.pause();
-            Stebs.ui.highlightLine(0);
+            ui.highlightLine(0);
         }
         codeChanged() {
             state = new InitialState();

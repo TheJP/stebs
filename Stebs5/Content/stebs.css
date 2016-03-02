@@ -300,7 +300,7 @@ a:hover, a:active {
 }
 
 #codingFrame {
-    height: calc(100% - 173px);
+    height: calc(100% - 63px);
 }
 
 /* 6. Run and Debug-Controll Panel */
@@ -318,6 +318,7 @@ a:hover, a:active {
     right: 0;
     position: absolute;
     height: 25px;
+    width: 230px;
     z-index: 4000;
 }
 
@@ -326,14 +327,15 @@ a:hover, a:active {
     color: white;
     background-color: #aaa;
     height: 25px;
-    padding-right: 20px;
-    padding-left: 34px;
+    width: 100%;
+    padding-right: 46px;
+    text-align: right;
 }
 
 #run-open-link .arrow-icon {
     position: absolute;
     top: 5px;
-    left: 10px;
+    right: 20px;
 }
 
 .runAndDebug .buttonView {
