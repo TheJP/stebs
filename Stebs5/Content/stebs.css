@@ -10,7 +10,7 @@
     6. Run and Debug-Controll Panel
     7. Register Watches
     8. Filemanagement
-    CodeMirror external changes
+    9. CodeMirror external changes
 
 */
 
@@ -102,6 +102,21 @@ a:hover, a:active {
     background-image: url(/Icons/down-icon.png);
 }
 
+button:disabled .enabled-icon,
+button:enabled .disabled-icon,
+#pause:enabled + #continue:disabled,
+#pause:disabled {
+    display: none;
+}
+
+@keyframes grow-icon {
+    0% { background-size: 20px 20px; }
+    25% { background-size: 21px 21px; }
+    50% { background-size: 22px 22px; }
+    75% { background-size: 23px 23px; }
+    100% { background-size: 24px 24px; }
+}
+
 /* 2. Top bar */
 
 #codingTopBar {
@@ -114,6 +129,7 @@ a:hover, a:active {
 }
 
 #filename {
+    padding-top: 2px;
     min-width: 10%;
     max-width: 30%;
     float: left;
@@ -124,19 +140,61 @@ a:hover, a:active {
     float: left;
 }
 
-#codingTopBar button {
-    box-sizing: content-box;
-    height: 20px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-right: 10px;
-    margin-top: -3px;
-    border: none;
-    background-color: transparent;
+.simulationControl, .accountLinks {
+    float: right;
 }
 
-.simulationControl, .accountLinks {
-     float: right;
+.simulationControl {
+    height: 24px;
+    padding: 0;
+}
+
+#codingTopBar button {
+    box-sizing: border-box;
+    height: 24px;
+    width: 24px;
+    padding: 0;
+    margin: 0 10px 0 0;
+    border: 0;
+    background-position: center center;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    vertical-align: top;
+}
+
+#codingTopBar button:hover {
+    animation: grow-icon 0.25s linear 1;
+    background-size: 24px 24px;
+
+}
+
+#assemble {
+    background-image: url(/Icons/assemble.png);
+}
+
+#debug {
+    background-image: url(/Icons/step-by-step.png);
+}
+
+#start {
+    background-image: url(/Icons/Play-icon.png);
+}
+
+#open {
+    background-image: url(/Icons/open-file-icon.png);
+}
+
+#save {
+    background-image: url(/Icons/Save-icon.png);
+}
+
+#new {
+    background-image: url(/Icons/new-file-icon.png);
+}
+
+.accountLinks {
+    padding-top: 2px;
 }
 
 .fileControl {
@@ -455,24 +513,6 @@ a:hover, a:active {
     margin: 0px;
 }
 
-/* Run and debug buttons */
-#debug:disabled .enabled-icon,
-#debug:enabled .disabled-icon,
-#start:disabled .enabled-icon,
-#start:enabled .disabled-icon,
-#pause:disabled .enabled-icon,
-#pause:enabled .disabled-icon,
-#continue:disabled .enabled-icon,
-#continue:enabled .disabled-icon,
-#stop:disabled .enabled-icon,
-#stop:enabled .disabled-icon,
-#reset:disabled .enabled-icon,
-#reset:enabled .disabled-icon,
-#pause:enabled + #continue:disabled,
-#pause:disabled {
-    display: none;
-}
-
 /* 7. Register watches */
 
 #addWatches {
@@ -619,7 +659,8 @@ a:hover, a:active {
     background-image: url(/Icons/down-icon.png); 
 }
 
-/* CodeMirror external changes */
+/* 9. CodeMirror external changes */
+
 .CodeMirror {
     height: 100% !important;
     font-family: Consolas !important;
