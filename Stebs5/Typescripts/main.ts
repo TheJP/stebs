@@ -371,7 +371,7 @@ $(document).ready(function () {
     Stebs.codeEditor.on("change", function (cm, change) {
         Stebs.state.codeChanged();
         Stebs.ui.setEditorContentChanged(true);
-    })
+    });
 
     //Show confirm. If the user stays on page the connection will be recreated 
     $(window).on('beforeunload', function () {

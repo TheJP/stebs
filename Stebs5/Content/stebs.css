@@ -110,11 +110,8 @@ button:enabled .disabled-icon,
 }
 
 @keyframes grow-icon {
-    0% { background-size: 20px 20px; }
-    25% { background-size: 21px 21px; }
-    50% { background-size: 22px 22px; }
-    75% { background-size: 23px 23px; }
-    100% { background-size: 24px 24px; }
+    0% { background-size: 80% 80%; }
+    100% { background-size: 100% 100%; }
 }
 
 /* 2. Top bar */
@@ -157,39 +154,47 @@ button:enabled .disabled-icon,
     margin: 0 10px 0 0;
     border: 0;
     background-position: center center;
-    background-size: 20px 20px;
+    background-size: 80% 80%;
     background-repeat: no-repeat;
     background-color: transparent;
     vertical-align: top;
 }
 
-#codingTopBar button:hover {
+#codingTopBar button:enabled:hover {
     animation: grow-icon 0.25s linear 1;
-    background-size: 24px 24px;
+    background-size: 100% 100%;
 
 }
 
-#assemble {
+#assemble:enabled {
     background-image: url(/Icons/assemble.png);
 }
 
-#debug {
+#debug:enabled {
     background-image: url(/Icons/step-by-step.png);
 }
 
-#start {
+#debug:disabled {
+    background-image: url(/Icons/step-by-step-grey.png);
+}
+
+#start:enabled {
     background-image: url(/Icons/Play-icon.png);
 }
 
-#open {
+#start:disabled {
+    background-image: url(/Icons/Play-icon-grey.png);
+}
+
+#open:enabled {
     background-image: url(/Icons/open-file-icon.png);
 }
 
-#save {
+#save:enabled {
     background-image: url(/Icons/Save-icon.png);
 }
 
-#new {
+#new:enabled {
     background-image: url(/Icons/new-file-icon.png);
 }
 
