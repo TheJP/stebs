@@ -102,16 +102,9 @@ a:hover, a:active {
     background-image: url(/Icons/down-icon.png);
 }
 
-button:disabled .enabled-icon,
-button:enabled .disabled-icon,
 #pause:enabled + #continue:disabled,
 #pause:disabled {
     display: none;
-}
-
-@keyframes grow-icon {
-    0% { background-size: 80% 80%; }
-    100% { background-size: 100% 100%; }
 }
 
 /* 2. Top bar */
@@ -146,24 +139,26 @@ button:enabled .disabled-icon,
     padding: 0;
 }
 
-#codingTopBar button {
+#codingTopBar button, .controlButtons button {
     box-sizing: border-box;
     height: 24px;
     width: 24px;
     padding: 0;
-    margin: 0 10px 0 0;
     border: 0;
     background-position: center center;
     background-size: 80% 80%;
     background-repeat: no-repeat;
     background-color: transparent;
     vertical-align: top;
+    transition: background-size linear 0.25s;
 }
 
-#codingTopBar button:enabled:hover {
-    animation: grow-icon 0.25s linear 1;
-    background-size: 100% 100%;
+#codingTopBar button {
+    margin: 0 10px 0 0;
+}
 
+#codingTopBar button:enabled:hover, .controlButtons button:enabled:hover {
+    background-size: 100% 100%;
 }
 
 #assemble:enabled {
@@ -406,55 +401,84 @@ button:enabled .disabled-icon,
     width: 212px;
 }
 
-.runAndDebug .buttonView .stepSizeRadios {
+.stepSizeRadios {
     float: left;
 }
 
-.runAndDebug .buttonView .stepSizeRadios label, .runAndDebug .buttonView button {
+.stepSizeRadios label, .buttonView button {
     display: block;
     height: 25px;
 }
 
-.runAndDebug .buttonView .stepSizeButtons {
+.stepSizeButtons {
     display: none;
     float: left;
 }
 
-.runAndDebug .buttonView .stepSizeButtons button {
+.stepSizeButtons button {
     width: 140px;
 }
 
-.runAndDebug .buttonView .controlButtons {
+.controlButtons {
     float: right;
 }
 
-.runAndDebug .buttonView .controlButtons button {
-    width: 60px;
-    box-sizing: content-box;
-    height: 20px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-top: -3px;
-    border: none;
-    background-color: transparent;
+.controlButtons button {
+    margin: 0 20px 2px 0;
 }
 
-.runAndDebug .buttonView .sliderDiv {
+#reset {
+    margin-bottom: 0;
+}
+
+#pause:enabled {
+    background-image: url(/Icons/Pause-icon.png);
+}
+
+#pause:disabled {
+    background-image: url(/Icons/Pause-icon-grey.png);
+}
+
+#continue:enabled {
+    background-image: url(/Icons/Play-icon.png);
+}
+
+#continue:disabled {
+    background-image: url(/Icons/Play-icon-grey.png);
+}
+
+#stop:enabled {
+    background-image: url(/Icons/Stop-icon.png);
+}
+
+#stop:disabled {
+    background-image: url(/Icons/Stop-icon-grey.png);
+}
+
+#reset:enabled {
+    background-image: url(/Icons/reset.png);
+}
+
+#reset:disabled {
+    background-image: url(/Icons/reset-grey.png);
+}
+
+.buttonView .sliderDiv {
     clear: both;
     width: 98%;
 }
 
-.runAndDebug .buttonView .sliderDiv #speedSlider {
+#speedSlider {
     width: 98%;
 }
 
-.runAndDebug #watcher-container {
+#watcher-container {
     position: relative;
     width: calc(100% - 220px);
     height: 100%;
 }
 
-.runAndDebug #watcher-container #watcher-elements {
+#watcher-container #watcher-elements {
     height: 100%;
     float: left;
     max-width: calc(100% - 68px);
@@ -462,7 +486,7 @@ button:enabled .disabled-icon,
     overflow-x: hidden;
 }
 
-.runAndDebug #watcher-container .watcher {
+#watcher-container .watcher {
     float: left;
     position: relative;
     border: 1px solid black;
@@ -476,44 +500,45 @@ button:enabled .disabled-icon,
     background-color: white;
 }
 
-.runAndDebug #watcher-container .watcher button {
+#watcher-container .watcher button {
     position: relative;
     float: right;
     border: 0px;
     background-color: transparent;
 }
 
-.runAndDebug #watcher-container .watcher a {
+#watcher-container .watcher a {
     text-decoration: none;
     color: black;
 }
 
-.runAndDebug #watcher-container .watcher .changed {
+#watcher-container .watcher .changed {
     background-color: yellow;
 }
 
-.runAndDebug #watcher-container .watcher a:hover {
+#watcher-container .watcher a:hover {
     text-decoration: underline;
 }
 
-.runAndDebug #watcher-container .watcher p {
+#watcher-container .watcher p {
     margin: 1px;
     margin-bottom: 0px;
 }
 
-.runAndDebug #watcher-container #addWatchElement {
+#watcher-container #addWatchElement {
     float: left;
     position: relative;
     display: block;
 }
-.runAndDebug #watcher-container #addWatchElement button {
+
+#watcher-container #addWatchElement button {
     position: relative;
     display: block;
     width: 56px;
     height: 40px;
 }
 
-.runAndDebug #watcher-container #addWatchElement h1 {
+#watcher-container #addWatchElement h1 {
     position: relative;
     margin: 0px;
 }
@@ -531,7 +556,7 @@ button:enabled .disabled-icon,
     border: 1px solid black;  
 }
 
-#addWatches #closeWatches {
+#closeWatches {
     float: right;
     width: 15px;
 }
